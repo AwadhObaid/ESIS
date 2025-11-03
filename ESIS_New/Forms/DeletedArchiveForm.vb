@@ -144,6 +144,7 @@
                 Return
             End If
 
+
             ' تحويل المعرف مع التحقق من القيم الفارغة
             Dim idValue As Object = dgvDeletedArchive.SelectedRows(0).Cells("ID").Value
             Dim selectedId As Integer

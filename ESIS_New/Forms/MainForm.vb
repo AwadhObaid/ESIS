@@ -1515,6 +1515,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
             ' تحميل الرابط
             Try
+                'ghoooo
                 ' التأكد من تنسيق الرابط الصحيح
                 Dim uri As New Uri(url)
                 webForm.webBrowser.Navigate(uri)

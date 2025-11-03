@@ -131,6 +131,7 @@
 
     ' زر الحذف النهائي (اختياري)
     Private Sub btnPermanentDelete_Click(sender As Object, e As EventArgs) Handles btnPermanentDelete.Click
+
         Try
             ' التحقق من وجود صف محدد
             If dgvDeletedArchive.SelectedRows.Count = 0 Then

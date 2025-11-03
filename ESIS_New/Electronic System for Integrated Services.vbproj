@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props" Condition="Exists('..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7829CDC6-AF42-49EB-9CE7-3342B8E34443}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>ElectronicSystemforIntegratedServices.My.MyApplication</StartupObject>
+    <RootNamespace>ElectronicSystemforIntegratedServices</RootNamespace>
+    <AssemblyName>Electronic System for Integrated Services</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Electronic System for Integrated Services.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Electronic System for Integrated Services.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DocumentationFile>Electronic System for Integrated Services.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DocumentationFile>Electronic System for Integrated Services.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LogoNew.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="ALquhaliLibrary">
+      <HintPath>C:\Users\Awadh\Desktop\ALquhaliLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.105.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.105.0\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=AMD64">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.Framework.3.1.1\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport, Version=2025.2.12.0, Culture=neutral, PublicKeyToken=5ceb240df42bf6e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastReport.OpenSource.2025.2.12\lib\net462\FastReport.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.Compat, Version=2025.2.12.0, Culture=neutral, PublicKeyToken=5ceb240df42bf6e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastReport.Compat.2025.2.12\lib\net462\FastReport.Compat.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.OpenSource.Export.PdfSimple, Version=2025.2.12.0, Culture=neutral, PublicKeyToken=b33a9a06fcc00c4c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastReport.OpenSource.Export.PdfSimple.2025.2.12\lib\net462\FastReport.OpenSource.Export.PdfSimple.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.WinForms, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.WinForms.0.9.7\lib\net45\LiveCharts.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="MicroVisionPCID">
+      <HintPath>C:\Users\Awadh\Downloads\Dll files\MicroVisionPCID.dll</HintPath>
+    </Reference>
+    <Reference Include="MicroVisionSerial">
+      <HintPath>C:\Users\Awadh\Downloads\Dll files\MicroVisionSerial.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RBush, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c77e27b81f4d0187, processorArchitecture=MSIL">
+      <HintPath>..\packages\RBush.Signed.4.0.0\lib\net47\RBush.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\ActivityLogClass.vb" />
+    <Compile Include="Classes\ArchiveClass.vb" />
+    <Compile Include="Classes\BaseFormWithPermissions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\ConnectionStatusChangedEventArgs.vb" />
+    <Compile Include="Classes\ControlScaler.vb" />
+    <Compile Include="Classes\DatabaseBackupHelper.vb" />
+    <Compile Include="Classes\DatabaseConnectionTester.vb" />
+    <Compile Include="Classes\DataGridViewErrorHandler.vb" />
+    <Compile Include="Classes\DataGridViewHelper.vb" />
+    <Compile Include="Classes\DataHelper.vb" />
+    <Compile Include="Classes\NetworkConnection.vb" />
+    <Compile Include="Classes\NetworkMonitor.vb" />
+    <Compile Include="Classes\PermissionEventManager.vb" />
+    <Compile Include="Classes\PermissionHelper.vb" />
+    <Compile Include="Classes\PermissionsManager.vb" />
+    <Compile Include="Classes\PolicyValidationHelper.vb" />
+    <Compile Include="Classes\ReportGenerator.vb" />
+    <Compile Include="Classes\SaderClass.vb" />
+    <Compile Include="Classes\SaderEvents.vb" />
+    <Compile Include="Classes\ServerConnectionManager.vb" />
+    <Compile Include="Classes\UsersClass.vb" />
+    <Compile Include="Classes\WaredClass.vb" />
+    <Compile Include="Forms\ActivationForm.Designer.vb">
+      <DependentUpon>ActivationForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ActivationForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ArchiveForm.Designer.vb">
+      <DependentUpon>ArchiveForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ArchiveForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BackupForm.Designer.vb">
+      <DependentUpon>BackupForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BackupForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BackupManagerForm.Designer.vb">
+      <DependentUpon>BackupManagerForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BackupManagerForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CustomSearch.Designer.vb">
+      <DependentUpon>CustomSearch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CustomSearch.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DashboardForm.Designer.vb">
+      <DependentUpon>DashboardForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DashboardForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DatabaseConnectionForm.Designer.vb">
+      <DependentUpon>DatabaseConnectionForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DatabaseConnectionForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DateDifferenceForm.Designer.vb">
+      <DependentUpon>DateDifferenceForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DateDifferenceForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DeletedArchiveForm.Designer.vb">
+      <DependentUpon>DeletedArchiveForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DeletedArchiveForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangePasswordForm.Designer.vb">
+      <DependentUpon>ChangePasswordForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ChangePasswordForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutForm.Designer.vb">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AboutForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmDataBaseBackup.Designer.vb">
+      <DependentUpon>FrmDataBaseBackup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmDataBaseBackup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManageCategoriesForm.Designer.vb">
+      <DependentUpon>ManageCategoriesForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManageCategoriesForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginMessegeForm.Designer.vb">
+      <DependentUpon>LoginMessegeForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginMessegeForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InstallWizardForm.Designer.vb">
+      <DependentUpon>InstallWizardForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InstallWizardForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.vb">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewSubjForm.Designer.vb">
+      <DependentUpon>NewSubjForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewSubjForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NotificationsForm.Designer.vb">
+      <DependentUpon>NotificationsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NotificationsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PermissionsForm.Designer.vb">
+      <DependentUpon>PermissionsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PermissionsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RestoreForm.Designer.vb">
+      <DependentUpon>RestoreForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RestoreForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SaderForm.Designer.vb">
+      <DependentUpon>SaderForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SaderForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ServerConnectionForm.Designer.vb">
+      <DependentUpon>ServerConnectionForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ServerConnectionForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.vb">
+      <DependentUpon>SettingsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.Designer.vb">
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UnarchivedRecordsForm.Designer.vb">
+      <DependentUpon>UnarchivedRecordsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UnarchivedRecordsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserActivityLogForm.Designer.vb">
+      <DependentUpon>UserActivityLogForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UserActivityLogForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UsersForm.Designer.vb">
+      <DependentUpon>UsersForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UsersForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WaredForm.Designer.vb">
+      <DependentUpon>WaredForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WaredForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WebBrowserForm.Designer.vb">
+      <DependentUpon>WebBrowserForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WebBrowserForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modules\DatabaseHelper.vb" />
+    <Compile Include="Modules\GlobalData.vb" />
+    <Compile Include="Modules\PolicyValidationEvents.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ReportsForms\ReportCriteriaForm.Designer.vb">
+      <DependentUpon>ReportCriteriaForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ReportsForms\ReportCriteriaForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportsForms\ReportSelectionForm.Designer.vb">
+      <DependentUpon>ReportSelectionForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ReportsForms\ReportSelectionForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportsForms\ReportViewerForm.Designer.vb">
+      <DependentUpon>ReportViewerForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ReportsForms\ReportViewerForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportsForms\UserActivityLogReportView.Designer.vb">
+      <DependentUpon>UserActivityLogReportView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ReportsForms\UserActivityLogReportView.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\CrystalReport1.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReport1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\OutgoingRecordsReport.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OutgoingRecordsReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\UserActivityLogReport.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserActivityLogReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Settings.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ActivationForm.resx">
+      <DependentUpon>ActivationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ArchiveForm.resx">
+      <DependentUpon>ArchiveForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BackupForm.resx">
+      <DependentUpon>BackupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BackupManagerForm.resx">
+      <DependentUpon>BackupManagerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomSearch.resx">
+      <DependentUpon>CustomSearch.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DashboardForm.resx">
+      <DependentUpon>DashboardForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DatabaseConnectionForm.resx">
+      <DependentUpon>DatabaseConnectionForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DateDifferenceForm.resx">
+      <DependentUpon>DateDifferenceForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DeletedArchiveForm.resx">
+      <DependentUpon>DeletedArchiveForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangePasswordForm.resx">
+      <DependentUpon>ChangePasswordForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageCategoriesForm.resx">
+      <DependentUpon>ManageCategoriesForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginMessegeForm.resx">
+      <DependentUpon>LoginMessegeForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InstallWizardForm.resx">
+      <DependentUpon>InstallWizardForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewSubjForm.resx">
+      <DependentUpon>NewSubjForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NotificationsForm.resx">
+      <DependentUpon>NotificationsForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PermissionsForm.resx">
+      <DependentUpon>PermissionsForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RestoreForm.resx">
+      <DependentUpon>RestoreForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaderForm.resx">
+      <DependentUpon>SaderForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ServerConnectionForm.resx">
+      <DependentUpon>ServerConnectionForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UnarchivedRecordsForm.resx">
+      <DependentUpon>UnarchivedRecordsForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserActivityLogForm.resx">
+      <DependentUpon>UserActivityLogForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UsersForm.resx">
+      <DependentUpon>UsersForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WebBrowserForm.resx">
+      <DependentUpon>WebBrowserForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportsForms\ReportCriteriaForm.resx">
+      <DependentUpon>ReportCriteriaForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportsForms\ReportSelectionForm.resx">
+      <DependentUpon>ReportSelectionForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportsForms\ReportViewerForm.resx">
+      <DependentUpon>ReportViewerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportsForms\UserActivityLogReportView.resx">
+      <DependentUpon>UserActivityLogReportView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\CrystalReport1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReport1.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\OutgoingRecordsReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OutgoingRecordsReport.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UserActivityLogReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>UserActivityLogReport.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ESIS Logo.ico" />
+    <Content Include="LogoNew.ico" />
+    <Content Include="Resources\1309721023_setting_tools.png" />
+    <None Include="Resources\1761206598.png" />
+    <None Include="Resources\1322323808_group_key.png" />
+    <None Include="Resources\1309721023_setting_tools1.png" />
+    <None Include="Resources\backup1.png" />
+    <None Include="Resources\backup-file1.png" />
+    <None Include="Resources\archive box.png" />
+    <None Include="Resources\reseller_programm.png" />
+    <None Include="Resources\switch-turn-off-icon.png" />
+    <None Include="Resources\Windows-Turn-Off-icon%283%29.png" />
+    <None Include="Resources\Find_16x16 %283%29.png" />
+    <None Include="Resources\society.png" />
+    <None Include="Resources\settingPass.png" />
+    <None Include="Resources\restore1.png" />
+    <None Include="Resources\paper.png" />
+    <None Include="Resources\UserDefault.png" />
+    <Content Include="SqlServerTypes\Loader.cs" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Resources\pdf.png" />
+    <None Include="Resources\google-docs.png" />
+    <None Include="Resources\file.png" />
+    <None Include="Resources\open-in-browser.png" />
+    <None Include="Resources\printer.png" />
+    <None Include="Resources\home.png" />
+    <None Include="Resources\refresh-button.png" />
+    <None Include="Resources\arrow.png" />
+    <None Include="Resources\back.png" />
+    <None Include="Resources\ActivationIcon.png" />
+    <Content Include="Resources\backup %281%29.png" />
+    <Content Include="Resources\backup-file.png" />
+    <Content Include="Resources\backup.png" />
+    <Content Include="Resources\broom.png" />
+    <Content Include="Resources\cancel.png" />
+    <Content Include="Resources\close %281%29.png" />
+    <Content Include="Resources\Close_16x16.png" />
+    <Content Include="Resources\close_50px.png" />
+    <None Include="Resources\close_50px1.png" />
+    <Content Include="Resources\database.png" />
+    <Content Include="Resources\delete.png" />
+    <Content Include="Resources\description.png" />
+    <Content Include="Resources\Entypo_d83d%280%29_32.png" />
+    <Content Include="Resources\export.png" />
+    <Content Include="Resources\iconfinder_Open_file_132300.png" />
+    <None Include="Resources\info.png" />
+    <Content Include="Resources\Lock.png" />
+    <Content Include="Resources\Lock1.png" />
+    <Content Include="Resources\Locklogin.png" />
+    <None Include="Resources\notification.png" />
+    <None Include="Resources\OK.png" />
+    <Content Include="Resources\Print_16x16.png" />
+    <Content Include="Resources\restore.png" />
+    <None Include="Resources\tenor.gif" />
+    <Content Include="Resources\update.png" />
+    <Content Include="Resources\User.png" />
+    <Content Include="Resources\شعار الوزارة.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Acrobat">
+      <Guid>{E64169B3-3592-47D2-816E-602C5C13F328}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="AcroPDFLib">
+      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="AxAcroPDFLib">
+      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props'))" />
+  </Target>
+</Project>

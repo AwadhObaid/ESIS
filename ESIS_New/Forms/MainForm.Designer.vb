@@ -30,9 +30,21 @@ Partial Class MainForm
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.men = New System.Windows.Forms.MenuStrip()
         Me.عامToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnUsers = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnPermissions = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnExit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnLogout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnSetting = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnSearch = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnActivityLog = New System.Windows.Forms.ToolStripMenuItem()
         Me.النسخالإحتياطيوالإستعادةToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnBackup = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnRestore = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnBackupManager = New System.Windows.Forms.ToolStripMenuItem()
         Me.إدارةالبريدToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnWared = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnSader = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnArchive = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnDeletedForm1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnDeletedForm = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuCleanupArchives = New System.Windows.Forms.ToolStripMenuItem()
@@ -53,9 +65,14 @@ Partial Class MainForm
         Me.clearanceContractFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.medicalFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.emergencyLeaveFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Tasreeh = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AQuood = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Kuwait = New System.Windows.Forms.ToolStripMenuItem()
         Me.القاريرToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BtnReportCriteriaForm = New System.Windows.Forms.ToolStripMenuItem()
         Me.BtnReportSelectionForm = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnNotification = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.lblArchiveCount = New System.Windows.Forms.Label()
         Me.lblUnarchivedCount = New System.Windows.Forms.Label()
@@ -89,20 +106,6 @@ Partial Class MainForm
         Me.lblUser2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBoxUser = New System.Windows.Forms.PictureBox()
-        Me.btnUsers = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnPermissions = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnExit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnLogout = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnSetting = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnSearch = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnActivityLog = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnBackup = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnRestore = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnBackupManager = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnSader = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnArchive = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnNotification = New System.Windows.Forms.ToolStripMenuItem()
-        Me.btnAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.men.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -115,12 +118,12 @@ Partial Class MainForm
         '
         Me.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.lblTitle.AutoSize = True
-        Me.lblTitle.Font = New System.Drawing.Font("Tahoma", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTitle.Font = New System.Drawing.Font("Cairo ExtraBold", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTitle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(122, Byte), Integer), CType(CType(204, Byte), Integer))
-        Me.lblTitle.Location = New System.Drawing.Point(640, 6)
+        Me.lblTitle.Location = New System.Drawing.Point(644, 2)
         Me.lblTitle.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(273, 29)
+        Me.lblTitle.Size = New System.Drawing.Size(264, 45)
         Me.lblTitle.TabIndex = 0
         Me.lblTitle.Text = "نظام إدارة الوثائق ESIS"
         '
@@ -143,6 +146,68 @@ Partial Class MainForm
         Me.عامToolStripMenuItem.Size = New System.Drawing.Size(43, 28)
         Me.عامToolStripMenuItem.Text = "عام"
         '
+        'btnUsers
+        '
+        Me.btnUsers.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnUsers.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.reseller_programm
+        Me.btnUsers.Name = "btnUsers"
+        Me.btnUsers.Size = New System.Drawing.Size(231, 28)
+        Me.btnUsers.Text = "إدراة المسـتخدميـــــن"
+        '
+        'btnPermissions
+        '
+        Me.btnPermissions.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnPermissions.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources._1322323808_group_key
+        Me.btnPermissions.Name = "btnPermissions"
+        Me.btnPermissions.Size = New System.Drawing.Size(231, 28)
+        Me.btnPermissions.Text = "صلاحيات المستخدمين"
+        '
+        'btnExit
+        '
+        Me.btnExit.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnExit.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Windows_Turn_Off_icon_3_
+        Me.btnExit.Name = "btnExit"
+        Me.btnExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F10), System.Windows.Forms.Keys)
+        Me.btnExit.Size = New System.Drawing.Size(231, 28)
+        Me.btnExit.Text = "خــــــروج | Exit"
+        '
+        'btnLogout
+        '
+        Me.btnLogout.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnLogout.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.switch_turn_off_icon
+        Me.btnLogout.Name = "btnLogout"
+        Me.btnLogout.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F11), System.Windows.Forms.Keys)
+        Me.btnLogout.Size = New System.Drawing.Size(231, 28)
+        Me.btnLogout.Text = "تسجيل خروج"
+        '
+        'btnSetting
+        '
+        Me.btnSetting.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnSetting.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources._1309721023_setting_tools
+        Me.btnSetting.Name = "btnSetting"
+        Me.btnSetting.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
+        Me.btnSetting.Size = New System.Drawing.Size(231, 28)
+        Me.btnSetting.Text = "شاشة الإعدادات"
+        '
+        'btnSearch
+        '
+        Me.btnSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnSearch.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Find_16x16__3_
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.F), System.Windows.Forms.Keys)
+        Me.btnSearch.Size = New System.Drawing.Size(231, 28)
+        Me.btnSearch.Tag = ""
+        Me.btnSearch.Text = "بحـــــــث | Search"
+        '
+        'btnActivityLog
+        '
+        Me.btnActivityLog.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnActivityLog.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.society
+        Me.btnActivityLog.Name = "btnActivityLog"
+        Me.btnActivityLog.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
+        Me.btnActivityLog.Size = New System.Drawing.Size(231, 28)
+        Me.btnActivityLog.Text = "حــركة المستخدمين"
+        '
         'النسخالإحتياطيوالإستعادةToolStripMenuItem
         '
         Me.النسخالإحتياطيوالإستعادةToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnBackup, Me.btnRestore, Me.btnBackupManager})
@@ -150,6 +215,30 @@ Partial Class MainForm
         Me.النسخالإحتياطيوالإستعادةToolStripMenuItem.Name = "النسخالإحتياطيوالإستعادةToolStripMenuItem"
         Me.النسخالإحتياطيوالإستعادةToolStripMenuItem.Size = New System.Drawing.Size(183, 28)
         Me.النسخالإحتياطيوالإستعادةToolStripMenuItem.Text = "النسخ الإحتياطي والإستعادة"
+        '
+        'btnBackup
+        '
+        Me.btnBackup.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnBackup.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.backup
+        Me.btnBackup.Name = "btnBackup"
+        Me.btnBackup.Size = New System.Drawing.Size(203, 28)
+        Me.btnBackup.Text = "النسخ الإحتياطي"
+        '
+        'btnRestore
+        '
+        Me.btnRestore.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnRestore.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.restore
+        Me.btnRestore.Name = "btnRestore"
+        Me.btnRestore.Size = New System.Drawing.Size(203, 28)
+        Me.btnRestore.Text = "الإستعادة"
+        '
+        'btnBackupManager
+        '
+        Me.btnBackupManager.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnBackupManager.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.backup_file
+        Me.btnBackupManager.Name = "btnBackupManager"
+        Me.btnBackupManager.Size = New System.Drawing.Size(203, 28)
+        Me.btnBackupManager.Text = "إدارة النسخ الإحتياطية"
         '
         'إدارةالبريدToolStripMenuItem
         '
@@ -166,6 +255,25 @@ Partial Class MainForm
         Me.btnWared.Name = "btnWared"
         Me.btnWared.Size = New System.Drawing.Size(197, 38)
         Me.btnWared.Text = "إدارة الوارد"
+        '
+        'btnSader
+        '
+        Me.btnSader.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnSader.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.file1
+        Me.btnSader.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
+        Me.btnSader.Name = "btnSader"
+        Me.btnSader.ShortcutKeys = System.Windows.Forms.Keys.F1
+        Me.btnSader.Size = New System.Drawing.Size(197, 38)
+        Me.btnSader.Text = "إدارة الصادر"
+        '
+        'btnArchive
+        '
+        Me.btnArchive.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnArchive.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.paper
+        Me.btnArchive.Name = "btnArchive"
+        Me.btnArchive.ShortcutKeys = System.Windows.Forms.Keys.F2
+        Me.btnArchive.Size = New System.Drawing.Size(197, 38)
+        Me.btnArchive.Text = "إدارة الأرشيف"
         '
         'btnDeletedForm1
         '
@@ -211,8 +319,7 @@ Partial Class MainForm
         '
         'btnOpenWebForms
         '
-        Me.btnOpenWebForms.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.leaveFormToolStripMenuItem, Me.attendanceFormToolStripMenuItem, Me.transferFormToolStripMenuItem, Me.promotionFormToolStripMenuItem, Me.resignationFormToolStripMenuItem, Me.requestFormToolStripMenuItem, Me.idRequestFormToolStripMenuItem, Me.allowanceFormToolStripMenuItem, Me.exitPermitFormToolStripMenuItem, Me.clearanceFormToolStripMenuItem, Me.clearanceContractFormToolStripMenuItem, Me.medicalFormToolStripMenuItem, Me.emergencyLeaveFormToolStripMenuItem})
-        Me.btnOpenWebForms.Enabled = False
+        Me.btnOpenWebForms.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.leaveFormToolStripMenuItem, Me.attendanceFormToolStripMenuItem, Me.transferFormToolStripMenuItem, Me.promotionFormToolStripMenuItem, Me.resignationFormToolStripMenuItem, Me.requestFormToolStripMenuItem, Me.idRequestFormToolStripMenuItem, Me.allowanceFormToolStripMenuItem, Me.exitPermitFormToolStripMenuItem, Me.clearanceFormToolStripMenuItem, Me.clearanceContractFormToolStripMenuItem, Me.medicalFormToolStripMenuItem, Me.emergencyLeaveFormToolStripMenuItem, Me.Tasreeh, Me.AQuood, Me.Kuwait})
         Me.btnOpenWebForms.ForeColor = System.Drawing.Color.White
         Me.btnOpenWebForms.Name = "btnOpenWebForms"
         Me.btnOpenWebForms.Size = New System.Drawing.Size(124, 28)
@@ -221,6 +328,7 @@ Partial Class MainForm
         'leaveFormToolStripMenuItem
         '
         Me.leaveFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.leaveFormToolStripMenuItem.Enabled = False
         Me.leaveFormToolStripMenuItem.Name = "leaveFormToolStripMenuItem"
         Me.leaveFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.leaveFormToolStripMenuItem.Text = "نموذج إجازة وإقرار عودة"
@@ -228,6 +336,7 @@ Partial Class MainForm
         'attendanceFormToolStripMenuItem
         '
         Me.attendanceFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.attendanceFormToolStripMenuItem.Enabled = False
         Me.attendanceFormToolStripMenuItem.Name = "attendanceFormToolStripMenuItem"
         Me.attendanceFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.attendanceFormToolStripMenuItem.Text = "نموذج استمارة كشف حضور وانصراف للموظفين العاملين بالمواقع الميدانية الثابتة وغير " &
@@ -236,6 +345,7 @@ Partial Class MainForm
         'transferFormToolStripMenuItem
         '
         Me.transferFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.transferFormToolStripMenuItem.Enabled = False
         Me.transferFormToolStripMenuItem.Name = "transferFormToolStripMenuItem"
         Me.transferFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.transferFormToolStripMenuItem.Text = "نموذج نقل وندب داخلي للهيئة الإدارية والمالية"
@@ -243,6 +353,7 @@ Partial Class MainForm
         'promotionFormToolStripMenuItem
         '
         Me.promotionFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.promotionFormToolStripMenuItem.Enabled = False
         Me.promotionFormToolStripMenuItem.Name = "promotionFormToolStripMenuItem"
         Me.promotionFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.promotionFormToolStripMenuItem.Text = "طلب ترشيح لوظيفة إشرافية"
@@ -250,6 +361,7 @@ Partial Class MainForm
         'resignationFormToolStripMenuItem
         '
         Me.resignationFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.resignationFormToolStripMenuItem.Enabled = False
         Me.resignationFormToolStripMenuItem.Name = "resignationFormToolStripMenuItem"
         Me.resignationFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.resignationFormToolStripMenuItem.Text = "نموذج طلب إستقالة / تقاعد"
@@ -257,6 +369,7 @@ Partial Class MainForm
         'requestFormToolStripMenuItem
         '
         Me.requestFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.requestFormToolStripMenuItem.Enabled = False
         Me.requestFormToolStripMenuItem.Name = "requestFormToolStripMenuItem"
         Me.requestFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.requestFormToolStripMenuItem.Text = "نموذج طلب معاملة"
@@ -264,6 +377,7 @@ Partial Class MainForm
         'idRequestFormToolStripMenuItem
         '
         Me.idRequestFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.idRequestFormToolStripMenuItem.Enabled = False
         Me.idRequestFormToolStripMenuItem.Name = "idRequestFormToolStripMenuItem"
         Me.idRequestFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.idRequestFormToolStripMenuItem.Text = "نموذج طلب هوية"
@@ -271,6 +385,7 @@ Partial Class MainForm
         'allowanceFormToolStripMenuItem
         '
         Me.allowanceFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.allowanceFormToolStripMenuItem.Enabled = False
         Me.allowanceFormToolStripMenuItem.Name = "allowanceFormToolStripMenuItem"
         Me.allowanceFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.allowanceFormToolStripMenuItem.Text = "نموذج استمارة صرف بدلات"
@@ -278,6 +393,7 @@ Partial Class MainForm
         'exitPermitFormToolStripMenuItem
         '
         Me.exitPermitFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.exitPermitFormToolStripMenuItem.Enabled = False
         Me.exitPermitFormToolStripMenuItem.Name = "exitPermitFormToolStripMenuItem"
         Me.exitPermitFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.exitPermitFormToolStripMenuItem.Text = "تصريح خروج"
@@ -285,6 +401,7 @@ Partial Class MainForm
         'clearanceFormToolStripMenuItem
         '
         Me.clearanceFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.clearanceFormToolStripMenuItem.Enabled = False
         Me.clearanceFormToolStripMenuItem.Name = "clearanceFormToolStripMenuItem"
         Me.clearanceFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.clearanceFormToolStripMenuItem.Text = "إخلاء طرف عهدة شخصية / تنظيمية"
@@ -292,6 +409,7 @@ Partial Class MainForm
         'clearanceContractFormToolStripMenuItem
         '
         Me.clearanceContractFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.clearanceContractFormToolStripMenuItem.Enabled = False
         Me.clearanceContractFormToolStripMenuItem.Name = "clearanceContractFormToolStripMenuItem"
         Me.clearanceContractFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.clearanceContractFormToolStripMenuItem.Text = "براءة ذمة لموظفي العقود الخاصة"
@@ -299,6 +417,7 @@ Partial Class MainForm
         'medicalFormToolStripMenuItem
         '
         Me.medicalFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.medicalFormToolStripMenuItem.Enabled = False
         Me.medicalFormToolStripMenuItem.Name = "medicalFormToolStripMenuItem"
         Me.medicalFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.medicalFormToolStripMenuItem.Text = "نموذج علاج موظف"
@@ -306,9 +425,29 @@ Partial Class MainForm
         'emergencyLeaveFormToolStripMenuItem
         '
         Me.emergencyLeaveFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.emergencyLeaveFormToolStripMenuItem.Enabled = False
         Me.emergencyLeaveFormToolStripMenuItem.Name = "emergencyLeaveFormToolStripMenuItem"
         Me.emergencyLeaveFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
         Me.emergencyLeaveFormToolStripMenuItem.Text = "اشعار اجازة طارئة"
+        '
+        'Tasreeh
+        '
+        Me.Tasreeh.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.Tasreeh.Name = "Tasreeh"
+        Me.Tasreeh.Size = New System.Drawing.Size(611, 28)
+        Me.Tasreeh.Text = "تصريح رسمي"
+        '
+        'AQuood
+        '
+        Me.AQuood.Name = "AQuood"
+        Me.AQuood.Size = New System.Drawing.Size(611, 28)
+        Me.AQuood.Text = "مناطق نائية | عقود خاصة"
+        '
+        'Kuwait
+        '
+        Me.Kuwait.Name = "Kuwait"
+        Me.Kuwait.Size = New System.Drawing.Size(611, 28)
+        Me.Kuwait.Text = "مناطق نائية | كويتيين"
         '
         'القاريرToolStripMenuItem
         '
@@ -330,6 +469,26 @@ Partial Class MainForm
         Me.BtnReportSelectionForm.Name = "BtnReportSelectionForm"
         Me.BtnReportSelectionForm.Size = New System.Drawing.Size(220, 28)
         Me.BtnReportSelectionForm.Text = "btnReportSelectionForm"
+        '
+        'btnNotification
+        '
+        Me.btnNotification.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.btnNotification.BackColor = System.Drawing.SystemColors.Highlight
+        Me.btnNotification.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnNotification.ForeColor = System.Drawing.Color.White
+        Me.btnNotification.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.notification
+        Me.btnNotification.Name = "btnNotification"
+        Me.btnNotification.Size = New System.Drawing.Size(28, 28)
+        Me.btnNotification.Text = "Notification"
+        '
+        'btnAbout
+        '
+        Me.btnAbout.ForeColor = System.Drawing.Color.White
+        Me.btnAbout.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.info
+        Me.btnAbout.Name = "btnAbout"
+        Me.btnAbout.Size = New System.Drawing.Size(94, 28)
+        Me.btnAbout.Text = "عن النظام"
+        Me.btnAbout.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage
         '
         'Panel1
         '
@@ -662,131 +821,6 @@ Partial Class MainForm
         Me.PictureBoxUser.TabIndex = 5
         Me.PictureBoxUser.TabStop = False
         '
-        'btnUsers
-        '
-        Me.btnUsers.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnUsers.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.reseller_programm
-        Me.btnUsers.Name = "btnUsers"
-        Me.btnUsers.Size = New System.Drawing.Size(231, 28)
-        Me.btnUsers.Text = "إدراة المسـتخدميـــــن"
-        '
-        'btnPermissions
-        '
-        Me.btnPermissions.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnPermissions.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources._1322323808_group_key
-        Me.btnPermissions.Name = "btnPermissions"
-        Me.btnPermissions.Size = New System.Drawing.Size(231, 28)
-        Me.btnPermissions.Text = "صلاحيات المستخدمين"
-        '
-        'btnExit
-        '
-        Me.btnExit.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnExit.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Windows_Turn_Off_icon_3_
-        Me.btnExit.Name = "btnExit"
-        Me.btnExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F10), System.Windows.Forms.Keys)
-        Me.btnExit.Size = New System.Drawing.Size(231, 28)
-        Me.btnExit.Text = "خــــــروج | Exit"
-        '
-        'btnLogout
-        '
-        Me.btnLogout.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnLogout.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.switch_turn_off_icon
-        Me.btnLogout.Name = "btnLogout"
-        Me.btnLogout.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F11), System.Windows.Forms.Keys)
-        Me.btnLogout.Size = New System.Drawing.Size(231, 28)
-        Me.btnLogout.Text = "تسجيل خروج"
-        '
-        'btnSetting
-        '
-        Me.btnSetting.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnSetting.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources._1309721023_setting_tools
-        Me.btnSetting.Name = "btnSetting"
-        Me.btnSetting.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.btnSetting.Size = New System.Drawing.Size(231, 28)
-        Me.btnSetting.Text = "شاشة الإعدادات"
-        '
-        'btnSearch
-        '
-        Me.btnSearch.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnSearch.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Find_16x16__3_
-        Me.btnSearch.Name = "btnSearch"
-        Me.btnSearch.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.F), System.Windows.Forms.Keys)
-        Me.btnSearch.Size = New System.Drawing.Size(231, 28)
-        Me.btnSearch.Tag = ""
-        Me.btnSearch.Text = "بحـــــــث | Search"
-        '
-        'btnActivityLog
-        '
-        Me.btnActivityLog.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnActivityLog.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.society
-        Me.btnActivityLog.Name = "btnActivityLog"
-        Me.btnActivityLog.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
-        Me.btnActivityLog.Size = New System.Drawing.Size(231, 28)
-        Me.btnActivityLog.Text = "حــركة المستخدمين"
-        '
-        'btnBackup
-        '
-        Me.btnBackup.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnBackup.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.backup
-        Me.btnBackup.Name = "btnBackup"
-        Me.btnBackup.Size = New System.Drawing.Size(203, 28)
-        Me.btnBackup.Text = "النسخ الإحتياطي"
-        '
-        'btnRestore
-        '
-        Me.btnRestore.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnRestore.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.restore
-        Me.btnRestore.Name = "btnRestore"
-        Me.btnRestore.Size = New System.Drawing.Size(203, 28)
-        Me.btnRestore.Text = "الإستعادة"
-        '
-        'btnBackupManager
-        '
-        Me.btnBackupManager.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnBackupManager.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.backup_file
-        Me.btnBackupManager.Name = "btnBackupManager"
-        Me.btnBackupManager.Size = New System.Drawing.Size(203, 28)
-        Me.btnBackupManager.Text = "إدارة النسخ الإحتياطية"
-        '
-        'btnSader
-        '
-        Me.btnSader.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnSader.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.file1
-        Me.btnSader.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
-        Me.btnSader.Name = "btnSader"
-        Me.btnSader.ShortcutKeys = System.Windows.Forms.Keys.F1
-        Me.btnSader.Size = New System.Drawing.Size(197, 38)
-        Me.btnSader.Text = "إدارة الصادر"
-        '
-        'btnArchive
-        '
-        Me.btnArchive.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.btnArchive.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.paper
-        Me.btnArchive.Name = "btnArchive"
-        Me.btnArchive.ShortcutKeys = System.Windows.Forms.Keys.F2
-        Me.btnArchive.Size = New System.Drawing.Size(197, 38)
-        Me.btnArchive.Text = "إدارة الأرشيف"
-        '
-        'btnNotification
-        '
-        Me.btnNotification.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.btnNotification.BackColor = System.Drawing.SystemColors.Highlight
-        Me.btnNotification.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.btnNotification.ForeColor = System.Drawing.Color.White
-        Me.btnNotification.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.notification
-        Me.btnNotification.Name = "btnNotification"
-        Me.btnNotification.Size = New System.Drawing.Size(28, 28)
-        Me.btnNotification.Text = "Notification"
-        '
-        'btnAbout
-        '
-        Me.btnAbout.ForeColor = System.Drawing.Color.White
-        Me.btnAbout.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.info
-        Me.btnAbout.Name = "btnAbout"
-        Me.btnAbout.Size = New System.Drawing.Size(94, 28)
-        Me.btnAbout.Text = "عن النظام"
-        Me.btnAbout.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage
-        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -897,5 +931,8 @@ Partial Class MainForm
     Friend WithEvents btnDeletedForm As ToolStripMenuItem
     Friend WithEvents MnuCleanupArchives As ToolStripMenuItem
     Friend WithEvents lblCountdown As ToolStripStatusLabel
+    Friend WithEvents Tasreeh As ToolStripMenuItem
+    Friend WithEvents AQuood As ToolStripMenuItem
+    Friend WithEvents Kuwait As ToolStripMenuItem
 End Class
 

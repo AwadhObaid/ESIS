@@ -1,6 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports System.IO
-Imports ESIS_New.ESIS_New
+Imports ALquhaliLibrary.DBCLS
 
 Public Class LoginForm
     ' متغيرات السحب والنقل للنافذة
@@ -56,6 +56,14 @@ Public Class LoginForm
 
             Select Case loginResult
                 Case LoginStatus.Success
+
+                    ' عرض رسالة الترحيب
+                    Dim frm As New LoginMessegeForm
+                    frm.lblUser.Text = GlobalData.LoggedInUserName
+                    frm.ShowDialog()
+
+                    ' إغلاق نموذج تسجيل الدخول
+                    Me.Close()
                     ' تحميل صورة المستخدم بعد تسجيل الدخول الناجح
                     LoadCurrentUserImage()
 
@@ -71,14 +79,6 @@ Public Class LoginForm
                         Dim newMainForm As New MainForm()
                         newMainForm.Show()
                     End If
-
-                    ' عرض رسالة الترحيب
-                    Dim frm As New LoginMessegeForm
-                    frm.lblUser.Text = GlobalData.LoggedInUserName
-                    frm.ShowDialog()
-
-                    ' إغلاق نموذج تسجيل الدخول
-                    Me.Close()
 
                 Case LoginStatus.InvalidCredentials
                     MessageBox.Show("اسم المستخدم أو كلمة المرور غير صحيحة", "بيانات خاطئة", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -364,7 +364,7 @@ Public Class LoginForm
             ' استخدام الإجراء المخزن "LoginUser"
             Dim parameters() As SqlParameter = {
             DatabaseHelper.CreateParameter("@UserName", ComboUsername.Text.Trim()),
-            DatabaseHelper.CreateParameter("@Password", userclass.EncryptPassword(txtPassword.Text.Trim()))
+            DatabaseHelper.CreateParameter("@Password", Encrypt(txtPassword.Text.Trim()))
         }
 
             Dim result As DataTable = DatabaseHelper.ExecuteStoredProcedure("LoginUser", parameters)

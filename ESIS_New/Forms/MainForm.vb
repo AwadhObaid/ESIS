@@ -1515,7 +1515,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
             ' تحميل الرابط
             Try
-                'ghoooo
+
                 ' التأكد من تنسيق الرابط الصحيح
                 Dim uri As New Uri(url)
                 webForm.webBrowser.Navigate(uri)
@@ -1705,7 +1705,23 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     Private Sub UpdateInternetDependentButtons(isConnected As Boolean)
         Try
             ' تعطيل/تفعيل الأزرار التي تتطلب اتصالًا بالإنترنت
-            btnOpenWebForms.Enabled = isConnected
+            'btnOpenWebForms.Enabled = isConnected
+            leaveFormToolStripMenuItem.Enabled = isConnected
+            attendanceFormToolStripMenuItem.Enabled = isConnected
+            transferFormToolStripMenuItem.Enabled = isConnected
+            promotionFormToolStripMenuItem.Enabled = isConnected
+            resignationFormToolStripMenuItem.Enabled = isConnected
+            requestFormToolStripMenuItem.Enabled = isConnected
+            idRequestFormToolStripMenuItem.Enabled = isConnected
+            allowanceFormToolStripMenuItem.Enabled = isConnected
+            exitPermitFormToolStripMenuItem.Enabled = isConnected
+            clearanceFormToolStripMenuItem.Enabled = isConnected
+            clearanceContractFormToolStripMenuItem.Enabled = isConnected
+            medicalFormToolStripMenuItem.Enabled = isConnected
+            emergencyLeaveFormToolStripMenuItem.Enabled = isConnected
+
+
+
             'btnOnlineBackup.Enabled = isConnected
             'btnCloudRestore.Enabled = isConnected
             'btnOnlineUpdate.Enabled = isConnected
@@ -2019,6 +2035,29 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             MessageBox.Show($"حدث خطأ أثناء التنظيف: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+    Private Sub Tasreeh_Click(sender As Object, e As EventArgs) Handles Tasreeh.Click
+        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "231000-43.pdf")
+        OpenElectronicForm(
+            filePath,
+            "تصريح رسمي")
+    End Sub
+
+    Private Sub AQuood_Click(sender As Object, e As EventArgs) Handles AQuood.Click
+        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "3good.html")
+        OpenElectronicForm(
+            filePath,
+            "مناطق نائية | عقود خاصة")
+    End Sub
+
+    Private Sub Kuwait_Click(sender As Object, e As EventArgs) Handles Kuwait.Click
+        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "Kuwait.html")
+        OpenElectronicForm(
+            filePath,
+            "مناطق نائية | كويتيين")
+    End Sub
+
+
 
 
 

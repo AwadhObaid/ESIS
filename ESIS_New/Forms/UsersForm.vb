@@ -305,7 +305,7 @@ Public Class UsersForm
             End If
 
             ' الحصول على كلمة المرور الحالية من قاعدة البيانات
-            Dim currentPassword As String = GetCurrentPassword(currentUserID)
+            Dim currentPassword As String = Decrypt(GetCurrentPassword(currentUserID))
 
             ' تحديث المستخدم مع الصورة
             Dim result As Boolean = usersClass.UpdateUser(

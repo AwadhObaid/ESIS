@@ -496,6 +496,7 @@ Module DatabaseHelper
             End If
 
             Using command As New SqlCommand(procedureName, connection)
+                command.CommandTimeout = 60 ' زيادة وقت التنفيذ إلى 60 ثانية
                 command.CommandType = CommandType.StoredProcedure
 
                 If parameters IsNot Nothing Then

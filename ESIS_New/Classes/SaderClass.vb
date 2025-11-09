@@ -680,95 +680,236 @@ Public Class SaderClass
     '    End Try
     'End Function
 
+    '''' <summary>
+    '''' حذف صادر
+    '''' </summary>
+    'Public Function DeleteSader(id As Integer) As Boolean
+    '    Dim transaction As SqlTransaction = Nothing
+    '    Try
+    '        Using connection As SqlConnection = GetConnection()
+    '            connection.Open()
+    '            transaction = connection.BeginTransaction()
+
+    '            Try
+    '                ' الحصول على ArchiveID قبل الحذف
+    '                Dim saderData As DataTable = GetSaderById(id)
+    '                Dim archiveID As Integer = GetArchiveIDBySaderID(id)
+    '                Dim currentFilePath As String = ""
+    '                Dim numberBook As String = ""
+    '                Dim subjBook As String = ""
+
+    '                ' استخراج البيانات إذا كانت موجودة
+    '                If saderData IsNot Nothing AndAlso saderData.Rows.Count > 0 Then
+    '                    numberBook = saderData.Rows(0)("NumberBook").ToString()
+    '                    subjBook = saderData.Rows(0)("SubjBook").ToString()
+    '                    archiveID = If(saderData.Rows(0)("ArchiveID") IsNot DBNull.Value,
+    '                            Convert.ToInt32(saderData.Rows(0)("ArchiveID")), 0)
+    '                End If
+
+    '                ' إذا كان هناك سجل مرتبط في الأرشيف
+    '                If archiveID > 0 Then
+    '                    ' الحصول على مسار الملف أولاً
+    '                    currentFilePath = GetCurrentFilePathByArchiveID(archiveID)
+
+    '                    ' حذف الملف من المسار الحالي أولاً
+    '                    If Not String.IsNullOrEmpty(currentFilePath) AndAlso File.Exists(currentFilePath) Then
+    '                        Try
+    '                            MoveToDeletedFolder(currentFilePath)
+    '                        Catch ex As Exception
+    '                            MoveToDeletedFolder(currentFilePath)
+    '                        End Try
+    '                    End If
+    '                End If
+
+    '                ' استخدام الإجراء المخزن "DeleteSader"
+    '                Dim parameters() As SqlParameter = {
+    '                DatabaseHelper.CreateParameter("@ID", id)
+    '            }
+
+    '                ' تنفيذ الإجراء المخزن واحصل على عدد الصفوف المؤثرة
+    '                Dim dt As DataTable = DatabaseHelper.ExecuteStoredProcedure("DeleteSader", parameters)
+
+    '                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+    '                    Dim rowsAffected As Integer = Convert.ToInt32(dt.Rows(0)("RowsAffected"))
+
+    '                    ' إذا كان هناك سجل مرتبط في الأرشيف
+    '                    If archiveID > 0 Then
+    '                        ' حذف السجل من جدول الأرشيف
+    '                        Dim deleteArchiveQuery As String = "DELETE FROM TbArchive WHERE ID = @ArchiveID"
+    '                        Using deleteArchiveCommand As New SqlCommand(deleteArchiveQuery, connection, transaction)
+    '                            deleteArchiveCommand.Parameters.AddWithValue("@ArchiveID", archiveID)
+    '                            deleteArchiveCommand.ExecuteNonQuery()
+    '                        End Using
+    '                    End If
+
+    '                    ' تأكيد المعاملة
+    '                    transaction.Commit()
+    '                    ' تحديث عداد الصادرة
+    '                    DataHelper.UpdateSaderCount()
+    '                    ' تسجيل نشاط إضافة الصادر
+    '                    activityLogClass.LogUserActivity(GlobalData.LoggedInUserName, "Delete", "TbSader", id, $"تم حذف كتاب صادر برقم: {numberBook}, الموضوع: {subjBook}" &
+    '                    If(archiveID > 0, $", مع حذف الأرشيف المرتبط (معرّف: {archiveID})", "")
+    '                )
+
+    '                    Return rowsAffected > 0
+    '                Else
+    '                    Return False
+    '                End If
+
+    '            Catch ex As Exception
+    '                ' التراجع عن المعاملة في حالة حدوث خطأ
+    '                If transaction IsNot Nothing Then
+    '                    transaction.Rollback()
+    '                End If
+    '                Throw
+    '            End Try
+    '        End Using
+    '    Catch ex As Exception
+    '        Throw New Exception("خطأ في حذف الصادر: " & ex.Message)
+    '    End Try
+    'End Function
+
+    '''' <summary>
+    '''' حذف صادر
+    '''' </summary>
+    'Public Function DeleteSader(id As Integer) As Boolean
+    '    Dim transaction As SqlTransaction = Nothing
+    '    Try
+    '        Using connection As SqlConnection = GetConnection()
+    '            connection.Open()
+    '            transaction = connection.BeginTransaction()
+
+    '            Try
+    '                ' الحصول على ArchiveID قبل الحذف
+    '                Dim saderData As DataTable = GetSaderById(id)
+    '                Dim archiveID As Integer = GetArchiveIDBySaderID(id)
+    '                Dim currentFilePath As String = ""
+    '                Dim numberBook As String = ""
+    '                Dim subjBook As String = ""
+
+    '                ' استخراج البيانات إذا كانت موجودة
+    '                If saderData IsNot Nothing AndAlso saderData.Rows.Count > 0 Then
+    '                    numberBook = saderData.Rows(0)("NumberBook").ToString()
+    '                    subjBook = saderData.Rows(0)("SubjBook").ToString()
+    '                    archiveID = If(saderData.Rows(0)("ArchiveID") IsNot DBNull.Value,
+    '                        Convert.ToInt32(saderData.Rows(0)("ArchiveID")), 0)
+    '                End If
+
+    '                ' إذا كان هناك سجل مرتبط في الأرشيف
+    '                If archiveID > 0 Then
+    '                    ' الحصول على مسار الملف أولاً
+    '                    currentFilePath = GetCurrentFilePathByArchiveID(archiveID)
+
+    '                    ' حذف الملف من المسار الحالي أولاً
+    '                    If Not String.IsNullOrEmpty(currentFilePath) AndAlso File.Exists(currentFilePath) Then
+    '                        Try
+    '                            MoveToDeletedFolder(currentFilePath)
+    '                        Catch ex As Exception
+    '                            MoveToDeletedFolder(currentFilePath)
+    '                        End Try
+    '                    End If
+
+    '                    ' حذف السجل من جدول الأرشيف
+    '                    Dim deleteArchiveQuery As String = "DELETE FROM TbArchive WHERE ID = @ArchiveID"
+    '                    Using deleteArchiveCommand As New SqlCommand(deleteArchiveQuery, connection, transaction)
+    '                        deleteArchiveCommand.Parameters.AddWithValue("@ArchiveID", archiveID)
+    '                        deleteArchiveCommand.ExecuteNonQuery()
+    '                    End Using
+    '                End If
+
+    '                ' استخدام الإجراء المخزن "DeleteSader"
+    '                Dim parameters() As SqlParameter = {
+    '                DatabaseHelper.CreateParameter("@ID", id)
+    '            }
+
+    '                ' تنفيذ الإجراء المخزن واحصل على عدد الصفوف المؤثرة
+    '                Dim dt As DataTable = DatabaseHelper.ExecuteStoredProcedure("DeleteSader", parameters)
+
+    '                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+    '                    Dim rowsAffected As Integer = Convert.ToInt32(dt.Rows(0)("RowsAffected"))
+
+    '                    ' تأكيد المعاملة
+    '                    transaction.Commit()
+    '                    ' تحديث عداد الصادرة
+    '                    DataHelper.UpdateSaderCount()
+    '                    ' تسجيل نشاط إضافة الصادر
+    '                    activityLogClass.LogUserActivity(GlobalData.LoggedInUserName, "Delete", "TbSader", id, $"تم حذف كتاب صادر برقم: {numberBook}, الموضوع: {subjBook}" &
+    '                    If(archiveID > 0, $", مع حذف الأرشيف المرتبط (معرّف: {archiveID})", "")
+    '                )
+
+    '                    Return rowsAffected > 0
+    '                Else
+    '                    Return False
+    '                End If
+
+    '            Catch ex As Exception
+    '                ' التراجع عن المعاملة في حالة حدوث خطأ
+    '                If transaction IsNot Nothing Then
+    '                    transaction.Rollback()
+    '                End If
+    '                Throw
+    '            End Try
+    '        End Using
+    '    Catch ex As Exception
+    '        Throw New Exception("خطأ في حذف الصادر: " & ex.Message)
+    '    End Try
+    'End Function
+
+    ''' <summary>
+    ''' الحصول على موضوع الصادر بواسطة المعرف
+    ''' </summary>
+    Public Function GetSaderSubjectById(id As Integer) As String
+        Try
+            Dim query As String = "SELECT SubjBook FROM TbSader WHERE ID = @ID"
+            Dim parameters() As SqlParameter = {
+            DatabaseHelper.CreateParameter("@ID", id)
+        }
+
+            Dim result As Object = DatabaseHelper.ExecuteScalar(query, parameters)
+            If result IsNot Nothing AndAlso Not IsDBNull(result) Then
+                Return result.ToString()
+            Else
+                Return ""
+            End If
+
+        Catch ex As Exception
+            System.Diagnostics.Debug.WriteLine($"خطأ في الحصول على موضوع الصادر: {ex.Message}")
+            Return ""
+        End Try
+    End Function
     ''' <summary>
     ''' حذف صادر
     ''' </summary>
     Public Function DeleteSader(id As Integer) As Boolean
-        Dim transaction As SqlTransaction = Nothing
         Try
-            Using connection As SqlConnection = GetConnection()
-                connection.Open()
-                transaction = connection.BeginTransaction()
+            ' استخدام الإجراء المخزن "DeleteSader"
+            Dim parameters() As SqlParameter = {
+            DatabaseHelper.CreateParameter("@ID", id)
+        }
 
-                Try
-                    ' الحصول على ArchiveID قبل الحذف
-                    Dim saderData As DataTable = GetSaderById(id)
-                    Dim archiveID As Integer = GetArchiveIDBySaderID(id)
-                    Dim currentFilePath As String = ""
-                    Dim numberBook As String = ""
-                    Dim subjBook As String = ""
+            ' تنفيذ الإجراء المخزن واحصل على عدد الصفوف المؤثرة
+            Dim dt As DataTable = DatabaseHelper.ExecuteStoredProcedure("DeleteSader", parameters)
 
-                    ' استخراج البيانات إذا كانت موجودة
-                    If saderData IsNot Nothing AndAlso saderData.Rows.Count > 0 Then
-                        numberBook = saderData.Rows(0)("NumberBook").ToString()
-                        subjBook = saderData.Rows(0)("SubjBook").ToString()
-                        archiveID = If(saderData.Rows(0)("ArchiveID") IsNot DBNull.Value,
-                                Convert.ToInt32(saderData.Rows(0)("ArchiveID")), 0)
-                    End If
+            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                Dim rowsAffected As Integer = Convert.ToInt32(dt.Rows(0)("RowsAffected"))
 
-                    ' إذا كان هناك سجل مرتبط في الأرشيف
-                    If archiveID > 0 Then
-                        ' الحصول على مسار الملف أولاً
-                        currentFilePath = GetCurrentFilePathByArchiveID(archiveID)
+                ' تحديث عداد الصادرة
+                DataHelper.UpdateSaderCount()
+                ' تسجيل نشاط إضافة الصادر
+                activityLogClass.LogUserActivity(GlobalData.LoggedInUserName, "Delete", "TbSader", id, $"تم حذف كتاب صادر برقم: {GetSaderById(id)}, الموضوع: {GetSaderSubjectById(id)}" &
+                If(GetArchiveIDBySaderID(id) > 0, $", مع حذف الأرشيف المرتبط (معرّف: {GetArchiveIDBySaderID(id)})", "")
+            )
 
-                        ' حذف الملف من المسار الحالي أولاً
-                        If Not String.IsNullOrEmpty(currentFilePath) AndAlso File.Exists(currentFilePath) Then
-                            Try
-                                MoveToDeletedFolder(currentFilePath)
-                            Catch ex As Exception
-                                MoveToDeletedFolder(currentFilePath)
-                            End Try
-                        End If
-                    End If
+                Return rowsAffected > 0
+            Else
+                Return False
+            End If
 
-                    ' استخدام الإجراء المخزن "DeleteSader"
-                    Dim parameters() As SqlParameter = {
-                    DatabaseHelper.CreateParameter("@ID", id)
-                }
-
-                    ' تنفيذ الإجراء المخزن واحصل على عدد الصفوف المؤثرة
-                    Dim dt As DataTable = DatabaseHelper.ExecuteStoredProcedure("DeleteSader", parameters)
-
-                    If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-                        Dim rowsAffected As Integer = Convert.ToInt32(dt.Rows(0)("RowsAffected"))
-
-                        ' إذا كان هناك سجل مرتبط في الأرشيف
-                        If archiveID > 0 Then
-                            ' حذف السجل من جدول الأرشيف
-                            Dim deleteArchiveQuery As String = "DELETE FROM TbArchive WHERE ID = @ArchiveID"
-                            Using deleteArchiveCommand As New SqlCommand(deleteArchiveQuery, connection, transaction)
-                                deleteArchiveCommand.Parameters.AddWithValue("@ArchiveID", archiveID)
-                                deleteArchiveCommand.ExecuteNonQuery()
-                            End Using
-                        End If
-
-                        ' تأكيد المعاملة
-                        transaction.Commit()
-                        ' تحديث عداد الصادرة
-                        DataHelper.UpdateSaderCount()
-                        ' تسجيل نشاط إضافة الصادر
-                        activityLogClass.LogUserActivity(GlobalData.LoggedInUserName, "Delete", "TbSader", id, $"تم حذف كتاب صادر برقم: {numberBook}, الموضوع: {subjBook}" &
-                        If(archiveID > 0, $", مع حذف الأرشيف المرتبط (معرّف: {archiveID})", "")
-                    )
-
-                        Return rowsAffected > 0
-                    Else
-                        Return False
-                    End If
-
-                Catch ex As Exception
-                    ' التراجع عن المعاملة في حالة حدوث خطأ
-                    If transaction IsNot Nothing Then
-                        transaction.Rollback()
-                    End If
-                    Throw
-                End Try
-            End Using
         Catch ex As Exception
-            Throw New Exception("خطأ في حذف الصادر: " & ex.Message)
+            System.Diagnostics.Debug.WriteLine($"خطأ في حذف الصادر: {ex.Message}")
+            Throw
         End Try
     End Function
-
 
     '''' <summary>
     '''' حذف صادر
@@ -854,9 +995,6 @@ Public Class SaderClass
     '        Throw New Exception("خطأ في حذف الصادر: " & ex.Message)
     '    End Try
     'End Function
-
-
-
 
 
     ''' <summary>

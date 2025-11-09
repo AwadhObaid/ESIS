@@ -3000,28 +3000,39 @@ Public Class ArchiveClass
     '    End Try
     'End Function
 
-
     ''' <summary>
     ''' جلب الأرشيفات النشطة (غير المحذوفة)
     ''' </summary>
     Public Function GetActiveArchives() As DataTable
-        Dim dt As New DataTable()
         Try
-            Using connection As SqlConnection = GetConnection()
-                connection.Open()
-                Dim query As String = "SELECT * FROM TbArchive WHERE IsDeleted = 0 ORDER BY ID"
-                Using command As New SqlCommand(query, connection)
-                    Using adapter As New SqlDataAdapter(command)
-                        adapter.Fill(dt)
-                    End Using
-                End Using
-            End Using
+            ' استخدام الإجراء المخزن "GetActiveArchives"
+            Return DatabaseHelper.ExecuteStoredProcedure("GetActiveArchives")
         Catch ex As Exception
             _lastError = "خطأ في جلب الأرشيفات النشطة: " & ex.Message
             Throw New Exception(_lastError)
         End Try
-        Return dt
     End Function
+    '''' <summary>
+    '''' جلب الأرشيفات النشطة (غير المحذوفة)
+    '''' </summary>
+    'Public Function GetActiveArchives() As DataTable
+    '    Dim dt As New DataTable()
+    '    Try
+    '        Using connection As SqlConnection = GetConnection()
+    '            connection.Open()
+    '            Dim query As String = "SELECT * FROM TbArchive WHERE IsDeleted = 0 ORDER BY ID"
+    '            Using command As New SqlCommand(query, connection)
+    '                Using adapter As New SqlDataAdapter(command)
+    '                    adapter.Fill(dt)
+    '                End Using
+    '            End Using
+    '        End Using
+    '    Catch ex As Exception
+    '        _lastError = "خطأ في جلب الأرشيفات النشطة: " & ex.Message
+    '        Throw New Exception(_lastError)
+    '    End Try
+    '    Return dt
+    'End Function
 
     ''' <summary>
     ''' جلب الأرشيفات المحذوفة (المخفية)

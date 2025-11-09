@@ -407,61 +407,6 @@ Public Class LoginForm
         End Try
     End Function
 
-    '''' <summary>
-    '''' محاولة تسجيل الدخول
-    '''' </summary>
-    'Private Function AttemptLogin() As LoginStatus
-    '    Try
-    '        ' استعلام للتحقق من بيانات المستخدم وحالته
-    '        Dim query As String = "
-    '            SELECT ID, UserName, Password, IsAdmin, IsActive 
-    '            FROM TbUsers 
-    '            WHERE UserName = @UserName AND Password = @Password"
-
-    '        Dim parameters() As SqlParameter = {
-    '            DatabaseHelper.CreateParameter("@UserName", ComboUsername.Text.Trim()),
-    '            DatabaseHelper.CreateParameter("@Password", userclass.EncryptPassword(txtPassword.Text.Trim()))
-    '        }
-
-    '        Dim result As DataTable = DatabaseHelper.ExecuteQuery(query, parameters)
-
-    '        ' التحقق من نتيجة الاستعلام
-    '        If result.Rows.Count = 0 Then
-    '            Return LoginStatus.InvalidCredentials
-    '        End If
-
-    '        Dim userRow As DataRow = result.Rows(0)
-
-    '        ' التحقق من حالة المستخدم (نشط أم لا)
-    '        Dim isActive As Boolean = Convert.ToBoolean(userRow("IsActive"))
-    '        If Not isActive Then
-    '            Return LoginStatus.UserNotActive
-    '        End If
-
-    '        ' التحقق من أن المستخدم موجود
-    '        If Convert.ToInt32(userRow("ID")) <= 0 Then
-    '            Return LoginStatus.UserNotFound
-    '        End If
-
-    '        ' حفظ بيانات المستخدم في المتغيرات العالمية
-    '        GlobalData.LoggedInUserID = Convert.ToInt32(userRow("ID"))
-    '        GlobalData.LoggedInUserName = userRow("UserName").ToString()
-
-    '        ' تطبيق الصلاحيات الأولية
-    '        ApplyInitialPermissions()
-
-    '        Return LoginStatus.Success
-
-    '    Catch ex As SqlException
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في قاعدة البيانات عند تسجيل الدخول: {ex.Message}")
-    '        Return LoginStatus.DatabaseError
-
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ عام عند تسجيل الدخول: {ex.Message}")
-    '        Return LoginStatus.DatabaseError
-    '    End Try
-    'End Function
-
     ''' <summary>
     ''' تحميل صورة المستخدم الحالي
     ''' </summary>

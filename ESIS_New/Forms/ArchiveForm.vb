@@ -7,7 +7,7 @@ Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports System.Windows.Forms
-Imports ESIS_New.ESIS_New
+
 
 
 Public Class ArchiveForm : Inherits BaseFormWithPermissions
@@ -88,7 +88,6 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
     ''' <summary>
     ''' تحميل البيانات عند تحميل النموذج
     ''' </summary>
-
     Private Sub ArchiveForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             ' التحقق من صلاحية عرض نموذج المستخدمين
@@ -249,8 +248,6 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
     End Sub
 
 
-
-
     'Private Sub ArchiveForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     '    Try
     '        isLoadingData = True
@@ -322,8 +319,8 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
     Public Sub LoadActiveArchive()
         Try
             isLoadingData = True
-            Dim dt As DataTable = archiveClass.GetActiveArchives()
-            dgvArchive.DataSource = dt
+            Dim DT As DataTable = archiveClass.GetActiveArchives()
+            dgvArchive.DataSource = DT
 
             ' تخصيص أسماء الأعمدة
             If dgvArchive.Columns.Contains("ID") Then dgvArchive.Columns("ID").HeaderText = "المعرف"
@@ -518,10 +515,10 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
             FillDefaultFields()
 
             ' رسالة تأكيد (يمكن إزالتها لاحقاً)
-            ' MessageBox.Show($"تم تعبئة البيانات من فورم الصادر بنجاح{vbNewLine}" &
-            '     $"التصنيف: {saderData.BookCategory}{vbNewLine}" &
-            '     $"المجلد المقترح: {ComboArchiveFolder.Text}",
-            '     "تعبئة البيانات", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show($"تم تعبئة البيانات من فورم الصادر بنجاح{vbNewLine}" &
+                $"التصنيف: {saderData.BookCategory}{vbNewLine}" &
+                $"المجلد المقترح: {ComboArchiveFolder.Text}",
+                "تعبئة البيانات", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
         Catch ex As Exception
             MessageBox.Show("خطأ في تعبئة البيانات من فورم الصادر: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -1665,46 +1662,6 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
-    ''' <summary>
-    ''' حساب مسار الوجهة في مجلد الأرشيف
-    ''' </summary>
-    'Public Sub CalculateDestinationPath()
-    '    Try
-    '        ' التحقق من وجود مسار أصلي
-    '        If String.IsNullOrWhiteSpace(txtOriginalPath.Text) Then
-    '            Return
-    '        End If
-
-    '        ' التحقق من اختيار تصنيف أرشيف
-    '        If String.IsNullOrWhiteSpace(ComboArchiveFolder.Text) Then
-    '            Return
-    '        End If
-
-    '        ' الحصول على مسار المجلد النهائي
-    '        Dim finalArchivePath As String = archiveClass.GetFinalArchivePath(ComboArchiveFolder.Text)
-    '        If String.IsNullOrEmpty(finalArchivePath) Then
-    '            Return
-    '        End If
-
-    '        ' إنشاء اسم الملف الكامل
-    '        Dim fileExtension As String = If(txtFileType.Text.StartsWith("."), txtFileType.Text, "." & txtFileType.Text)
-    '        Dim fullFileName As String = If(txtFilename.Text.EndsWith(fileExtension, StringComparison.OrdinalIgnoreCase),
-    '                                  txtFilename.Text,
-    '                                  txtFilename.Text & fileExtension)
-
-    '        ' تعيين مسار الوجهة
-    '        txtFilepath.Text = Path.Combine(finalArchivePath, fullFileName)
-
-    '        ' التحقق من وجود المجلد و إنشائه إذا لزم الأمر
-    '        Dim destinationFolder As String = Path.GetDirectoryName(txtFilepath.Text)
-    '        If Not Directory.Exists(destinationFolder) Then
-    '            Directory.CreateDirectory(destinationFolder)
-    '        End If
-
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في حساب مسار الوجهة: {ex.Message}")
-    '    End Try
-    'End Sub
     Public Sub CalculateDestinationPath()
         Try
             ' التحقق من وجود مسار أصلي
@@ -2485,6 +2442,14 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
         btnDelete.Enabled = enabled
         btnSearch.Enabled = enabled
         ' يمكن إضافة المزيد من الأزرار حسب الحاجة
+    End Sub
+
+    Private Sub CbArchiveNum_CheckedChanged(sender As Object, e As EventArgs) Handles CbArchiveNum.CheckedChanged
+        If CbArchiveNum.Checked Then
+            txtArchiveNum.ReadOnly = False
+        Else
+            txtArchiveNum.ReadOnly = True
+        End If
     End Sub
 #End Region
 

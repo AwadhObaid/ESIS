@@ -28,6 +28,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SaderForm))
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.PicMsg = New System.Windows.Forms.PictureBox()
+        Me.lblMessage = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btnAddCategory = New System.Windows.Forms.Button()
         Me.lblFilterStatus = New System.Windows.Forms.Label()
@@ -84,9 +87,11 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblSubjBook = New System.Windows.Forms.Label()
         Me.txtPrintNumberBook = New System.Windows.Forms.TextBox()
         Me.lblRecordCount = New System.Windows.Forms.Label()
-        Me.TimerRefrech = New System.Windows.Forms.Timer(Me.components)
+        Me.TimerMsg = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         CType(Me.dgvSader, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -106,11 +111,12 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1379, 650)
+        Me.Panel1.Size = New System.Drawing.Size(1379, 678)
         Me.Panel1.TabIndex = 20
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.Panel3)
         Me.Panel2.Controls.Add(Me.Label2)
         Me.Panel2.Controls.Add(Me.btnAddCategory)
         Me.Panel2.Controls.Add(Me.lblFilterStatus)
@@ -125,8 +131,41 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel2.Location = New System.Drawing.Point(0, 0)
         Me.Panel2.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(1379, 650)
+        Me.Panel2.Size = New System.Drawing.Size(1379, 678)
         Me.Panel2.TabIndex = 0
+        '
+        'Panel3
+        '
+        Me.Panel3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Panel3.Controls.Add(Me.PicMsg)
+        Me.Panel3.Controls.Add(Me.lblMessage)
+        Me.Panel3.Location = New System.Drawing.Point(505, 641)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(864, 37)
+        Me.Panel3.TabIndex = 32
+        '
+        'PicMsg
+        '
+        Me.PicMsg.Dock = System.Windows.Forms.DockStyle.Right
+        Me.PicMsg.Location = New System.Drawing.Point(827, 0)
+        Me.PicMsg.Name = "PicMsg"
+        Me.PicMsg.Size = New System.Drawing.Size(37, 37)
+        Me.PicMsg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PicMsg.TabIndex = 31
+        Me.PicMsg.TabStop = False
+        '
+        'lblMessage
+        '
+        Me.lblMessage.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lblMessage.Font = New System.Drawing.Font("Cairo", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.lblMessage.ForeColor = System.Drawing.Color.DarkBlue
+        Me.lblMessage.Location = New System.Drawing.Point(0, 0)
+        Me.lblMessage.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblMessage.Name = "lblMessage"
+        Me.lblMessage.Size = New System.Drawing.Size(864, 37)
+        Me.lblMessage.TabIndex = 30
+        Me.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label2
         '
@@ -145,9 +184,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnAddCategory.FlatAppearance.BorderSize = 0
         Me.btnAddCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAddCategory.Font = New System.Drawing.Font("Cairo", 8.999999!)
-        Me.btnAddCategory.Location = New System.Drawing.Point(982, 12)
+        Me.btnAddCategory.Location = New System.Drawing.Point(788, 12)
         Me.btnAddCategory.Name = "btnAddCategory"
-        Me.btnAddCategory.Size = New System.Drawing.Size(95, 32)
+        Me.btnAddCategory.Size = New System.Drawing.Size(191, 32)
         Me.btnAddCategory.TabIndex = 28
         Me.btnAddCategory.Text = "إدارة التصنيفات"
         Me.btnAddCategory.UseVisualStyleBackColor = False
@@ -324,9 +363,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.cmbBookCategory.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.cmbBookCategory.FormattingEnabled = True
         Me.cmbBookCategory.IntegralHeight = False
-        Me.cmbBookCategory.Location = New System.Drawing.Point(1083, 12)
+        Me.cmbBookCategory.Location = New System.Drawing.Point(985, 12)
         Me.cmbBookCategory.Name = "cmbBookCategory"
-        Me.cmbBookCategory.Size = New System.Drawing.Size(171, 31)
+        Me.cmbBookCategory.Size = New System.Drawing.Size(269, 31)
         Me.cmbBookCategory.TabIndex = 25
         '
         'dgvSader
@@ -378,7 +417,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox4.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Padding = New System.Windows.Forms.Padding(3, 6, 3, 6)
-        Me.GroupBox4.Size = New System.Drawing.Size(486, 328)
+        Me.GroupBox4.Size = New System.Drawing.Size(486, 351)
         Me.GroupBox4.TabIndex = 26
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "رقم الصادر"
@@ -390,7 +429,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.AxAcroPDF1.Location = New System.Drawing.Point(3, 31)
         Me.AxAcroPDF1.Name = "AxAcroPDF1"
         Me.AxAcroPDF1.OcxState = CType(resources.GetObject("AxAcroPDF1.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.AxAcroPDF1.Size = New System.Drawing.Size(480, 291)
+        Me.AxAcroPDF1.Size = New System.Drawing.Size(480, 314)
         Me.AxAcroPDF1.TabIndex = 1
         '
         'GroupBox3
@@ -913,16 +952,16 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblRecordCount.Text = "...."
         Me.lblRecordCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'TimerRefrech
+        'TimerMsg
         '
-        Me.TimerRefrech.Interval = 100000
+        Me.TimerMsg.Interval = 3000
         '
         'SaderForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1379, 650)
+        Me.ClientSize = New System.Drawing.Size(1379, 678)
         Me.Controls.Add(Me.Panel1)
         Me.Font = New System.Drawing.Font("Cairo SemiBold", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
@@ -936,6 +975,8 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel1.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
+        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.TableLayoutPanel3.ResumeLayout(False)
@@ -1006,12 +1047,15 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents lblWarning As Label
     Friend WithEvents btnShowUnarchivedOnly As Button
     Friend WithEvents lblFilterStatus As Label
-    Friend WithEvents TimerRefrech As Timer
+    Friend WithEvents TimerMsg As Timer
     Friend WithEvents AxAcroPDF1 As AxAcroPDFLib.AxAcroPDF
     Friend WithEvents RBDirectPrint As RadioButton
     Friend WithEvents RBPreviewBeforePrint As RadioButton
     Friend WithEvents rbUnarchivedSader As RadioButton
     Friend WithEvents btnAddCategory As Button
     Friend WithEvents Label2 As Label
+    Friend WithEvents PicMsg As PictureBox
+    Friend WithEvents lblMessage As Label
+    Friend WithEvents Panel3 As Panel
 End Class
 

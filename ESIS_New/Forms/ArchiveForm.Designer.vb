@@ -33,12 +33,12 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.lblUserName = New System.Windows.Forms.Label()
         Me.dtpArchiveDate = New System.Windows.Forms.DateTimePicker()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.CbArchiveNum = New System.Windows.Forms.CheckBox()
         Me.lblArchiveFolder = New System.Windows.Forms.Label()
         Me.lblArchiveSubject = New System.Windows.Forms.Label()
         Me.txtArchiveSubject = New System.Windows.Forms.TextBox()
         Me.txtArchiveNum = New System.Windows.Forms.TextBox()
         Me.txtFileType = New System.Windows.Forms.TextBox()
-        Me.lblArchiveNum = New System.Windows.Forms.Label()
         Me.lblFileType = New System.Windows.Forms.Label()
         Me.ComboArchiveFolder = New System.Windows.Forms.ComboBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
@@ -260,12 +260,12 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel2.ColumnCount = 2
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.09278!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.90722!))
+        Me.TableLayoutPanel2.Controls.Add(Me.CbArchiveNum, 0, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.lblArchiveFolder, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.lblArchiveSubject, 0, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.txtArchiveSubject, 1, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.txtArchiveNum, 1, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.txtFileType, 1, 3)
-        Me.TableLayoutPanel2.Controls.Add(Me.lblArchiveNum, 0, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.lblFileType, 0, 3)
         Me.TableLayoutPanel2.Controls.Add(Me.ComboArchiveFolder, 1, 0)
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(377, 24)
@@ -278,6 +278,17 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(379, 160)
         Me.TableLayoutPanel2.TabIndex = 29
+        '
+        'CbArchiveNum
+        '
+        Me.CbArchiveNum.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CbArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.CbArchiveNum.Location = New System.Drawing.Point(276, 82)
+        Me.CbArchiveNum.Name = "CbArchiveNum"
+        Me.CbArchiveNum.Size = New System.Drawing.Size(99, 32)
+        Me.CbArchiveNum.TabIndex = 33
+        Me.CbArchiveNum.Text = "رقم الأرشيف:"
+        Me.CbArchiveNum.UseVisualStyleBackColor = True
         '
         'lblArchiveFolder
         '
@@ -320,6 +331,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtArchiveNum.Location = New System.Drawing.Point(3, 83)
         Me.txtArchiveNum.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtArchiveNum.Name = "txtArchiveNum"
+        Me.txtArchiveNum.ReadOnly = True
         Me.txtArchiveNum.Size = New System.Drawing.Size(267, 30)
         Me.txtArchiveNum.TabIndex = 1
         '
@@ -333,18 +345,6 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtFileType.ReadOnly = True
         Me.txtFileType.Size = New System.Drawing.Size(267, 30)
         Me.txtFileType.TabIndex = 17
-        '
-        'lblArchiveNum
-        '
-        Me.lblArchiveNum.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblArchiveNum.Location = New System.Drawing.Point(275, 79)
-        Me.lblArchiveNum.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.lblArchiveNum.Name = "lblArchiveNum"
-        Me.lblArchiveNum.Size = New System.Drawing.Size(101, 38)
-        Me.lblArchiveNum.TabIndex = 0
-        Me.lblArchiveNum.Text = "رقم الأرشيف:"
-        Me.lblArchiveNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblFileType
         '
@@ -827,7 +827,6 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
     Friend WithEvents txtArchiveSubject As TextBox
     Friend WithEvents lblArchiveSubject As Label
     Friend WithEvents txtArchiveNum As TextBox
-    Friend WithEvents lblArchiveNum As Label
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents btnSearchByDate As Button
     Friend WithEvents dtpEndDate As DateTimePicker
@@ -854,6 +853,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents txtOriginalPath As TextBox
     Friend WithEvents lblDeletedRecordCount As Label
+    Friend WithEvents CbArchiveNum As CheckBox
 End Class
 
 

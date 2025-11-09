@@ -1,4 +1,4 @@
-﻿Imports ESIS_New.ESIS_New
+﻿
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class UserActivityLogReportForm

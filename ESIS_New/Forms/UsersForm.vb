@@ -99,9 +99,6 @@ Public Class UsersForm
         End Try
     End Sub
 
-    'Private Sub dgvUsers_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvUsers.CellClick
-
-    'End Sub
 
     ''' <summary>
     ''' معالجة تحديد صف في جدول المستخدمين

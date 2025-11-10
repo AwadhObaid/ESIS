@@ -631,15 +631,15 @@ Public Class ArchiveClass
                         System.Diagnostics.Debug.WriteLine($"فشل في نقل الملف: {ex.Message}")
                         ' يمكنك اختيار عدم إظهار رسالة خطأ للمستخدم هنا
                     End Try
-                Else
-                    ' إذا لم يكن هناك ملف، فقط عدّ العملية ناجحة
-                    If showMessages Then
-                        MessageBox.Show(
-                    "تم إخفاء الأرشيف بنجاح. لا يوجد ملف مرتبط.",
-                    "نجاح",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information)
-                    End If
+                    'Else
+                    '    ' إذا لم يكن هناك ملف، فقط عدّ العملية ناجحة
+                    '    If showMessages Then
+                    '        MessageBox.Show(
+                    '    "تم إخفاء الأرشيف بنجاح. لا يوجد ملف مرتبط.",
+                    '    "نجاح",
+                    '    MessageBoxButtons.OK,
+                    '    MessageBoxIcon.Information)
+                    '    End If
                 End If
 
                 ' 5. إلغاء الارتباط من جدول الصادر (TbSader)
@@ -2656,6 +2656,26 @@ Public Class ArchiveClass
     End Sub
 
     ''' <summary>
+    ''' ربط الأرشيف بالصادر
+    ''' </summary>
+    Public Function UpdateArchiveSaderId(archiveNum As String, saderId As Integer) As Boolean
+        Try
+            Dim query As String = "UPDATE TbArchive SET SaderID = @SaderID WHERE ArchiveNum = @ArchiveNum"
+            Using connection As SqlConnection = GetConnection()
+                connection.Open()
+                Using command As New SqlCommand(query, connection)
+                    command.Parameters.AddWithValue("@ArchiveNum", archiveNum)
+                    command.Parameters.AddWithValue("@SaderID", saderId)
+                    Return command.ExecuteNonQuery() > 0
+                End Using
+            End Using
+        Catch ex As Exception
+            System.Diagnostics.Debug.WriteLine($"خطأ في UpdateArchiveSaderId: {ex.Message}")
+            Return False
+        End Try
+    End Function
+
+    ''' <summary>
     ''' الحصول على اسم العملية التي تستخدم الملف
     ''' </summary>
     Private Function GetProcessUsingFile(filePath As String) As String
@@ -3057,60 +3077,150 @@ Public Class ArchiveClass
     End Function
 
     ''' <summary>
-    ''' استرجاع الأرشيف (إلغاء الحذف المنطقي)
+    ''' استعادة أرشيف من سلة المحذوفات
     ''' </summary>
     Public Function RestoreArchiveById(
-        ByVal archiveId As Integer,
-        ByVal userName As String,
-        Optional ByVal showMessages As Boolean = True) As Boolean
+    ByVal archiveId As Integer,
+    ByVal userName As String,
+    Optional ByVal showMessages As Boolean = True) As Boolean
 
         Try
-            Using connection As SqlConnection = GetConnection()
-                connection.Open()
+            Dim parameters() As SqlParameter = {
+            DatabaseHelper.CreateParameter("@ID", archiveId),
+            DatabaseHelper.CreateParameter("@RestoredBy", userName)
+        }
 
-                Dim query As String = "UPDATE TbArchive SET " &
-                                      "IsDeleted = 0, " &
-                                      "DeletedDate = NULL, " &
-                                      "DeletedBy = NULL " &
-                                      "WHERE ID = @ID"
+            ' تنفيذ الإجراء المخزن واحصل على نتيجة الاستعادة
+            Dim dt As DataTable = DatabaseHelper.ExecuteStoredProcedure("RestoreArchive", parameters)
 
-                Using command As New SqlCommand(query, connection)
-                    command.Parameters.AddWithValue("@ID", archiveId)
+            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                ' تحديث عداد الأرشيف
+                DataHelper.UpdateArchiveCount()
 
-                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
+                ' تسجيل نشاط إضافة المصدر
+                activityLogClass.LogUserActivity(userName, "Restore", "TbArchive", archiveId, $"تم استعادة الأرشيف رقم: {archiveId}")
 
-                    If showMessages AndAlso rowsAffected > 0 Then
-                        MessageBox.Show(
-                            "تم استرجاع الأرشيف بنجاح.",
-                            "نجاح",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information)
-                    End If
+                Return True
+            Else
+                Return False
+            End If
 
-                    ' تحديث عداد الأرشيف
-                    DataHelper.UpdateArchiveCount()
-
-                    ' تحديث عداد الأرشيفات المحذوفة
-                    DataHelper.UpdateDeletedArchiveCount()
-
-                    Return rowsAffected > 0
-                End Using
-            End Using
         Catch ex As Exception
-            _lastError = $"حدث خطأ أثناء استرجاع الأرشيف بمعرف {archiveId}: {ex.Message}"
+            _lastError = $"حدث خطأ أثناء استعادة الأرشيف بمعرف {archiveId}: {ex.Message}"
             System.Diagnostics.Debug.WriteLine(_lastError)
 
             If showMessages Then
                 MessageBox.Show(
-                    $"حدث خطأ أثناء استرجاع الأرشيف: {ex.Message}",
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error)
+                $"حدث خطأ أثناء استعادة الأرشيف: {ex.Message}",
+                "خطأ",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error)
             End If
 
             Return False
         End Try
     End Function
+
+    '''' <summary>
+    '''' استعادة أرشيف من سلة المحذوفات
+    '''' </summary>
+    'Public Function RestoreArchiveById(
+    'ByVal archiveId As Integer,
+    'ByVal userName As String,
+    'Optional ByVal showMessages As Boolean = True) As Boolean
+
+    '    Try
+    '        Dim parameters() As SqlParameter = {
+    '        DatabaseHelper.CreateParameter("@ID", archiveId),
+    '        DatabaseHelper.CreateParameter("@RestoredBy", userName)
+    '    }
+
+    '        ' تنفيذ الإجراء المخزن واحصل على نتيجة الاستعادة
+    '        Dim dt As DataTable = DatabaseHelper.ExecuteStoredProcedure("RestoreArchive", parameters)
+
+    '        If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+    '            ' تحديث عداد الأرشيف
+    '            DataHelper.UpdateArchiveCount()
+
+    '            ' تسجيل نشاط إضافة المصدر
+    '            activityLogClass.LogUserActivity(userName, "Restore", "TbArchive", archiveId, $"تم استعادة الأرشيف رقم: {archiveId}")
+
+    '            Return True
+    '        Else
+    '            Return False
+    '        End If
+
+    '    Catch ex As Exception
+    '        _lastError = $"حدث خطأ أثناء استعادة الأرشيف بمعرف {archiveId}: {ex.Message}"
+    '        System.Diagnostics.Debug.WriteLine(_lastError)
+
+    '        If showMessages Then
+    '            MessageBox.Show(
+    '            $"حدث خطأ أثناء استعادة الأرشيف: {ex.Message}",
+    '            "خطأ",
+    '            MessageBoxButtons.OK,
+    '            MessageBoxIcon.Error)
+    '        End If
+
+    '        Return False
+    '    End Try
+    'End Function
+
+    '''' <summary>
+    '''' استرجاع الأرشيف (إلغاء الحذف المنطقي)
+    '''' </summary>
+    'Public Function RestoreArchiveById(
+    '    ByVal archiveId As Integer,
+    '    ByVal userName As String,
+    '    Optional ByVal showMessages As Boolean = True) As Boolean
+
+    '    Try
+    '        Using connection As SqlConnection = GetConnection()
+    '            connection.Open()
+
+    '            Dim query As String = "UPDATE TbArchive SET " &
+    '                                  "IsDeleted = 0, " &
+    '                                  "DeletedDate = NULL, " &
+    '                                  "DeletedBy = NULL " &
+    '                                  "WHERE ID = @ID"
+
+    '            Using command As New SqlCommand(query, connection)
+    '                command.Parameters.AddWithValue("@ID", archiveId)
+
+    '                Dim rowsAffected As Integer = command.ExecuteNonQuery()
+
+    '                If showMessages AndAlso rowsAffected > 0 Then
+    '                    MessageBox.Show(
+    '                        "تم استرجاع الأرشيف بنجاح.",
+    '                        "نجاح",
+    '                        MessageBoxButtons.OK,
+    '                        MessageBoxIcon.Information)
+    '                End If
+
+    '                ' تحديث عداد الأرشيف
+    '                DataHelper.UpdateArchiveCount()
+
+    '                ' تحديث عداد الأرشيفات المحذوفة
+    '                DataHelper.UpdateDeletedArchiveCount()
+
+    '                Return rowsAffected > 0
+    '            End Using
+    '        End Using
+    '    Catch ex As Exception
+    '        _lastError = $"حدث خطأ أثناء استرجاع الأرشيف بمعرف {archiveId}: {ex.Message}"
+    '        System.Diagnostics.Debug.WriteLine(_lastError)
+
+    '        If showMessages Then
+    '            MessageBox.Show(
+    '                $"حدث خطأ أثناء استرجاع الأرشيف: {ex.Message}",
+    '                "خطأ",
+    '                MessageBoxButtons.OK,
+    '                MessageBoxIcon.Error)
+    '        End If
+
+    '        Return False
+    '    End Try
+    'End Function
 
     ''' <summary>
     ''' حذف الأرشيف نهائيًا بعد فترة محددة (للحذف الدائم)

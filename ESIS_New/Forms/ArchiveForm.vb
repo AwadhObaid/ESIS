@@ -335,6 +335,8 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
             If dgvArchive.Columns.Contains("ArchiveNotes") Then dgvArchive.Columns("ArchiveNotes").HeaderText = "الملاحظات"
             If dgvArchive.Columns.Contains("UserName") Then dgvArchive.Columns("UserName").HeaderText = "المستخدم"
             If dgvArchive.Columns.Contains("CreatedDate") Then dgvArchive.Columns("CreatedDate").HeaderText = "تاريخ الإنشاء"
+            If dgvArchive.Columns.Contains("SaderID") Then dgvArchive.Columns("SaderID").HeaderText = "معرف الصادر"
+
 
             ' تعديل حجم الاعمدة
             If dgvArchive.Columns.Contains("ArchiveNum") Then dgvArchive.Columns("ArchiveNum").Width = 100
@@ -344,12 +346,13 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
             If dgvArchive.Columns.Contains("FileName") Then dgvArchive.Columns("FileName").Width = 200
             If dgvArchive.Columns.Contains("ArchiveWillMaster") Then dgvArchive.Columns("ArchiveWillMaster").Width = 120
             If dgvArchive.Columns.Contains("ArchiveWillSub") Then dgvArchive.Columns("ArchiveWillSub").Width = 120
+            If dgvArchive.Columns.Contains("SaderID") Then dgvArchive.Columns("SaderID").Width = 120
 
             ' إخفاء عمود المعرف ومسار الملف
             If dgvArchive.Columns.Contains("FileType") Then dgvArchive.Columns("FileType").Visible = False
-            If dgvArchive.Columns.Contains("ID") Then dgvArchive.Columns("ID").Visible = False
+            'If dgvArchive.Columns.Contains("ID") Then dgvArchive.Columns("ID").Visible = False
             If dgvArchive.Columns.Contains("FilePath") Then dgvArchive.Columns("FilePath").Visible = False
-            If dgvArchive.Columns.Contains("SaderID") Then dgvArchive.Columns("SaderID").Visible = False
+            'If dgvArchive.Columns.Contains("SaderID") Then dgvArchive.Columns("SaderID").Visible = False
             If dgvArchive.Columns.Contains("OriginalFilePath") Then dgvArchive.Columns("OriginalFilePath").Visible = False
             If dgvArchive.Columns.Contains("NumericID") Then dgvArchive.Columns("NumericID").Visible = False
             If dgvArchive.Columns.Contains("IsDeleted") Then dgvArchive.Columns("IsDeleted").Visible = False
@@ -574,22 +577,23 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
 
                 If ValidateBeforeAdd() Then
                     Dim newId As Integer = archiveClass.AddArchive(
-                        txtArchiveNum.Text.Trim(),
-                        txtArchiveSubject.Text.Trim(),
-                        ComboArchiveFolder.Text,
-                        dtpArchiveDate.Value,
-                        txtArchiveWillMaster.Text.Trim(),
-                        txtArchiveWillSub.Text.Trim(),
-                        txtArchiveNotes.Text.Trim,
-                        txtFilename.Text.Trim(),
-                        txtFileType.Text.Trim(),
-                        txtFilepath.Text.Trim(),
-                        txtOriginalPath.Text.Trim(),
-                        txtUserName.Text.Trim()
-                    )
+                    txtArchiveNum.Text.Trim(),
+                    txtArchiveSubject.Text.Trim(),
+                    ComboArchiveFolder.Text,
+                    dtpArchiveDate.Value,
+                    txtArchiveWillMaster.Text.Trim(),
+                    txtArchiveWillSub.Text.Trim(),
+                    txtArchiveNotes.Text.Trim,
+                    txtFilename.Text.Trim(),
+                    txtFileType.Text.Trim(),
+                    txtFilepath.Text.Trim(),
+                    txtOriginalPath.Text.Trim(),
+                    txtUserName.Text.Trim()
+                )
 
                     If newId > 0 Then
-                        MessageBox.Show("تم إضافة الأرشيف بنجاح", "نجح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        SavedSuccessfully(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
+                        'MessageBox.Show("تم إضافة الأرشيف بنجاح", "نجح", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         ' تحديث العدد بعد الإضافة الناجحة
                         DataHelper.UpdateArchiveCount()
 
@@ -610,6 +614,13 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
 
                                     ' تحديث عداد السجلات غير المؤرشفة
                                     DataHelper.UpdateUnarchivedSaderCount()
+
+                                    ' ربط الأرشيف بالصادر باستخدام UpdateArchiveSaderId
+                                    Dim archiveClass As New ArchiveClass()
+                                    If archiveClass.UpdateArchiveSaderId(txtArchiveNum.Text.Trim(), newId) Then
+                                        MessageBox.Show($"تم ربط الأرشيف رقم {newId} بالصادر رقم {saderData.NumberBook} بنجاح", "ربط الأرشيف", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                    End If
+
                                 End If
                             Catch ex As Exception
                                 MessageBox.Show($"تم إضافة الأرشيف بنجاح ولكن فشل في ربطه بالصادر: {ex.Message}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -619,7 +630,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
                         LoadActiveArchive()
                         ClearFields()
 
-                        ' عرض رسالة للسؤال عن ربط الأرشيف بالصادر
+                        ''عرض رسالة للسؤال عن ربط الأرشيف بالصادر
                         'Dim result As DialogResult = MessageBox.Show("هل تريد فتح نموذج الصادر وربط هذا الأرشيف به؟", "ربط الأرشيف بالصادر", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                         'If result = DialogResult.Yes Then
                         ' البحث عن نموذج الصادر المفتوح
@@ -655,6 +666,109 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
+    'Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+    '    ' التحقق من صلاحية الإضافة
+    '    If Not CheckPermission(1, "إضافة ملف أرشيف") Then
+    '        Return
+    '    End If
+
+    '    Try
+    '        If ValidateInput() Then
+    '            ' استخدام التصنيف الحالي في ComboBox
+    '            Dim archiveFolder As String = ComboArchiveFolder.Text
+
+    '            ' إذا كان التصنيف لا يحتوي على تاريخ شهري، أضفه
+    '            If Not archiveFolder.Contains("\") Then
+    '                Dim currentMonth As String = DateTime.Now.ToString("yyyy-MM")
+    '                archiveFolder = $"{archiveFolder}\{currentMonth}"
+    '            End If
+
+    '            If ValidateBeforeAdd() Then
+    '                Dim newId As Integer = archiveClass.AddArchive(
+    '                    txtArchiveNum.Text.Trim(),
+    '                    txtArchiveSubject.Text.Trim(),
+    '                    ComboArchiveFolder.Text,
+    '                    dtpArchiveDate.Value,
+    '                    txtArchiveWillMaster.Text.Trim(),
+    '                    txtArchiveWillSub.Text.Trim(),
+    '                    txtArchiveNotes.Text.Trim,
+    '                    txtFilename.Text.Trim(),
+    '                    txtFileType.Text.Trim(),
+    '                    txtFilepath.Text.Trim(),
+    '                    txtOriginalPath.Text.Trim(),
+    '                    txtUserName.Text.Trim()
+    '                )
+
+    '                If newId > 0 Then
+    '                    SavedSuccessfully(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
+    '                    'MessageBox.Show("تم إضافة الأرشيف بنجاح", "نجح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                    ' تحديث العدد بعد الإضافة الناجحة
+    '                    DataHelper.UpdateArchiveCount()
+
+    '                    ' إذا كانت البيانات من فورم الصادر، قم بتحديث معرف الأرشيف في جدول الصادر
+    '                    If isDataFromSader AndAlso Not String.IsNullOrEmpty(saderData.NumberBook) Then
+    '                        Try
+    '                            Dim saderClass As New SaderClass()
+    '                            If saderClass.UpdateArchiveIDByNumberBook(saderData.NumberBook, newId) Then
+    '                                'MessageBox.Show($"تم ربط الأرشيف رقم {newId} بالصادر رقم {saderData.NumberBook} بنجاح", "ربط الأرشيف", MessageBoxButtons.OK, MessageBoxIcon.Information)
+    '                                ' تحديث فورم الصادر إذا كان مفتوحًا
+    '                                For Each form As Form In Application.OpenForms
+    '                                    If TypeOf form Is SaderForm Then
+    '                                        DirectCast(form, SaderForm).RefreshData()
+    '                                        DirectCast(form, SaderForm).SetArchiveIdFromArchiveForm(newId)
+    '                                        Exit For
+    '                                    End If
+    '                                Next
+
+    '                                ' تحديث عداد السجلات غير المؤرشفة
+    '                                DataHelper.UpdateUnarchivedSaderCount()
+    '                            End If
+    '                        Catch ex As Exception
+    '                            MessageBox.Show($"تم إضافة الأرشيف بنجاح ولكن فشل في ربطه بالصادر: {ex.Message}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                        End Try
+    '                    End If
+
+    '                    LoadActiveArchive()
+    '                    ClearFields()
+
+    '                    ''عرض رسالة للسؤال عن ربط الأرشيف بالصادر
+    '                    'Dim result As DialogResult = MessageBox.Show("هل تريد فتح نموذج الصادر وربط هذا الأرشيف به؟", "ربط الأرشيف بالصادر", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+    '                    'If result = DialogResult.Yes Then
+    '                    ' البحث عن نموذج الصادر المفتوح
+    '                    Dim saderFormFound As Boolean = False
+    '                        For Each form As Form In Application.OpenForms
+    '                        If TypeOf form Is SaderForm Then
+    '                            ' إذا كان النموذج مفتوحًا، قم بتحديث البيانات
+    '                            DirectCast(form, SaderForm).RefreshData()
+    '                            DirectCast(form, SaderForm).SetArchiveIdFromArchiveForm(newId)
+    '                            form.BringToFront()
+    '                            saderFormFound = True
+    '                            Exit For
+    '                        End If
+    '                    Next
+
+    '                    ' إذا لم يكن النموذج مفتوحًا، قم بفتحه
+    '                    If Not saderFormFound Then
+    '                        Dim saderForm As New SaderForm()
+    '                        saderForm.Show()
+    '                        saderForm.RefreshData()
+    '                        saderForm.SetArchiveIdFromArchiveForm(newId)
+    '                    End If
+    '                    'End If
+
+    '                    Me.Close()
+    '                Else
+    '                    MessageBox.Show("فشل في إضافة الأرشيف", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '                End If
+    '            End If
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show("خطأ في إضافة الأرشيف: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+
+
     ''' <summary>
     ''' تعديل أرشيف موجودGetArchiveById
     ''' </summary>
@@ -679,6 +793,65 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
             Return Nothing
         End Try
     End Function
+    'Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
+    '    ' التحقق من صلاحية التعديل
+    '    If Not CheckPermission(2, "تعديل ملف أرشيف") Then
+    '        Return
+    '    End If
+
+    '    ' التحقق من وجود صف محدد
+    '    If dgvArchive.SelectedRows.Count = 0 Then
+    '        MessageBox.Show("يرجى اختيار أرشيف للتعديل", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '        Return
+    '    End If
+
+    '    Try
+    '        If dgvArchive.SelectedRows.Count > 0 AndAlso ValidateInputForUpdate() Then
+    '            Dim selectedId As Integer
+    '            If Integer.TryParse(dgvArchive.SelectedRows(0).Cells("ID").Value?.ToString(), selectedId) Then
+    '                Dim success As Boolean = archiveClass.UpdateArchive(
+    '                selectedId,
+    '                txtArchiveNum.Text.Trim(),
+    '                txtArchiveSubject.Text.Trim(),
+    '                ComboArchiveFolder.Text.Trim(),
+    '                dtpArchiveDate.Value,
+    '                txtArchiveWillMaster.Text.Trim(),
+    '                txtArchiveWillSub.Text.Trim(),
+    '                txtArchiveNotes.Text.Trim(),
+    '                txtFilename.Text.Trim(),
+    '                txtFileType.Text.Trim(),
+    '                txtFilepath.Text.Trim(),
+    '                txtOriginalPath.Text.Trim(),
+    '                txtUserName.Text.Trim()
+    '            )
+
+    '                If success Then
+    '                    UpdetedSuccessfully(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
+    '                    'MessageBox.Show("تم تحديث الأرشيف بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
+
+
+    '                    LoadActiveArchive()
+    '                    If File.Exists(txtFilepath.Text) Then
+    '                        WebBrowser1.Navigate(txtFilepath.Text)
+    '                    Else
+    '                        WebBrowser1.Navigate("about:blank")
+    '                    End If
+    '                    ClearFields()
+    '                Else
+    '                    MessageBox.Show("لم يتم إجراء اي تغييرات على الارشيف المحدد", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                End If
+    '            Else
+    '                MessageBox.Show("المعرف غير صالح. يرجى اختيار سجل صالح.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            End If
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
         ' التحقق من صلاحية التعديل
         If Not CheckPermission(2, "تعديل ملف أرشيف") Then
@@ -712,7 +885,32 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
                 )
 
                     If success Then
-                        MessageBox.Show("تم تحديث الأرشيف بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        UpdetedSuccessfully(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
+                        'MessageBox.Show("تم تحديث الأرشيف بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+                        ' إذا كانت البيانات من فورم الصادر، قم بتحديث معرف الأرشيف في جدول الصادر
+                        If isDataFromSader AndAlso Not String.IsNullOrEmpty(saderData.NumberBook) Then
+                            Try
+                                Dim saderClass As New SaderClass()
+                                If saderClass.UpdateArchiveIDByNumberBook(saderData.NumberBook, selectedId) Then
+                                    'MessageBox.Show($"تم ربط الأرشيف رقم {selectedId} بالصادر رقم {saderData.NumberBook} بنجاح", "ربط الأرشيف", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                    ' تحديث فورم الصادر إذا كان مفتوحًا
+                                    For Each form As Form In Application.OpenForms
+                                        If TypeOf form Is SaderForm Then
+                                            DirectCast(form, SaderForm).RefreshData()
+                                            DirectCast(form, SaderForm).SetArchiveIdFromArchiveForm(selectedId)
+                                            Exit For
+                                        End If
+                                    Next
+
+                                    ' تحديث عداد السجلات غير المؤرشفة
+                                    DataHelper.UpdateUnarchivedSaderCount()
+                                End If
+                            Catch ex As Exception
+                                MessageBox.Show($"تم تحديث الأرشيف بنجاح ولكن فشل في ربطه بالصادر: {ex.Message}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            End Try
+                        End If
+
                         LoadActiveArchive()
                         If File.Exists(txtFilepath.Text) Then
                             WebBrowser1.Navigate(txtFilepath.Text)
@@ -721,7 +919,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
                         End If
                         ClearFields()
                     Else
-                        MessageBox.Show("لم يتم إجراء اي تغييرات على الارشيف المحدد", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MessageBox.Show("لم يتم إجراء أي تغييرات على الأرشيف المحدد", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     End If
                 Else
                     MessageBox.Show("المعرف غير صالح. يرجى اختيار سجل صالح.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -731,6 +929,8 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
             MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+
     ''' <summary>
     ''' حذف أرشيف
     ''' </summary>
@@ -785,8 +985,8 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
 
             ' طلب التأكيد
             Dim result As DialogResult = MessageBox.Show(
-            $"هل أنت متأكد من رغبتك في إخفاء أرشيف رقم {archiveNum}؟" & vbNewLine &
-            "سيتم إخفاؤه من القائمة الرئيسية ويمكن استرجاعه لاحقًا.",
+            $"هل أنت متأكد من رغبتك في إرسال الأرشيف رقم {archiveNum}؟" & vbNewLine &
+            "سيتم إرسالة الى سلة المحذوفات ويمكن استرجاعه لاحقًا.",
             "تأكيد الإخفاء",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question,
@@ -805,14 +1005,15 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
                 If success Then
                     LoadActiveArchive() ' إعادة تحميل الأرشيفات النشطة
                     ClearFields()
-                    MessageBox.Show("تم إخفاء الأرشيف بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    DeletedArchiveSuccessfully(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
+                    'MessageBox.Show("تم إخفاء الأرشيف بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Else
-                    MessageBox.Show("فشل في إخفاء الأرشيف. يرجى المحاولة مرة أخرى.", "فشل", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    MessageBox.Show("فشل في إرسال الأرشيف. يرجى المحاولة مرة أخرى.", "فشل", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             End If
         Catch ex As Exception
             ' تضمين تفاصيل الخطأ في الرسالة
-            MessageBox.Show("حدث خطأ غير متوقع أثناء محاولة إخفاء الأرشيف: " & ex.Message &
+            MessageBox.Show("حدث خطأ غير متوقع أثناء محاولة إرسال الأرشيف: " & ex.Message &
                         vbNewLine & "التفاصيل التقنية: " & ex.StackTrace,
                         "خطأ",
                         MessageBoxButtons.OK,
@@ -2450,6 +2651,10 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
         Else
             txtArchiveNum.ReadOnly = True
         End If
+    End Sub
+
+    Private Sub TimerMsg_Tick(sender As Object, e As EventArgs) Handles TimerMsg.Tick
+        ClearConfirmMsgTools(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
     End Sub
 #End Region
 

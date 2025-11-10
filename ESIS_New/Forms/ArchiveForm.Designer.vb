@@ -16,6 +16,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -70,6 +71,10 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnClose = New System.Windows.Forms.Button()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.PicMsg = New System.Windows.Forms.PictureBox()
+        Me.lblMessage = New System.Windows.Forms.Label()
+        Me.TimerMsg = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -77,6 +82,8 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.GroupBox2.SuspendLayout()
         CType(Me.dgvArchive, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -714,7 +721,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvArchive.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgvArchive.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.dgvArchive.Location = New System.Drawing.Point(0, 485)
+        Me.dgvArchive.Location = New System.Drawing.Point(0, 519)
         Me.dgvArchive.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.dgvArchive.MultiSelect = False
         Me.dgvArchive.Name = "dgvArchive"
@@ -730,7 +737,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.dgvArchive.RowHeadersWidth = 51
         Me.dgvArchive.RowTemplate.Height = 24
         Me.dgvArchive.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvArchive.Size = New System.Drawing.Size(1440, 190)
+        Me.dgvArchive.Size = New System.Drawing.Size(1440, 183)
         Me.dgvArchive.TabIndex = 3
         '
         'btnClose
@@ -754,7 +761,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.WebBrowser1.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(17, 30)
         Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(654, 438)
+        Me.WebBrowser1.Size = New System.Drawing.Size(654, 472)
         Me.WebBrowser1.TabIndex = 5
         '
         'GroupBox3
@@ -765,17 +772,49 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.GroupBox3.Controls.Add(Me.WebBrowser1)
         Me.GroupBox3.Location = New System.Drawing.Point(780, 9)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(660, 469)
+        Me.GroupBox3.Size = New System.Drawing.Size(660, 503)
         Me.GroupBox3.TabIndex = 7
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "مستعرض الملفات"
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.PicMsg)
+        Me.Panel1.Controls.Add(Me.lblMessage)
+        Me.Panel1.Location = New System.Drawing.Point(11, 482)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(762, 35)
+        Me.Panel1.TabIndex = 33
+        '
+        'PicMsg
+        '
+        Me.PicMsg.Dock = System.Windows.Forms.DockStyle.Right
+        Me.PicMsg.Location = New System.Drawing.Point(732, 0)
+        Me.PicMsg.Name = "PicMsg"
+        Me.PicMsg.Size = New System.Drawing.Size(30, 35)
+        Me.PicMsg.TabIndex = 1
+        Me.PicMsg.TabStop = False
+        '
+        'lblMessage
+        '
+        Me.lblMessage.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lblMessage.Location = New System.Drawing.Point(0, 0)
+        Me.lblMessage.Name = "lblMessage"
+        Me.lblMessage.Size = New System.Drawing.Size(762, 35)
+        Me.lblMessage.TabIndex = 0
+        Me.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'TimerMsg
+        '
+        Me.TimerMsg.Interval = 3000
         '
         'ArchiveForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1440, 675)
+        Me.ClientSize = New System.Drawing.Size(1440, 702)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.dgvArchive)
@@ -800,6 +839,8 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.GroupBox2.PerformLayout()
         CType(Me.dgvArchive, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -854,6 +895,10 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
     Friend WithEvents txtOriginalPath As TextBox
     Friend WithEvents lblDeletedRecordCount As Label
     Friend WithEvents CbArchiveNum As CheckBox
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents TimerMsg As Timer
+    Friend WithEvents PicMsg As PictureBox
+    Friend WithEvents lblMessage As Label
 End Class
 
 

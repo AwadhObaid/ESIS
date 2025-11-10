@@ -699,7 +699,7 @@ Partial Class MainForm
         '
         'btnLogout2
         '
-        Me.btnLogout2.BackColor = System.Drawing.Color.LightCyan
+        Me.btnLogout2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
         Me.btnLogout2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnLogout2.FlatAppearance.BorderSize = 0
         Me.btnLogout2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -714,7 +714,7 @@ Partial Class MainForm
         '
         'btnServerConnection
         '
-        Me.btnServerConnection.BackColor = System.Drawing.Color.LightCyan
+        Me.btnServerConnection.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
         Me.btnServerConnection.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnServerConnection.FlatAppearance.BorderSize = 0
         Me.btnServerConnection.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -729,7 +729,7 @@ Partial Class MainForm
         '
         'btnDashboard
         '
-        Me.btnDashboard.BackColor = System.Drawing.Color.LightCyan
+        Me.btnDashboard.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
         Me.btnDashboard.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnDashboard.FlatAppearance.BorderSize = 0
         Me.btnDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -743,7 +743,7 @@ Partial Class MainForm
         '
         'btnSader2
         '
-        Me.btnSader2.BackColor = System.Drawing.Color.LightCyan
+        Me.btnSader2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
         Me.btnSader2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnSader2.FlatAppearance.BorderSize = 0
         Me.btnSader2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -758,7 +758,7 @@ Partial Class MainForm
         '
         'btnArchive2
         '
-        Me.btnArchive2.BackColor = System.Drawing.Color.LightCyan
+        Me.btnArchive2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
         Me.btnArchive2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnArchive2.FlatAppearance.BorderSize = 0
         Me.btnArchive2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -773,7 +773,7 @@ Partial Class MainForm
         '
         'btnDeletedForm2
         '
-        Me.btnDeletedForm2.BackColor = System.Drawing.Color.LightCyan
+        Me.btnDeletedForm2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
         Me.btnDeletedForm2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnDeletedForm2.FlatAppearance.BorderSize = 0
         Me.btnDeletedForm2.FlatStyle = System.Windows.Forms.FlatStyle.Flat

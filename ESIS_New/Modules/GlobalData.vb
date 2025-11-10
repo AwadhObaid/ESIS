@@ -1629,6 +1629,12 @@ Module GlobalData
         t.Start()
     End Sub
 
+    Public Sub DeletedArchiveSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+        lbl.Text = "تم ارسال الارشيف الى سلة المحذوفات بنجاح"
+        pic.Image = My.Resources.OK
+        t.Start()
+    End Sub
+
     Public Sub ConfirmMessage(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer, ByVal msg As String)
 
         lbl.Text = msg

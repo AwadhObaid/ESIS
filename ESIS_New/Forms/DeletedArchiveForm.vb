@@ -71,6 +71,7 @@
             If dgvDeletedArchive.Columns.Contains("DeletedBy") Then dgvDeletedArchive.Columns("DeletedBy").HeaderText = "حذف بواسطة"
 
 
+
             ' إخفاء عمود المعرف ومسار الملف
             If dgvDeletedArchive.Columns.Contains("ID") Then dgvDeletedArchive.Columns("ID").Visible = False
             If dgvDeletedArchive.Columns.Contains("FilePath") Then dgvDeletedArchive.Columns("FilePath").Visible = False
@@ -78,6 +79,7 @@
             If dgvDeletedArchive.Columns.Contains("ArchiveNotes") Then dgvDeletedArchive.Columns("ArchiveNotes").Visible = False
             If dgvDeletedArchive.Columns.Contains("FileType") Then dgvDeletedArchive.Columns("FileType").Visible = False
             If dgvDeletedArchive.Columns.Contains("OriginalFilePath") Then dgvDeletedArchive.Columns("OriginalFilePath").Visible = False
+            If dgvDeletedArchive.Columns.Contains("OriginalSaderID") Then dgvDeletedArchive.Columns("OriginalSaderID").Visible = False
             If dgvDeletedArchive.Columns.Contains("NumericID") Then dgvDeletedArchive.Columns("NumericID").Visible = False
             If dgvDeletedArchive.Columns.Contains("IsDeleted") Then dgvDeletedArchive.Columns("IsDeleted").Visible = False
             If dgvDeletedArchive.Columns.Contains("CreatedDate") Then dgvDeletedArchive.Columns("CreatedDate").Visible = False
@@ -99,23 +101,25 @@
         Try
             If dgvDeletedArchive.SelectedRows.Count > 0 Then
                 Dim selectedId As Integer = Convert.ToInt32(dgvDeletedArchive.SelectedRows(0).Cells("ID").Value)
-                
+
                 Dim result As DialogResult = MessageBox.Show(
-                    "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
-                    "تأكيد الاسترجاع",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question)
+                "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
+                "تأكيد الاسترجاع",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question)
 
                 If result = DialogResult.Yes Then
                     Dim success As Boolean = archiveClass.RestoreArchiveById(selectedId, GlobalData.LoggedInUserName)
-                    
+
                     If success Then
                         LoadDeletedArchives()
                         ' تحديث النموذج الرئيسي إذا كان مفتوحًا
                         For Each form As Form In Application.OpenForms
                             If TypeOf form Is ArchiveForm Then
                                 DirectCast(form, ArchiveForm).LoadActiveArchive()
-                                Exit For
+                            End If
+                            If TypeOf form Is SaderForm Then
+                                DirectCast(form, SaderForm).RefreshData()
                             End If
                         Next
                     End If
@@ -128,8 +132,74 @@
         End Try
     End Sub
 
+    'Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
+    '    Try
+    '        If dgvDeletedArchive.SelectedRows.Count > 0 Then
+    '            Dim selectedId As Integer = Convert.ToInt32(dgvDeletedArchive.SelectedRows(0).Cells("ID").Value)
 
-    ' زر الحذف النهائي (اختياري)
+    '            Dim result As DialogResult = MessageBox.Show(
+    '            "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
+    '            "تأكيد الاسترجاع",
+    '            MessageBoxButtons.YesNo,
+    '            MessageBoxIcon.Question)
+
+    '            If result = DialogResult.Yes Then
+    '                Dim success As Boolean = archiveClass.RestoreArchiveById(selectedId, GlobalData.LoggedInUserName)
+
+    '                If success Then
+    '                    LoadDeletedArchives()
+    '                    ' تحديث النموذج الرئيسي إذا كان مفتوحًا
+    '                    For Each form As Form In Application.OpenForms
+    '                        If TypeOf form Is ArchiveForm Then
+    '                            DirectCast(form, ArchiveForm).LoadActiveArchive()
+    '                            Exit For
+    '                        End If
+    '                    Next
+    '                End If
+    '            End If
+    '        Else
+    '            MessageBox.Show("يرجى اختيار أرشيف للاسترجاع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+    'Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
+    '    Try
+    '        If dgvDeletedArchive.SelectedRows.Count > 0 Then
+    '            Dim selectedId As Integer = Convert.ToInt32(dgvDeletedArchive.SelectedRows(0).Cells("ID").Value)
+
+    '            Dim result As DialogResult = MessageBox.Show(
+    '                "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
+    '                "تأكيد الاسترجاع",
+    '                MessageBoxButtons.YesNo,
+    '                MessageBoxIcon.Question)
+
+    '            If result = DialogResult.Yes Then
+    '                Dim success As Boolean = archiveClass.RestoreArchiveById(selectedId, GlobalData.LoggedInUserName)
+
+    '                If success Then
+    '                    LoadDeletedArchives()
+    '                    ' تحديث النموذج الرئيسي إذا كان مفتوحًا
+    '                    For Each form As Form In Application.OpenForms
+    '                        If TypeOf form Is ArchiveForm Then
+    '                            DirectCast(form, ArchiveForm).LoadActiveArchive()
+    '                            Exit For
+    '                        End If
+    '                    Next
+    '                End If
+    '            End If
+    '        Else
+    '            MessageBox.Show("يرجى اختيار أرشيف للاسترجاع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+
+    'زر الحذف النهائي (اختياري)
     Private Sub btnPermanentDelete_Click(sender As Object, e As EventArgs) Handles btnPermanentDelete.Click
 
         Try

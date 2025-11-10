@@ -52,13 +52,14 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.ListPrinter = New System.Windows.Forms.CheckedListBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblArchiveMsg = New System.Windows.Forms.Label()
         Me.RBDirectPrint = New System.Windows.Forms.RadioButton()
         Me.RBPreviewBeforePrint = New System.Windows.Forms.RadioButton()
         Me.lblWarning = New System.Windows.Forms.Label()
         Me.TLPControls = New System.Windows.Forms.TableLayoutPanel()
+        Me.CbArchiveNum = New System.Windows.Forms.CheckBox()
         Me.lblWillMaster = New System.Windows.Forms.Label()
         Me.txtWillMaster = New System.Windows.Forms.TextBox()
-        Me.lblArchiveID = New System.Windows.Forms.Label()
         Me.txtArchiveID = New System.Windows.Forms.TextBox()
         Me.lblWillSub = New System.Windows.Forms.Label()
         Me.txtUserName = New System.Windows.Forms.TextBox()
@@ -88,6 +89,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.txtPrintNumberBook = New System.Windows.Forms.TextBox()
         Me.lblRecordCount = New System.Windows.Forms.Label()
         Me.TimerMsg = New System.Windows.Forms.Timer(Me.components)
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -460,6 +462,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblArchiveMsg)
         Me.GroupBox1.Controls.Add(Me.RBDirectPrint)
         Me.GroupBox1.Controls.Add(Me.RBPreviewBeforePrint)
         Me.GroupBox1.Controls.Add(Me.lblWarning)
@@ -479,6 +482,19 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox1.TabIndex = 22
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "بيانات الصادر"
+        '
+        'lblArchiveMsg
+        '
+        Me.lblArchiveMsg.AutoSize = True
+        Me.lblArchiveMsg.BackColor = System.Drawing.Color.Black
+        Me.lblArchiveMsg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblArchiveMsg.Font = New System.Drawing.Font("Cairo SemiBold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblArchiveMsg.ForeColor = System.Drawing.Color.White
+        Me.lblArchiveMsg.Location = New System.Drawing.Point(6, 138)
+        Me.lblArchiveMsg.Name = "lblArchiveMsg"
+        Me.lblArchiveMsg.Size = New System.Drawing.Size(2, 32)
+        Me.lblArchiveMsg.TabIndex = 54
+        Me.lblArchiveMsg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'RBDirectPrint
         '
@@ -529,9 +545,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TLPControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.71137!))
         Me.TLPControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.31749!))
         Me.TLPControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.10696!))
+        Me.TLPControls.Controls.Add(Me.CbArchiveNum, 2, 0)
         Me.TLPControls.Controls.Add(Me.lblWillMaster, 0, 0)
         Me.TLPControls.Controls.Add(Me.txtWillMaster, 1, 0)
-        Me.TLPControls.Controls.Add(Me.lblArchiveID, 2, 0)
         Me.TLPControls.Controls.Add(Me.txtArchiveID, 3, 0)
         Me.TLPControls.Controls.Add(Me.lblWillSub, 0, 1)
         Me.TLPControls.Controls.Add(Me.txtUserName, 3, 1)
@@ -550,6 +566,17 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TLPControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.92344!))
         Me.TLPControls.Size = New System.Drawing.Size(589, 113)
         Me.TLPControls.TabIndex = 25
+        '
+        'CbArchiveNum
+        '
+        Me.CbArchiveNum.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CbArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.CbArchiveNum.Location = New System.Drawing.Point(199, 3)
+        Me.CbArchiveNum.Name = "CbArchiveNum"
+        Me.CbArchiveNum.Size = New System.Drawing.Size(95, 30)
+        Me.CbArchiveNum.TabIndex = 34
+        Me.CbArchiveNum.Text = "رقم الأرشيف:"
+        Me.CbArchiveNum.UseVisualStyleBackColor = True
         '
         'lblWillMaster
         '
@@ -573,17 +600,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.txtWillMaster.Size = New System.Drawing.Size(170, 30)
         Me.txtWillMaster.TabIndex = 7
         Me.txtWillMaster.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'lblArchiveID
-        '
-        Me.lblArchiveID.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.lblArchiveID.Location = New System.Drawing.Point(198, 0)
-        Me.lblArchiveID.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.lblArchiveID.Name = "lblArchiveID"
-        Me.lblArchiveID.Size = New System.Drawing.Size(97, 30)
-        Me.lblArchiveID.TabIndex = 12
-        Me.lblArchiveID.Text = "معرف الأرشيف:"
-        Me.lblArchiveID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'txtArchiveID
         '
@@ -956,6 +972,11 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         Me.TimerMsg.Interval = 3000
         '
+        'Timer1
+        '
+        Me.Timer1.Enabled = True
+        Me.Timer1.Interval = 7000
+        '
         'SaderForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 24.0!)
@@ -1022,7 +1043,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents rbNumberBook As RadioButton
     Friend WithEvents txtSearch As TextBox
     Friend WithEvents txtArchiveID As TextBox
-    Friend WithEvents lblArchiveID As Label
     Friend WithEvents txtUserName As TextBox
     Friend WithEvents lblUserName As Label
     Friend WithEvents txtWillSub As TextBox
@@ -1057,5 +1077,8 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents PicMsg As PictureBox
     Friend WithEvents lblMessage As Label
     Friend WithEvents Panel3 As Panel
+    Friend WithEvents CbArchiveNum As CheckBox
+    Friend WithEvents lblArchiveMsg As Label
+    Friend WithEvents Timer1 As Timer
 End Class
 

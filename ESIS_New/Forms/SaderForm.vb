@@ -57,7 +57,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         Try
             ' الاشتراك في الحدث
             AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
-
+            lblArchiveMsg.Visible = False
             ' تحديث العداد في الواجهة
             UpdateRecordCount()
             ' ربط تلقائي لأحداث التحقق من البوليصات
@@ -192,6 +192,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             Return True
         End Try
     End Function
+
 #End Region
 
 #Region "Data Loading and Display     تحميل البيانات وعرضها"
@@ -258,6 +259,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                 If dgvSader.Columns.Contains("BookCategory") Then
                     dgvSader.Columns("BookCategory").HeaderText = "التصنيف"
                     dgvSader.Columns("BookCategory").Width = 100
+                    dgvSader.Columns("BookCategory").Visible = False
                 End If
                 If dgvSader.Columns.Contains("UserName") Then
                     dgvSader.Columns("UserName").HeaderText = "المستخدم"
@@ -421,7 +423,8 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             btnUpdate.Enabled = True
             btnPrint.Enabled = True
             btnAdd.Enabled = False
-
+            lblArchiveMsg.Visible = True
+            lblArchiveMsg.Text = "إضغط على الجدول مرتين لارشفة الكتاب"
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -1560,6 +1563,20 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
     Private Sub TimerMsg_Tick(sender As Object, e As EventArgs) Handles TimerMsg.Tick
         ClearConfirmMsgTools(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
+
+    End Sub
+
+    Private Sub CbArchiveNum_CheckedChanged(sender As Object, e As EventArgs) Handles CbArchiveNum.CheckedChanged
+        If CbArchiveNum.Checked Then
+            txtArchiveID.ReadOnly = False
+
+        Else
+            txtArchiveID.ReadOnly = True
+        End If
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        lblArchiveMsg.Visible = False
     End Sub
 
 

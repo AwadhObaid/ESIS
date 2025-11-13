@@ -48,8 +48,8 @@ Public Class SplashScreen
             Me.StartPosition = FormStartPosition.CenterScreen
             Me.Size = New Size(600, 400)
             Me.BackColor = Color.FromArgb(225, 245, 254) ' لون خلفية داكن
-            Me.ShowInTaskbar = False
-            Me.TopMost = True
+            'Me.ShowInTaskbar = False
+            'Me.TopMost = True
 
             ' إعداد ProgressBar
             progressBar.Style = ProgressBarStyle.Continuous

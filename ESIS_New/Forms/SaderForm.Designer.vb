@@ -57,6 +57,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.RBPreviewBeforePrint = New System.Windows.Forms.RadioButton()
         Me.lblWarning = New System.Windows.Forms.Label()
         Me.TLPControls = New System.Windows.Forms.TableLayoutPanel()
+        Me.CbDateBook = New System.Windows.Forms.CheckBox()
         Me.CbArchiveNum = New System.Windows.Forms.CheckBox()
         Me.lblWillMaster = New System.Windows.Forms.Label()
         Me.txtWillMaster = New System.Windows.Forms.TextBox()
@@ -66,7 +67,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblNumberBook = New System.Windows.Forms.Label()
         Me.txtNumberBook = New System.Windows.Forms.TextBox()
         Me.txtWillSub = New System.Windows.Forms.TextBox()
-        Me.lblDateBook = New System.Windows.Forms.Label()
         Me.dtpDateBook = New System.Windows.Forms.DateTimePicker()
         Me.lblUserName = New System.Windows.Forms.Label()
         Me.ComboSubjBook = New System.Windows.Forms.ComboBox()
@@ -160,7 +160,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'lblMessage
         '
         Me.lblMessage.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblMessage.Font = New System.Drawing.Font("Cairo", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.lblMessage.Font = New System.Drawing.Font("Cairo", 18.0!, System.Drawing.FontStyle.Bold)
         Me.lblMessage.ForeColor = System.Drawing.Color.DarkBlue
         Me.lblMessage.Location = New System.Drawing.Point(0, 0)
         Me.lblMessage.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
@@ -486,7 +486,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'lblArchiveMsg
         '
         Me.lblArchiveMsg.AutoSize = True
-        Me.lblArchiveMsg.BackColor = System.Drawing.Color.Black
+        Me.lblArchiveMsg.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
         Me.lblArchiveMsg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblArchiveMsg.Font = New System.Drawing.Font("Cairo SemiBold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblArchiveMsg.ForeColor = System.Drawing.Color.White
@@ -545,6 +545,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TLPControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.71137!))
         Me.TLPControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.31749!))
         Me.TLPControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.10696!))
+        Me.TLPControls.Controls.Add(Me.CbDateBook, 0, 2)
         Me.TLPControls.Controls.Add(Me.CbArchiveNum, 2, 0)
         Me.TLPControls.Controls.Add(Me.lblWillMaster, 0, 0)
         Me.TLPControls.Controls.Add(Me.txtWillMaster, 1, 0)
@@ -554,7 +555,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TLPControls.Controls.Add(Me.lblNumberBook, 2, 2)
         Me.TLPControls.Controls.Add(Me.txtNumberBook, 3, 2)
         Me.TLPControls.Controls.Add(Me.txtWillSub, 1, 1)
-        Me.TLPControls.Controls.Add(Me.lblDateBook, 0, 2)
         Me.TLPControls.Controls.Add(Me.dtpDateBook, 1, 2)
         Me.TLPControls.Controls.Add(Me.lblUserName, 2, 1)
         Me.TLPControls.Enabled = False
@@ -566,6 +566,17 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TLPControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.92344!))
         Me.TLPControls.Size = New System.Drawing.Size(589, 113)
         Me.TLPControls.TabIndex = 25
+        '
+        'CbDateBook
+        '
+        Me.CbDateBook.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CbDateBook.Font = New System.Drawing.Font("Cairo ExtraBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CbDateBook.Location = New System.Drawing.Point(474, 79)
+        Me.CbDateBook.Name = "CbDateBook"
+        Me.CbDateBook.Size = New System.Drawing.Size(112, 31)
+        Me.CbDateBook.TabIndex = 35
+        Me.CbDateBook.Text = "تــاريـخ الكتـــاب :"
+        Me.CbDateBook.UseVisualStyleBackColor = True
         '
         'CbArchiveNum
         '
@@ -668,21 +679,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.txtWillSub.TabIndex = 9
         Me.txtWillSub.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
-        'lblDateBook
-        '
-        Me.lblDateBook.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblDateBook.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.lblDateBook.Location = New System.Drawing.Point(473, 76)
-        Me.lblDateBook.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.lblDateBook.Name = "lblDateBook"
-        Me.lblDateBook.Size = New System.Drawing.Size(114, 37)
-        Me.lblDateBook.TabIndex = 2
-        Me.lblDateBook.Text = "تـــــاريخ الكتـــاب:"
-        Me.lblDateBook.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'dtpDateBook
         '
         Me.dtpDateBook.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dtpDateBook.Enabled = False
         Me.dtpDateBook.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.dtpDateBook.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpDateBook.Location = New System.Drawing.Point(299, 80)
@@ -975,7 +975,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'Timer1
         '
         Me.Timer1.Enabled = True
-        Me.Timer1.Interval = 7000
+        Me.Timer1.Interval = 500
         '
         'SaderForm
         '
@@ -1051,7 +1051,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents lblWillMaster As Label
     Friend WithEvents lblSubjBook As Label
     Friend WithEvents dtpDateBook As DateTimePicker
-    Friend WithEvents lblDateBook As Label
     Friend WithEvents txtNumberBook As TextBox
     Friend WithEvents lblNumberBook As Label
     Friend WithEvents dtpSearchDate As DateTimePicker
@@ -1080,5 +1079,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents CbArchiveNum As CheckBox
     Friend WithEvents lblArchiveMsg As Label
     Friend WithEvents Timer1 As Timer
+    Friend WithEvents CbDateBook As CheckBox
 End Class
 

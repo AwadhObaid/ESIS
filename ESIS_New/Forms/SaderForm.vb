@@ -57,7 +57,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         Try
             ' الاشتراك في الحدث
             AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
-            lblArchiveMsg.Visible = False
+            'lblArchiveMsg.Visible = False
             ' تحديث العداد في الواجهة
             UpdateRecordCount()
             ' ربط تلقائي لأحداث التحقق من البوليصات
@@ -423,6 +423,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             btnUpdate.Enabled = True
             btnPrint.Enabled = True
             btnAdd.Enabled = False
+            Timer1.Start()
             lblArchiveMsg.Visible = True
             lblArchiveMsg.Text = "إضغط على الجدول مرتين لارشفة الكتاب"
         Catch ex As Exception
@@ -542,10 +543,12 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 #End Region
 
+
 #Region "CRUD Operations       عمليات CRUD"
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
         'RBDirectPrint.Checked = True
         SelectAll_TbSader(dgvSader)
+        StopFlashingLabel()
         Me.Refresh()
         ' 6. تحديث العدد بعد العملية الناجحة
         DataHelper.UpdateSaderCount()
@@ -661,6 +664,8 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                 DataGridViewHelper.FindRowByValue(dgvSader, "ID", updatedId, True)
                 btnNew.PerformClick()
                 btnUpdate.Enabled = PermissionsManager.Instance.HasPermission(GlobalData.LoggedInUserID, "SaderForm", "Add")
+                DataHelper.UpdateArchiveCount()
+                DataHelper.UpdateUnarchivedSaderCount()
             Else
                 MessageBox.Show("فشل في تحديث الصادر", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
@@ -1235,7 +1240,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                 ' إذا لم يكن الملف موجودًا، قم بإنشائه مع القيم الافتراضية
                 Dim defaultCategories As String() = {"DHL EXPRESS إفراج جمركي", "DHL EXPRESS تصدير", "DHL GLOBAL إفراج جمركي", "DHL GLOBAL تصدير",
                                                     "FEDEX EXPRESS إفراج جمركي", "FEDEX EXPRESS تصدير", "EXPEDITORS إفراج جمركي", "EXPEDITORS تصدير",
-                                                    "إستلام مباشر", "شركات اخرى", "الجمارك العامة", "مذكرات", "تصدير", "إفراج جمركي"}
+                                                    "الاستلام المباشر", "شركات اخرى", "الجمارك العامة", "مذكرات", "تصدير", "إفراج جمركي"}
 
                 File.WriteAllLines(filePath, defaultCategories)
             End If
@@ -1576,7 +1581,39 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        lblArchiveMsg.Visible = False
+        ' إنشاء لون عشوائي
+        Dim random As New Random()
+        Dim r As Integer = random.Next(0, 256) ' قيمة حمراء عشوائية بين 0 و 255
+        Dim g As Integer = random.Next(0, 256) ' قيمة خضراء عشوائية
+        Dim b As Integer = random.Next(0, 256) ' قيمة زرقاء عشوائية
+        Dim randomColor As Color = Color.FromArgb(r, g, b)
+
+        ' تغيير لون النص للون العشوائي
+        lblArchiveMsg.ForeColor = randomColor
+
+        ' جعل النص يلمع (يظهر ويختفي)
+        ' إذا كان النص مرئيًا، اجعله غير مرئي والعكس صحيح
+        lblArchiveMsg.Visible = Not lblArchiveMsg.Visible
+
+
+
+        'lblArchiveMsg.Visible = False
+    End Sub
+
+    ' إذا أردت إيقاف التوهج لاحقًا (مثلاً عند ضغط زر)
+    Private Sub StopFlashingLabel()
+        Timer1.Stop()
+        lblArchiveMsg.Visible = False ' تأكد من أن النص مرئي عند الإيقاف
+        lblArchiveMsg.ForeColor = SystemColors.ControlText ' إعادة اللون الافتراضي
+    End Sub
+
+    Private Sub CbDateBook_CheckedChanged(sender As Object, e As EventArgs) Handles CbDateBook.CheckedChanged
+        If CbDateBook.Checked Then
+            dtpDateBook.Enabled = True
+
+        Else
+            dtpDateBook.Enabled = False
+        End If
     End Sub
 
 

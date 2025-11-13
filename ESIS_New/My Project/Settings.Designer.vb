@@ -69,12 +69,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("C:\ESIS_Archive\")>  _
-        Public Property ARCHIVE_Default_PATH() As String
+        Public Property ARCHIVE_DEFAULT_PATH() As String
             Get
-                Return CType(Me("ARCHIVE_Default_PATH"),String)
+                Return CType(Me("ARCHIVE_DEFAULT_PATH"),String)
             End Get
             Set
-                Me("ARCHIVE_Default_PATH") = value
+                Me("ARCHIVE_DEFAULT_PATH") = value
             End Set
         End Property
         

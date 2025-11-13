@@ -151,7 +151,6 @@ Partial Class SplashScreen
         Me.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RightToLeftLayout = True
         Me.ShowIcon = False
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "نظام ESIS - شاشة البداية"
         Me.panelMain.ResumeLayout(False)

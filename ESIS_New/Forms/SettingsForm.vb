@@ -1,6 +1,6 @@
 ﻿Public Class SettingsForm
     Private Sub SettingsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        txtArchiveDefaultPath.Text = My.Settings.ARCHIVE_Default_PATH
+        txtArchiveDefaultPath.Text = My.Settings.ARCHIVE_DEFAULT_PATH
         txtSearchDefaultPath.Text = My.Settings.DefaultPathSearch
         txtlastSavedNumber.Text = My.Settings.LastSaderNumber
         txtdaysToKeep.Text = My.Settings.daysToKeep
@@ -8,7 +8,7 @@
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        My.Settings.ARCHIVE_Default_PATH = txtArchiveDefaultPath.Text.Trim()
+        My.Settings.ARCHIVE_DEFAULT_PATH = txtArchiveDefaultPath.Text.Trim()
         My.Settings.DefaultPathSearch = txtSearchDefaultPath.Text.Trim()
         My.Settings.LastSaderNumber = txtlastSavedNumber.Text.Trim()
         My.Settings.daysToKeep = txtdaysToKeep.Text.Trim()

@@ -1,4 +1,6 @@
-﻿Public Class DeletedArchiveForm
+﻿Imports System.IO
+
+Public Class DeletedArchiveForm
     Private archiveClass As New ArchiveClass()
 
     Public Sub New()
@@ -122,6 +124,35 @@
                                 DirectCast(form, SaderForm).RefreshData()
                             End If
                         Next
+
+                        ' نقل الملف إلى مساره الأصلي
+                        Dim filePath As String = GetSelectedRowStringValue("FilePath")
+                        Dim originalFilePath As String = GetSelectedRowStringValue("OriginalFilePath")
+
+                        If Not String.IsNullOrEmpty(originalFilePath) AndAlso Not String.IsNullOrEmpty(filePath) Then
+                            Try
+                                ' التحقق من وجود الملف في مساره الحالي
+                                If File.Exists(filePath) Then
+                                    ' إنشاء المجلد الأصلي إذا لم يكن موجودًا
+                                    Dim originalFolder As String = Path.GetDirectoryName(originalFilePath)
+                                    If Not Directory.Exists(originalFolder) Then
+                                        Directory.CreateDirectory(originalFolder)
+                                    End If
+
+                                    ' نقل الملف إلى مساره الأصلي
+                                    File.Move(filePath, originalFilePath)
+
+                                    ' تحديث المسار في جدول TbArchive
+                                    archiveClass.UpdateArchivePath(selectedId, originalFilePath)
+                                    DataHelper.UpdateDeletedArchiveCount()
+                                    DataHelper.UpdateArchiveCount()
+                                Else
+                                    MessageBox.Show($"الملف غير موجود في المسار الحالي: {filePath}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                End If
+                            Catch ex As Exception
+                                MessageBox.Show($"تم استعادة الأرشيف بنجاح ولكن فشل في نقل الملف إلى مساره الأصلي: {ex.Message}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            End Try
+                        End If
                     End If
                 End If
             Else
@@ -131,6 +162,229 @@
             MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+    'Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
+    '    Try
+    '        If dgvDeletedArchive.SelectedRows.Count > 0 Then
+    '            Dim selectedId As Integer = Convert.ToInt32(dgvDeletedArchive.SelectedRows(0).Cells("ID").Value)
+
+    '            Dim result As DialogResult = MessageBox.Show(
+    '            "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
+    '            "تأكيد الاسترجاع",
+    '            MessageBoxButtons.YesNo,
+    '            MessageBoxIcon.Question)
+
+    '            If result = DialogResult.Yes Then
+    '                Dim success As Boolean = archiveClass.RestoreArchiveById(selectedId, GlobalData.LoggedInUserName)
+
+    '                If success Then
+    '                    LoadDeletedArchives()
+    '                    ' تحديث النموذج الرئيسي إذا كان مفتوحًا
+    '                    For Each form As Form In Application.OpenForms
+    '                        If TypeOf form Is ArchiveForm Then
+    '                            DirectCast(form, ArchiveForm).LoadActiveArchive()
+    '                        End If
+    '                        If TypeOf form Is SaderForm Then
+    '                            DirectCast(form, SaderForm).RefreshData()
+    '                        End If
+    '                    Next
+
+    '                    ' نقل الملف إلى مساره الأصلي
+    '                    Dim filePath As String = GetSelectedRowStringValue("FilePath")
+    '                    Dim originalFilePath As String = GetSelectedRowStringValue("OriginalFilePath")
+
+    '                    If Not String.IsNullOrEmpty(originalFilePath) AndAlso Not String.IsNullOrEmpty(filePath) Then
+    '                        Try
+    '                            ' التحقق من وجود الملف في مساره الحالي
+    '                            If File.Exists(filePath) Then
+    '                                ' إنشاء المجلد الأصلي إذا لم يكن موجودًا
+    '                                Dim originalFolder As String = Path.GetDirectoryName(originalFilePath)
+    '                                If Not Directory.Exists(originalFolder) Then
+    '                                    Directory.CreateDirectory(originalFolder)
+    '                                End If
+
+    '                                ' نقل الملف إلى مساره الأصلي
+    '                                File.Move(filePath, originalFilePath)
+
+    '                                ' تحديث المسار في جدول TbArchive
+    '                                archiveClass.UpdateArchivePath(selectedId, originalFilePath)
+    '                            Else
+    '                                MessageBox.Show($"الملف غير موجود في المسار الحالي: {filePath}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                            End If
+    '                        Catch ex As Exception
+    '                            MessageBox.Show($"تم استعادة الأرشيف بنجاح ولكن فشل في نقل الملف إلى مساره الأصلي: {ex.Message}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                        End Try
+    '                    End If
+    '                End If
+    '            End If
+    '        Else
+    '            MessageBox.Show("يرجى اختيار أرشيف للاسترجاع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+    'Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
+    '    Try
+    '        If dgvDeletedArchive.SelectedRows.Count > 0 Then
+    '            Dim selectedId As Integer = Convert.ToInt32(dgvDeletedArchive.SelectedRows(0).Cells("ID").Value)
+
+    '            Dim result As DialogResult = MessageBox.Show(
+    '            "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
+    '            "تأكيد الاسترجاع",
+    '            MessageBoxButtons.YesNo,
+    '            MessageBoxIcon.Question)
+
+    '            If result = DialogResult.Yes Then
+    '                Dim success As Boolean = archiveClass.RestoreArchiveById(selectedId, GlobalData.LoggedInUserName)
+
+    '                If success Then
+    '                    LoadDeletedArchives()
+    '                    ' تحديث النموذج الرئيسي إذا كان مفتوحًا
+    '                    For Each form As Form In Application.OpenForms
+    '                        If TypeOf form Is ArchiveForm Then
+    '                            DirectCast(form, ArchiveForm).LoadActiveArchive()
+    '                        End If
+    '                        If TypeOf form Is SaderForm Then
+    '                            DirectCast(form, SaderForm).RefreshData()
+    '                        End If
+    '                    Next
+
+    '                    ' نقل الملف إلى مساره الأصلي
+    '                    Dim filePath As String = GetSelectedRowStringValue("FilePath")
+    '                    Dim originalFilePath As String = GetSelectedRowStringValue("OriginalFilePath")
+
+    '                    If Not String.IsNullOrEmpty(originalFilePath) AndAlso Not String.IsNullOrEmpty(filePath) Then
+    '                        Try
+    '                            ' التحقق من وجود الملف في مساره الحالي
+    '                            If File.Exists(filePath) Then
+    '                                ' إنشاء المجلد الأصلي إذا لم يكن موجودًا
+    '                                Dim originalFolder As String = Path.GetDirectoryName(originalFilePath)
+    '                                If Not Directory.Exists(originalFolder) Then
+    '                                    Directory.CreateDirectory(originalFolder)
+    '                                End If
+
+    '                                ' نقل الملف إلى مساره الأصلي
+    '                                File.Move(filePath, originalFilePath)
+
+    '                                ' تحديث المسار في جدول TbArchive
+    '                                archiveClass.UpdateArchivePath(selectedId, originalFilePath)
+    '                            Else
+    '                                MessageBox.Show($"الملف غير موجود في المسار الحالي: {filePath}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                            End If
+    '                        Catch ex As Exception
+    '                            MessageBox.Show($"تم استعادة الأرشيف بنجاح ولكن فشل في نقل الملف إلى مساره الأصلي: {ex.Message}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                        End Try
+    '                    End If
+    '                End If
+    '            End If
+    '        Else
+    '            MessageBox.Show("يرجى اختيار أرشيف للاسترجاع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+    'Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
+
+    '    Try
+    '        If dgvDeletedArchive.SelectedRows.Count > 0 Then
+    '            Dim selectedId As Integer = Convert.ToInt32(dgvDeletedArchive.SelectedRows(0).Cells("ID").Value)
+
+    '            Dim result As DialogResult = MessageBox.Show(
+    '                "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
+    '                "تأكيد الاسترجاع",
+    '                MessageBoxButtons.YesNo,
+    '                MessageBoxIcon.Question)
+
+    '            If result = DialogResult.Yes Then
+    '                Dim success As Boolean = archiveClass.RestoreArchiveById(selectedId, GlobalData.LoggedInUserName)
+
+    '                If success Then
+    '                    LoadDeletedArchives()
+    '                    ' تحديث النموذج الرئيسي إذا كان مفتوحًا
+    '                    For Each form As Form In Application.OpenForms
+    '                        If TypeOf form Is ArchiveForm Then
+    '                            DirectCast(form, ArchiveForm).LoadActiveArchive()
+    '                        End If
+    '                        If TypeOf form Is SaderForm Then
+    '                            DirectCast(form, SaderForm).RefreshData()
+    '                        End If
+    '                    Next
+
+    '                    ' نقل الملف إلى مساره الأصلي
+    '                    Dim filePath As String = GetSelectedRowStringValue("FilePath")
+    '                    Dim originalFilePath As String = GetSelectedRowStringValue("OriginalFilePath")
+
+    '                    If Not String.IsNullOrEmpty(originalFilePath) AndAlso Not String.IsNullOrEmpty(filePath) Then
+    '                        Try
+    '                            ' التحقق من وجود المسار الأصلي
+    '                            Dim originalFolder As String = Path.GetDirectoryName(originalFilePath)
+    '                            If Not Directory.Exists(originalFolder) Then
+    '                                Directory.CreateDirectory(originalFolder)
+    '                            End If
+
+    '                            ' نقل الملف إلى مساره الأصلي
+    '                            File.Move(filePath, originalFilePath)
+
+    '                            ' تحديث المسار في جدول TbArchive
+    '                            archiveClass.UpdateArchivePath(selectedId, originalFilePath)
+    '                        Catch ex As Exception
+    '                            MessageBox.Show($"تم استعادة الأرشيف بنجاح ولكن فشل في نقل الملف إلى مساره الأصلي: {ex.Message}", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '                        End Try
+    '                    End If
+    '                End If
+    '            End If
+    '        Else
+    '            MessageBox.Show("يرجى اختيار أرشيف للاسترجاع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+
+
+
+    '    'Try
+    '    '    If dgvDeletedArchive.SelectedRows.Count > 0 Then
+    '    '        Dim selectedId As Integer = Convert.ToInt32(dgvDeletedArchive.SelectedRows(0).Cells("ID").Value)
+
+    '    '        Dim result As DialogResult = MessageBox.Show(
+    '    '        "هل أنت متأكد من رغبتك في استرجاع هذا الأرشيف؟",
+    '    '        "تأكيد الاسترجاع",
+    '    '        MessageBoxButtons.YesNo,
+    '    '        MessageBoxIcon.Question)
+
+    '    '        If result = DialogResult.Yes Then
+    '    '            Dim success As Boolean = archiveClass.RestoreArchiveById(selectedId, GlobalData.LoggedInUserName)
+
+    '    '            If success Then
+    '    '                LoadDeletedArchives()
+    '    '                ' تحديث النموذج الرئيسي إذا كان مفتوحًا
+    '    '                For Each form As Form In Application.OpenForms
+    '    '                    If TypeOf form Is ArchiveForm Then
+    '    '                        DirectCast(form, ArchiveForm).LoadActiveArchive()
+    '    '                    End If
+    '    '                    If TypeOf form Is SaderForm Then
+    '    '                        DirectCast(form, SaderForm).RefreshData()
+    '    '                    End If
+    '    '                    DataHelper.UpdateArchiveCount()
+    '    '                    DataHelper.UpdateDeletedArchiveCount()
+    '    '                Next
+    '    '            End If
+    '    '        End If
+    '    '    Else
+    '    '        MessageBox.Show("يرجى اختيار أرشيف للاسترجاع", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '    '    End If
+    '    'Catch ex As Exception
+    '    '    MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    'End Try
+    'End Sub
+
+    Private Function GetSelectedRowStringValue(columnName As String, Optional defaultValue As String = "") As String
+        Return DataGridViewHelper.GetSelectedRowValue(Of String)(dgvDeletedArchive, columnName, defaultValue)
+    End Function
 
     'Private Sub btnRestore_Click(sender As Object, e As EventArgs) Handles btnRestore.Click
     '    Try
@@ -268,6 +522,8 @@
                             Exit For
                         End If
                     Next
+                    DataHelper.UpdateArchiveCount()
+                    DataHelper.UpdateDeletedArchiveCount()
                 Else
                     MessageBox.Show("فشل في حذف الأرشيف نهائيًا. يرجى المحاولة مرة أخرى.", "فشل", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If

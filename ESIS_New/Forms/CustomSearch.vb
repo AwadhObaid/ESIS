@@ -70,6 +70,17 @@ Public Class CustomSearch
         ' تعطيل أزرار الملفات حتى يتم اختيار ملف
         btnOpenLoction.Enabled = False
         btnPrint.Enabled = False
+
+
+        ' ✅ بدلاً من ذلك، ابدأ البحث بعد أن يتم عرض النموذج
+        AddHandler Me.Shown, AddressOf CustomSearch_Shown
+    End Sub
+
+    Private Sub CustomSearch_Shown(sender As Object, e As EventArgs)
+        ' الآن النموذج جاهز تمامًا، ويمكنك بدء البحث بأمان
+        StartSearch()
+        ' أو يمكنك إزالة هذا الحدث إذا كنت لا تحتاجه لاحقًا
+        RemoveHandler Me.Shown, AddressOf CustomSearch_Shown
     End Sub
 #End Region
 
@@ -78,15 +89,31 @@ Public Class CustomSearch
         OpenSelectedFile(resultsTreeView.SelectedNode, isDoubleClick:=True)
         btnOpenLoction.Enabled = True
         btnPrint.Enabled = True
-        'Me.Close()
-        Dim archiveForm As ArchiveForm = TryCast(Application.OpenForms("ArchiveForm"), ArchiveForm)
-        If archiveForm IsNot Nothing Then
 
-            archiveForm.btnAdd.Text = "اضغط للاضافة"
-            archiveForm.btnAdd.Select()
-            Thread.Sleep(500)
-            Close()
-        End If
+        ' استخدام BeginInvoke لإغلاق النموذج بعد انتهاء معالجة الحدث
+        Me.BeginInvoke(Sub()
+                           Dim archiveForm As ArchiveForm = TryCast(Application.OpenForms("ArchiveForm"), ArchiveForm)
+                           If archiveForm IsNot Nothing Then
+                               archiveForm.btnAdd.Text = "اضغط للاضافة"
+                               archiveForm.btnAdd.Select()
+                               Thread.Sleep(500)
+                               Me.Close() ' إغلاق النموذج بعد انتهاء المعالجة
+                           End If
+                       End Sub)
+
+
+        'OpenSelectedFile(resultsTreeView.SelectedNode, isDoubleClick:=True)
+        'btnOpenLoction.Enabled = True
+        'btnPrint.Enabled = True
+        ''Me.Close()
+        'Dim archiveForm As ArchiveForm = TryCast(Application.OpenForms("ArchiveForm"), ArchiveForm)
+        'If archiveForm IsNot Nothing Then
+
+        '    archiveForm.btnAdd.Text = "اضغط للاضافة"
+        '    archiveForm.btnAdd.Select()
+        '    Thread.Sleep(500)
+        '    Me.Close()
+        'End If
     End Sub
 
     Private Sub ResultsTreeView_KeyDown(sender As Object, e As KeyEventArgs) Handles resultsTreeView.KeyDown
@@ -1976,13 +2003,6 @@ End Class
 
 
 #End Region
-
-
-
-
-
-
-
 
 'Imports System.IO
 'Imports System.Data

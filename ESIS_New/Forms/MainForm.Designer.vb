@@ -699,12 +699,12 @@ Partial Class MainForm
         '
         'btnLogout2
         '
-        Me.btnLogout2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.btnLogout2.BackColor = System.Drawing.Color.FromArgb(CType(CType(74, Byte), Integer), CType(CType(181, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.btnLogout2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnLogout2.FlatAppearance.BorderSize = 0
         Me.btnLogout2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnLogout2.Font = New System.Drawing.Font("Cairo SemiBold", 8.249999!, System.Drawing.FontStyle.Bold)
-        Me.btnLogout2.ForeColor = System.Drawing.Color.Black
+        Me.btnLogout2.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnLogout2.ForeColor = System.Drawing.Color.White
         Me.btnLogout2.Location = New System.Drawing.Point(3, 213)
         Me.btnLogout2.Name = "btnLogout2"
         Me.btnLogout2.Size = New System.Drawing.Size(111, 35)
@@ -714,12 +714,12 @@ Partial Class MainForm
         '
         'btnServerConnection
         '
-        Me.btnServerConnection.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.btnServerConnection.BackColor = System.Drawing.Color.FromArgb(CType(CType(74, Byte), Integer), CType(CType(181, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.btnServerConnection.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnServerConnection.FlatAppearance.BorderSize = 0
         Me.btnServerConnection.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnServerConnection.Font = New System.Drawing.Font("Cairo SemiBold", 8.249999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnServerConnection.ForeColor = System.Drawing.Color.Black
+        Me.btnServerConnection.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnServerConnection.ForeColor = System.Drawing.Color.White
         Me.btnServerConnection.Location = New System.Drawing.Point(3, 45)
         Me.btnServerConnection.Name = "btnServerConnection"
         Me.btnServerConnection.Size = New System.Drawing.Size(111, 37)
@@ -729,11 +729,12 @@ Partial Class MainForm
         '
         'btnDashboard
         '
-        Me.btnDashboard.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.btnDashboard.BackColor = System.Drawing.Color.FromArgb(CType(CType(74, Byte), Integer), CType(CType(181, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.btnDashboard.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnDashboard.FlatAppearance.BorderSize = 0
         Me.btnDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnDashboard.Font = New System.Drawing.Font("Cairo SemiBold", 8.249999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDashboard.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDashboard.ForeColor = System.Drawing.Color.White
         Me.btnDashboard.Location = New System.Drawing.Point(3, 3)
         Me.btnDashboard.Name = "btnDashboard"
         Me.btnDashboard.Size = New System.Drawing.Size(111, 36)
@@ -743,12 +744,12 @@ Partial Class MainForm
         '
         'btnSader2
         '
-        Me.btnSader2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.btnSader2.BackColor = System.Drawing.Color.FromArgb(CType(CType(74, Byte), Integer), CType(CType(181, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.btnSader2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnSader2.FlatAppearance.BorderSize = 0
         Me.btnSader2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSader2.Font = New System.Drawing.Font("Cairo SemiBold", 8.249999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSader2.ForeColor = System.Drawing.Color.Black
+        Me.btnSader2.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSader2.ForeColor = System.Drawing.Color.White
         Me.btnSader2.Location = New System.Drawing.Point(3, 88)
         Me.btnSader2.Name = "btnSader2"
         Me.btnSader2.Size = New System.Drawing.Size(111, 35)
@@ -758,12 +759,12 @@ Partial Class MainForm
         '
         'btnArchive2
         '
-        Me.btnArchive2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.btnArchive2.BackColor = System.Drawing.Color.FromArgb(CType(CType(74, Byte), Integer), CType(CType(181, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.btnArchive2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnArchive2.FlatAppearance.BorderSize = 0
         Me.btnArchive2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnArchive2.Font = New System.Drawing.Font("Cairo SemiBold", 8.249999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnArchive2.ForeColor = System.Drawing.Color.Black
+        Me.btnArchive2.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnArchive2.ForeColor = System.Drawing.Color.White
         Me.btnArchive2.Location = New System.Drawing.Point(3, 129)
         Me.btnArchive2.Name = "btnArchive2"
         Me.btnArchive2.Size = New System.Drawing.Size(111, 36)
@@ -773,12 +774,12 @@ Partial Class MainForm
         '
         'btnDeletedForm2
         '
-        Me.btnDeletedForm2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(226, Byte), Integer))
+        Me.btnDeletedForm2.BackColor = System.Drawing.Color.FromArgb(CType(CType(74, Byte), Integer), CType(CType(181, Byte), Integer), CType(CType(230, Byte), Integer))
         Me.btnDeletedForm2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnDeletedForm2.FlatAppearance.BorderSize = 0
         Me.btnDeletedForm2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnDeletedForm2.Font = New System.Drawing.Font("Cairo SemiBold", 8.249999!, System.Drawing.FontStyle.Bold)
-        Me.btnDeletedForm2.ForeColor = System.Drawing.Color.Black
+        Me.btnDeletedForm2.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDeletedForm2.ForeColor = System.Drawing.Color.White
         Me.btnDeletedForm2.Location = New System.Drawing.Point(3, 171)
         Me.btnDeletedForm2.Name = "btnDeletedForm2"
         Me.btnDeletedForm2.Size = New System.Drawing.Size(111, 36)

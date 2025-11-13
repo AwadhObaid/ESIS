@@ -1289,7 +1289,7 @@ Public Class SaderClass
     ' دالة لنقل الملف إلى مجلد المحذوفات في حالة فشل الحذف
     Private Sub MoveToDeletedFolder(filePath As String)
         Try
-            Dim deletedFolderPath As String = IO.Path.Combine(My.Settings.ARCHIVE_Default_PATH, "مجلد المحذوفات")
+            Dim deletedFolderPath As String = IO.Path.Combine(My.Settings.ARCHIVE_DEFAULT_PATH, "مجلد المحذوفات")
             If Not IO.Directory.Exists(deletedFolderPath) Then
                 Directory.CreateDirectory(deletedFolderPath)
             End If

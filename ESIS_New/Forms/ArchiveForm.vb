@@ -339,6 +339,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
 
 
             ' تعديل حجم الاعمدة
+            If dgvArchive.Columns.Contains("ID") Then dgvArchive.Columns("ID").Width = 50
             If dgvArchive.Columns.Contains("ArchiveNum") Then dgvArchive.Columns("ArchiveNum").Width = 100
             If dgvArchive.Columns.Contains("ArchiveDate") Then dgvArchive.Columns("ArchiveDate").Width = 100
             If dgvArchive.Columns.Contains("ArchiveSubject") Then dgvArchive.Columns("ArchiveSubject").Width = 250
@@ -1007,6 +1008,8 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
                     ClearFields()
                     DeletedArchiveSuccessfully(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
                     'MessageBox.Show("تم إخفاء الأرشيف بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    DataHelper.UpdateDeletedArchiveCount()
+                    DataHelper.UpdateUnarchivedSaderCount()
                 Else
                     MessageBox.Show("فشل في إرسال الأرشيف. يرجى المحاولة مرة أخرى.", "فشل", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
@@ -2239,7 +2242,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
     Public Function CreateSubFolder(category As String, subFolder As String) As String
         Try
             ' إنشاء مسار المجلد الرئيسي
-            Dim categoryPath As String = Path.Combine(My.Settings.ARCHIVE_Default_PATH, category)
+            Dim categoryPath As String = Path.Combine(My.Settings.ARCHIVE_DEFAULT_PATH, category)
 
             ' إنشاء مسار المجلد الفرعي
             Dim subFolderPath As String = Path.Combine(categoryPath, subFolder)

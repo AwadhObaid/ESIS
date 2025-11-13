@@ -1516,6 +1516,9 @@ Module GlobalData
 
 #End Region
 
+    Private Function GetSelectedRowStringValue(DataGridViewName As DataGridView, columnName As String, Optional defaultValue As String = "") As String
+        Return DataGridViewHelper.GetSelectedRowValue(Of String)(DataGridViewName, columnName, defaultValue)
+    End Function
 
 #Region "====================( Checking Functions )=================="
 

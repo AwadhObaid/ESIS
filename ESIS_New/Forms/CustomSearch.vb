@@ -926,9 +926,6 @@ Public Class CustomSearch
 
 End Class
 
-
-
-
 'Imports System.IO
 'Imports System.Data
 'Imports System.Drawing

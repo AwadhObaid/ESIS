@@ -49,7 +49,6 @@ Partial Class MainForm
         Me.btnDeletedForm = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuCleanupArchives = New System.Windows.Forms.ToolStripMenuItem()
         Me.menuUnarchivedRecords = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BtnRefreshUnarchived = New System.Windows.Forms.ToolStripMenuItem()
         Me.BtnDateDeff = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnOpenWebForms = New System.Windows.Forms.ToolStripMenuItem()
         Me.leaveFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -131,7 +130,7 @@ Partial Class MainForm
         '
         Me.men.BackColor = System.Drawing.SystemColors.Highlight
         Me.men.Font = New System.Drawing.Font("Cairo", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.men.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.عامToolStripMenuItem, Me.النسخالإحتياطيوالإستعادةToolStripMenuItem, Me.إدارةالبريدToolStripMenuItem, Me.btnDeletedForm1, Me.menuUnarchivedRecords, Me.BtnRefreshUnarchived, Me.BtnDateDeff, Me.btnOpenWebForms, Me.القاريرToolStripMenuItem, Me.btnNotification, Me.btnAbout})
+        Me.men.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.عامToolStripMenuItem, Me.النسخالإحتياطيوالإستعادةToolStripMenuItem, Me.إدارةالبريدToolStripMenuItem, Me.btnDeletedForm1, Me.menuUnarchivedRecords, Me.BtnDateDeff, Me.btnOpenWebForms, Me.القاريرToolStripMenuItem, Me.btnNotification, Me.btnAbout})
         Me.men.Location = New System.Drawing.Point(0, 0)
         Me.men.Name = "men"
         Me.men.Size = New System.Drawing.Size(1552, 32)
@@ -301,14 +300,6 @@ Partial Class MainForm
         Me.menuUnarchivedRecords.Name = "menuUnarchivedRecords"
         Me.menuUnarchivedRecords.Size = New System.Drawing.Size(151, 28)
         Me.menuUnarchivedRecords.Text = "السجلات غير المؤرشفة"
-        '
-        'BtnRefreshUnarchived
-        '
-        Me.BtnRefreshUnarchived.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.BtnRefreshUnarchived.ForeColor = System.Drawing.Color.White
-        Me.BtnRefreshUnarchived.Name = "BtnRefreshUnarchived"
-        Me.BtnRefreshUnarchived.Size = New System.Drawing.Size(169, 28)
-        Me.BtnRefreshUnarchived.Text = "تحديث الغير مؤرشف يدويا"
         '
         'BtnDateDeff
         '
@@ -888,7 +879,6 @@ Partial Class MainForm
     Friend WithEvents btnDeletedForm1 As ToolStripMenuItem
     Friend WithEvents lblDeletedArchiveCount As Label
     Friend WithEvents menuUnarchivedRecords As ToolStripMenuItem
-    Friend WithEvents BtnRefreshUnarchived As ToolStripMenuItem
     Friend WithEvents BtnDateDeff As ToolStripMenuItem
     Friend WithEvents btnOpenWebForms As ToolStripMenuItem
     Friend WithEvents leaveFormToolStripMenuItem As ToolStripMenuItem

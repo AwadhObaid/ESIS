@@ -170,6 +170,17 @@ Public Class NotificationsForm : Inherits System.Windows.Forms.Form
 
     Private Sub NotificationsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         ShowBalloonNotification()
+        ' بدء المؤقت مع المدة المحددة من الإعدادات
+        Timer1.Interval = My.Settings.NotificationsFormInterval * 1000 ' تحويل الثواني إلى مللي ثانية
+        Timer1.Start()
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        ' إيقاف المؤقت أولاً
+        Timer1.Stop()
+
+        ' إغلاق النموذج
+        Me.Close()
     End Sub
 End Class
 

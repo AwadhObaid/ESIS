@@ -14,6 +14,8 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     Private _notificationBalloon As NotificationsForm = Nothing
     Private _notificationTaskbar As NotificationsForm = Nothing
     Public xx As Short = 0
+    ' متغير لتحديد حالة تسجيل الخروج
+    Private isLoggingOut As Boolean = False
 
 #Region "التهيئة والتحميل"
     ''' <summary>
@@ -766,32 +768,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
-    ''' <summary>
-    ''' إغلاق النموذج الرئيسي
-    ''' </summary>
-    Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Try
-            ' إلغاء الاشتراك في الأحداث
-            RemoveHandler DataHelper.SaderCountChanged, AddressOf OnDataCountChanged
-            RemoveHandler DataHelper.UnarchivedSaderCountChanged, AddressOf HandleUnarchivedCountChanged
-            RemoveHandler DataHelper.ArchiveCountChanged, AddressOf OnArchiveCountChanged
-            ' تنظيف الموارد
-            If PictureBoxUser.Image IsNot Nothing AndAlso PictureBoxUser.Image IsNot My.Resources.UserDefault Then
-                PictureBoxUser.Image.Dispose()
-            End If
 
-            If e.CloseReason = CloseReason.UserClosing Then
-                If MessageBox.Show("هل تريد الخروج من البرنامج؟", "تأكيد الخروج", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
-                    e.Cancel = True
-                Else
-                    timerClock.Stop()
-                    Application.Exit()
-                End If
-            End If
-        Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في إغلاق النموذج: {ex.Message}")
-        End Try
-    End Sub
 
     '' <summary>
     '' التحديث الدوري للتاريخ والوقت
@@ -962,7 +939,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             '    Return
             'End If
             Dim frm As New BackupManagerForm
-
             frm.Show(Me)
             'OpenMdiForm(Of BackupManagerForm)(Me)
         Catch ex As Exception
@@ -980,16 +956,30 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             MessageBox.Show($"حدث خطأ أثناء محاولة الخروج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+    ''' <summary>
+    ''' تأكيد الخروج من البرنامج
+    ''' </summary>
+    Private Sub ConfirmExit()
+        Try
+            If MessageBox.Show("هل تريد الخروج من البرنامج؟", "تأكيد الخروج", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                Application.Exit()
+            End If
+        Catch ex As Exception
+            MessageBox.Show($"حدث خطأ أثناء تأكيد الخروج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
 
     ''' <summary>
     ''' زر تسجيل الخروج
     ''' </summary>
     Private Sub btnLogout_Click(sender As Object, e As EventArgs) Handles btnLogout.Click, btnLogout2.Click
+
         Try
             If MessageBox.Show("هل تريد تسجيل الخروج؟", "تأكيد تسجيل الخروج", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                isLoggingOut = True
                 Dim loginForm As New LoginForm()
                 loginForm.Show()
-                Me.Close()
+                'Me.Close()
             End If
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء تسجيل الخروج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -997,9 +987,45 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     End Sub
 
     ''' <summary>
+    ''' إغلاق النموذج الرئيسي
+    ''' </summary>
+    Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Try
+            ' إلغاء الاشتراك في الأحداث
+            RemoveHandler DataHelper.SaderCountChanged, AddressOf OnDataCountChanged
+            RemoveHandler DataHelper.UnarchivedSaderCountChanged, AddressOf HandleUnarchivedCountChanged
+            RemoveHandler DataHelper.ArchiveCountChanged, AddressOf OnArchiveCountChanged
+            ' تنظيف الموارد
+            If PictureBoxUser.Image IsNot Nothing AndAlso PictureBoxUser.Image IsNot My.Resources.UserDefault Then
+                PictureBoxUser.Image.Dispose()
+            End If
+
+            ' التحقق من سبب الإغلاق
+            If e.CloseReason = CloseReason.UserClosing Then
+                ' إذا كنا في حالة تسجيل الخروج، لا نعرض رسالة تأكيد
+                If isLoggingOut Then
+                    timerClock.Stop()
+                    Return
+                End If
+
+                ' إذا لم يكن تسجيل خروج، نعرض رسالة تأكيد
+                If MessageBox.Show("هل تريد الخروج من البرنامج؟", "تأكيد الخروج", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
+                    e.Cancel = True
+                    Return
+                End If
+
+                timerClock.Stop()
+                Application.Exit()
+            End If
+        Catch ex As Exception
+            System.Diagnostics.Debug.WriteLine($"خطأ في إغلاق النموذج: {ex.Message}")
+        End Try
+    End Sub
+
+    ''' <summary>
     ''' زر الوارد (قيد التطوير)
     ''' </summary>
-    Private Sub btnWared_Click(sender As Object, e As EventArgs) Handles btnWared.Click
+    Private Sub btnWared_Click(sender As Object, e As EventArgs)
         Try
             MessageBox.Show("هذه الميزة قيد التطوير", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Catch ex As Exception
@@ -1007,13 +1033,9 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
     ''' <summary>
-    ''' زر سلة المحذفات (قيد التطوير)
+    ''' زر سلة المحذفات
     ''' </summary>
-    Private Sub btnDeletedForm_Click(sender As Object, e As EventArgs) Handles btnDeletedForm1.Click
-
-    End Sub
-
-    Private Sub btnDeletedForm2_Click(sender As Object, e As EventArgs) Handles btnDeletedForm2.Click
+    Private Sub btnDeletedForm2_Click(sender As Object, e As EventArgs) Handles btnDeletedForm2.Click, btnDeletedForm1.Click
         Try
             '' التحقق من صلاحية عرض نموذج المستخدمين
             'If Not CheckPermission("View", "عرض نموذج سلة المحذوفات") Then
@@ -1113,18 +1135,8 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 #End Region
 
 #Region "الوظائف المساعدة"
-    ''' <summary>
-    ''' تأكيد الخروج من البرنامج
-    ''' </summary>
-    Private Sub ConfirmExit()
-        Try
-            If MessageBox.Show("هل تريد الخروج من البرنامج؟", "تأكيد الخروج", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                Application.Exit()
-            End If
-        Catch ex As Exception
-            MessageBox.Show($"حدث خطأ أثناء تأكيد الخروج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
+
+
 
     ''' <summary>
     ''' تحديث بيانات النموذج الرئيسي
@@ -1183,14 +1195,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         ShowUnarchivedRecordsDetails()
     End Sub
 
-    Private Sub BtnRefreshUnarchived_Click(sender As Object, e As EventArgs) Handles BtnRefreshUnarchived.Click
-        ' تحديث العدد يدويًا
-        DataHelper.UpdateUnarchivedSaderCount()
-
-        '' تحديث التسمية
-        'UpdateUnarchivedCountLabel(DataHelper.UnarchivedSaderCount)
-    End Sub
-
     Private Sub BtnDateDeff_Click(sender As Object, e As EventArgs) Handles BtnDateDeff.Click
         Try
             OpenMdiForm(Of DateDifferenceForm)(Me)
@@ -1202,7 +1206,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     Private Sub BtnReportCriteriaForm_Click(sender As Object, e As EventArgs) Handles BtnReportCriteriaForm.Click
         'OpenMdiForm(Of ReportCriteriaForm)()
     End Sub
-
 
     Private Sub BtnReportSelectionForm_Click(sender As Object, e As EventArgs) Handles BtnReportSelectionForm.Click
         Try
@@ -1216,41 +1219,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         End Try
 
     End Sub
-
-    '''' <summary>
-    '''' تحميل صورة المستخدم
-    '''' </summary>
-    'Private Sub LoadUserImage()
-    '    Try
-    '        ' التحقق مما إذا كانت الصورة قد تم تحميلها مسبقًا
-    '        If GlobalData.CurrentUserImage IsNot Nothing Then
-    '            PictureBoxUser.Image = GlobalData.CurrentUserImage
-    '        Else
-    '            ' محاولة تحميل الصورة من قاعدة البيانات
-    '            Dim usersClass As New UsersClass()
-    '            Dim imageData As Byte() = usersClass.GetUserImage(GlobalData.LoggedInUserID)
-
-    '            If imageData IsNot Nothing AndAlso imageData.Length > 0 Then
-    '                Using ms As New MemoryStream(imageData)
-    '                    PictureBoxUser.Image = Image.FromStream(ms)
-    '                    ' حفظ الصورة في المتغير العالمي
-    '                    GlobalData.CurrentUserImage = PictureBoxUser.Image
-    '                End Using
-    '            Else
-    '                ' استخدام صورة افتراضية
-    '                PictureBoxUser.Image = My.Resources.UserDefault
-    '                GlobalData.CurrentUserImage = My.Resources.UserDefault
-    '            End If
-    '        End If
-
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في تحميل صورة المستخدم: {ex.Message}")
-    '        ' استخدام صورة افتراضية في حالة الخطأ
-    '        PictureBoxUser.Image = My.Resources.UserDefault
-    '        GlobalData.CurrentUserImage = My.Resources.UserDefault
-    '    End Try
-    'End Sub
-
 
     ''' <summary>
     ''' تحميل صورة المستخدم
@@ -1292,41 +1260,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             GlobalData.CurrentUserImage = My.Resources.UserDefault
         End Try
     End Sub
-
-
-    '''' <summary>
-    '''' تحميل صورة المستخدم
-    '''' </summary>
-    'Private Sub LoadUserImage()
-    '    Try
-    '        ' التحقق مما إذا كانت الصورة قد تم تحميلها مسبقًا
-    '        If GlobalData.CurrentUserImage IsNot Nothing Then
-    '            PictureBoxUser.Image = GlobalData.CurrentUserImage
-    '        Else
-    '            ' محاولة تحميل الصورة من قاعدة البيانات
-    '            Dim usersClass As New UsersClass()
-    '            Dim imageData As Byte() = usersClass.GetUserImage(GlobalData.LoggedInUserID)
-
-    '            If imageData IsNot Nothing AndAlso imageData.Length > 0 Then
-    '                Using ms As New MemoryStream(imageData)
-    '                    PictureBoxUser.Image = Image.FromStream(ms)
-    '                    ' حفظ الصورة في المتغير العالمي
-    '                    GlobalData.CurrentUserImage = PictureBoxUser.Image
-    '                End Using
-    '            Else
-    '                ' استخدام صورة افتراضية
-    '                PictureBoxUser.Image = My.Resources.UserDefault
-    '                GlobalData.CurrentUserImage = My.Resources.UserDefault
-    '            End If
-    '        End If
-
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في تحميل صورة المستخدم: {ex.Message}")
-    '        ' استخدام صورة افتراضية في حالة الخطأ
-    '        PictureBoxUser.Image = My.Resources.UserDefault
-    '        GlobalData.CurrentUserImage = My.Resources.UserDefault
-    '    End Try
-    'End Sub
 
     ''' <summary>
     ''' تحديث صورة المستخدم (عند الحاجة)
@@ -1654,6 +1587,28 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenElectronicForm(
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-26.htm",
             "اشعار اجازة طارئة")
+    End Sub
+
+
+    Private Sub Tasreeh_Click(sender As Object, e As EventArgs) Handles Tasreeh.Click
+        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "231000-43.pdf")
+        OpenElectronicForm(
+            filePath,
+            "تصريح رسمي")
+    End Sub
+
+    Private Sub AQuood_Click(sender As Object, e As EventArgs) Handles AQuood.Click
+        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "3good.html")
+        OpenElectronicForm(
+            filePath,
+            "مناطق نائية | عقود خاصة")
+    End Sub
+
+    Private Sub Kuwait_Click(sender As Object, e As EventArgs) Handles Kuwait.Click
+        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "Kuwait.html")
+        OpenElectronicForm(
+            filePath,
+            "مناطق نائية | كويتيين")
     End Sub
 
 #End Region
@@ -2010,7 +1965,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
-
     Private Sub mnuCleanupArchives_Click(sender As Object, e As EventArgs) Handles MnuCleanupArchives.Click
         Try
             ' عرض مربع حوار للتأكيد
@@ -2036,26 +1990,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
-    Private Sub Tasreeh_Click(sender As Object, e As EventArgs) Handles Tasreeh.Click
-        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "231000-43.pdf")
-        OpenElectronicForm(
-            filePath,
-            "تصريح رسمي")
-    End Sub
 
-    Private Sub AQuood_Click(sender As Object, e As EventArgs) Handles AQuood.Click
-        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "3good.html")
-        OpenElectronicForm(
-            filePath,
-            "مناطق نائية | عقود خاصة")
-    End Sub
-
-    Private Sub Kuwait_Click(sender As Object, e As EventArgs) Handles Kuwait.Click
-        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "Kuwait.html")
-        OpenElectronicForm(
-            filePath,
-            "مناطق نائية | كويتيين")
-    End Sub
 
 
 

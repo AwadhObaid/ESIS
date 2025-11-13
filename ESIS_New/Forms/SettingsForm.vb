@@ -4,6 +4,7 @@
         txtSearchDefaultPath.Text = My.Settings.DefaultPathSearch
         txtlastSavedNumber.Text = My.Settings.LastSaderNumber
         txtdaysToKeep.Text = My.Settings.daysToKeep
+        nudNotificationInterval.Value = My.Settings.NotificationsFormInterval
 
     End Sub
 
@@ -12,6 +13,7 @@
         My.Settings.DefaultPathSearch = txtSearchDefaultPath.Text.Trim()
         My.Settings.LastSaderNumber = txtlastSavedNumber.Text.Trim()
         My.Settings.daysToKeep = txtdaysToKeep.Text.Trim()
+        My.Settings.NotificationsFormInterval = CInt(nudNotificationInterval.Value)
         My.Settings.Save()
         MessageBox.Show("تم حفظ المسار بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Me.Close()

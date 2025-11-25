@@ -113,7 +113,7 @@ Public Class BackupForm
     ''' <summary>
     ''' تحديث معلومات قاعدة البيانات
     ''' </summary>
-    Private Sub UpdateDatabaseInfo()
+    Public Sub UpdateDatabaseInfo()
         Try
             Dim dbInfo As DatabaseInfo = backupHelper.GetDatabaseInfo()
 
@@ -132,7 +132,7 @@ Public Class BackupForm
     ''' <summary>
     ''' تحديث قائمة النسخ الاحتياطية الموجودة
     ''' </summary>
-    Private Sub RefreshBackupsList()
+    Public Sub RefreshBackupsList()
         Try
             lstExistingBackups.Items.Clear()
 

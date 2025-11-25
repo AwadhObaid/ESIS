@@ -37,7 +37,7 @@ Public Class LoginForm
         Me.RightToLeft = RightToLeft.Yes
         Me.RightToLeftLayout = True
         ComboUsername.Focus()
-        fillCombo(ComboUsername, "SELECT UserName FROM TbUsers ORDER BY UserName", "UserName")
+        FillComboBox(ComboUsername, "SELECT UserName FROM TbUsers ORDER BY UserName", "UserName")
         LoadUserPermissions(GlobalData.LoggedInUserID)
     End Sub
 
@@ -515,6 +515,26 @@ Public Class LoginForm
 
         Catch ex As Exception
             System.Diagnostics.Debug.WriteLine($"خطأ في تطبيق الصلاحيات على الأدوات المشتركة: {ex.Message}")
+        End Try
+    End Sub
+
+    Private Sub ckConSettings_CheckedChanged(sender As Object, e As EventArgs) Handles ckConSettings.CheckedChanged
+        Try
+            If ckConSettings.Checked Then
+                Dim zz As New PasswordForm
+                zz.Label1.Text = "ادخل كملة المرور لفتح شاشة إعدادات الاتصال"
+                zz.ShowDialog()
+                If zz.InputText = Nothing Then ckConSettings.Checked = False : Return
+                If zz.InputText = My.Settings.FrmConStrPASS Then
+                    Dim Frm As New ServerConnectionForm
+                    Frm.ShowDialog()
+                Else
+                    MessageBox.Show("معذرة، كلمة المرور الذي ادخلتها غير صحيحة", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+                ckConSettings.Checked = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Try
     End Sub
 #End Region

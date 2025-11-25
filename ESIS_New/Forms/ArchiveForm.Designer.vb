@@ -216,6 +216,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtArchiveWillMaster.Name = "txtArchiveWillMaster"
         Me.txtArchiveWillMaster.Size = New System.Drawing.Size(245, 30)
         Me.txtArchiveWillMaster.TabIndex = 9
+        Me.txtArchiveWillMaster.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtUserName
         '
@@ -227,6 +228,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtUserName.ReadOnly = True
         Me.txtUserName.Size = New System.Drawing.Size(245, 30)
         Me.txtUserName.TabIndex = 21
+        Me.txtUserName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtArchiveWillSub
         '
@@ -237,6 +239,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtArchiveWillSub.Name = "txtArchiveWillSub"
         Me.txtArchiveWillSub.Size = New System.Drawing.Size(245, 30)
         Me.txtArchiveWillSub.TabIndex = 11
+        Me.txtArchiveWillSub.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblUserName
         '
@@ -330,6 +333,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtArchiveSubject.Name = "txtArchiveSubject"
         Me.txtArchiveSubject.Size = New System.Drawing.Size(267, 30)
         Me.txtArchiveSubject.TabIndex = 3
+        Me.txtArchiveSubject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtArchiveNum
         '
@@ -341,6 +345,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtArchiveNum.ReadOnly = True
         Me.txtArchiveNum.Size = New System.Drawing.Size(267, 30)
         Me.txtArchiveNum.TabIndex = 1
+        Me.txtArchiveNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtFileType
         '
@@ -352,6 +357,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtFileType.ReadOnly = True
         Me.txtFileType.Size = New System.Drawing.Size(267, 30)
         Me.txtFileType.TabIndex = 17
+        Me.txtFileType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblFileType
         '
@@ -479,7 +485,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnSelectArchive.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSelectArchive.Font = New System.Drawing.Font("Cairo SemiBold", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSelectArchive.ForeColor = System.Drawing.Color.White
-        Me.btnSelectArchive.Location = New System.Drawing.Point(8, 248)
+        Me.btnSelectArchive.Location = New System.Drawing.Point(8, 304)
         Me.btnSelectArchive.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnSelectArchive.Name = "btnSelectArchive"
         Me.btnSelectArchive.Size = New System.Drawing.Size(104, 23)
@@ -490,7 +496,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'txtFilepath
         '
         Me.txtFilepath.Font = New System.Drawing.Font("Consolas", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilepath.Location = New System.Drawing.Point(8, 223)
+        Me.txtFilepath.Location = New System.Drawing.Point(4, 223)
         Me.txtFilepath.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtFilepath.Name = "txtFilepath"
         Me.txtFilepath.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -516,6 +522,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtFilename.Name = "txtFilename"
         Me.txtFilename.Size = New System.Drawing.Size(541, 27)
         Me.txtFilename.TabIndex = 15
+        Me.txtFilename.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblFilename
         '
@@ -538,6 +545,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtArchiveNotes.Name = "txtArchiveNotes"
         Me.txtArchiveNotes.Size = New System.Drawing.Size(207, 81)
         Me.txtArchiveNotes.TabIndex = 13
+        Me.txtArchiveNotes.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblArchiveNotes
         '
@@ -553,7 +561,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'txtOriginalPath
         '
         Me.txtOriginalPath.Font = New System.Drawing.Font("Consolas", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOriginalPath.Location = New System.Drawing.Point(8, 223)
+        Me.txtOriginalPath.Location = New System.Drawing.Point(4, 223)
         Me.txtOriginalPath.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtOriginalPath.Name = "txtOriginalPath"
         Me.txtOriginalPath.RightToLeft = System.Windows.Forms.RightToLeft.No

@@ -26,18 +26,13 @@ Partial Class ServerConnectionForm
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.btnHelp = New System.Windows.Forms.ToolStripButton()
-        Me.BtnAccessPassword = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
         Me.Panel8 = New System.Windows.Forms.Panel()
         Me.lblConfirmMsg = New System.Windows.Forms.Label()
-        Me.PicMsg = New System.Windows.Forms.PictureBox()
         Me.Panel7 = New System.Windows.Forms.Panel()
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
-        Me.btnTest = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.btnSave = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.btnDelete = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnClose = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
@@ -72,16 +67,21 @@ Partial Class ServerConnectionForm
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
+        Me.btnTest = New System.Windows.Forms.ToolStripButton()
+        Me.btnSave = New System.Windows.Forms.ToolStripButton()
+        Me.btnDelete = New System.Windows.Forms.ToolStripButton()
+        Me.PicMsg = New System.Windows.Forms.PictureBox()
+        Me.BtnAccessPassword = New System.Windows.Forms.ToolStripButton()
         Me.Panel1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.Panel8.SuspendLayout()
-        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel7.SuspendLayout()
         Me.ToolStrip2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Panel1
@@ -109,20 +109,9 @@ Partial Class ServerConnectionForm
         '
         Me.btnHelp.AutoSize = False
         Me.btnHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-
         Me.btnHelp.Name = "btnHelp"
         Me.btnHelp.Size = New System.Drawing.Size(31, 31)
         Me.btnHelp.ToolTipText = "      "
-        '
-        'BtnAccessPassword
-        '
-        Me.BtnAccessPassword.AutoSize = False
-        Me.BtnAccessPassword.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-
-
-        Me.BtnAccessPassword.Name = "BtnAccessPassword"
-        Me.BtnAccessPassword.Size = New System.Drawing.Size(31, 31)
-        Me.BtnAccessPassword.Text = "ToolStripButton1"
         '
         'ToolStripLabel1
         '
@@ -156,15 +145,6 @@ Partial Class ServerConnectionForm
         Me.lblConfirmMsg.TabIndex = 14
         Me.lblConfirmMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'PicMsg
-        '
-        Me.PicMsg.Dock = System.Windows.Forms.DockStyle.Right
-        Me.PicMsg.Location = New System.Drawing.Point(523, 0)
-        Me.PicMsg.Name = "PicMsg"
-        Me.PicMsg.Size = New System.Drawing.Size(26, 28)
-        Me.PicMsg.TabIndex = 13
-        Me.PicMsg.TabStop = False
-        '
         'Panel7
         '
         Me.Panel7.Controls.Add(Me.ToolStrip2)
@@ -188,39 +168,15 @@ Partial Class ServerConnectionForm
         Me.ToolStrip2.TabIndex = 0
         Me.ToolStrip2.Text = "ToolStrip2"
         '
-        'btnTest
-        '
-        Me.btnTest.Font = New System.Drawing.Font("Sakkal Majalla", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
-        Me.btnTest.Name = "btnTest"
-        Me.btnTest.Size = New System.Drawing.Size(116, 37)
-        Me.btnTest.Text = "فحص الإتصال"
-        '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
         Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 40)
         '
-        'btnSave
-        '
-        Me.btnSave.Font = New System.Drawing.Font("Sakkal Majalla", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
-        Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(123, 37)
-        Me.btnSave.Text = "حفظ الإعدادات"
-        '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 40)
-        '
-        'btnDelete
-        '
-        Me.btnDelete.Font = New System.Drawing.Font("Sakkal Majalla", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
-        Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(119, 37)
-        Me.btnDelete.Text = "إلغاء الإعدادات"
         '
         'ToolStripSeparator5
         '
@@ -230,7 +186,7 @@ Partial Class ServerConnectionForm
         'btnClose
         '
         Me.btnClose.Font = New System.Drawing.Font("Sakkal Majalla", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
+        Me.btnClose.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Log_Out_16x16
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(64, 37)
         Me.btnClose.Text = "إغلاق"
@@ -590,7 +546,49 @@ Partial Class ServerConnectionForm
         Me.BackgroundWorker1.WorkerReportsProgress = True
         Me.BackgroundWorker1.WorkerSupportsCancellation = True
         '
-        'FrmServerConnection
+        'btnTest
+        '
+        Me.btnTest.Font = New System.Drawing.Font("Sakkal Majalla", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnTest.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.refresh
+        Me.btnTest.Name = "btnTest"
+        Me.btnTest.Size = New System.Drawing.Size(116, 37)
+        Me.btnTest.Text = "فحص الإتصال"
+        '
+        'btnSave
+        '
+        Me.btnSave.Font = New System.Drawing.Font("Sakkal Majalla", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSave.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Save_16x16__4_
+        Me.btnSave.Name = "btnSave"
+        Me.btnSave.Size = New System.Drawing.Size(123, 37)
+        Me.btnSave.Text = "حفظ الإعدادات"
+        '
+        'btnDelete
+        '
+        Me.btnDelete.Font = New System.Drawing.Font("Sakkal Majalla", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDelete.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Remove_16x16
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(119, 37)
+        Me.btnDelete.Text = "إلغاء الإعدادات"
+        '
+        'PicMsg
+        '
+        Me.PicMsg.Dock = System.Windows.Forms.DockStyle.Right
+        Me.PicMsg.Location = New System.Drawing.Point(523, 0)
+        Me.PicMsg.Name = "PicMsg"
+        Me.PicMsg.Size = New System.Drawing.Size(26, 28)
+        Me.PicMsg.TabIndex = 13
+        Me.PicMsg.TabStop = False
+        '
+        'BtnAccessPassword
+        '
+        Me.BtnAccessPassword.AutoSize = False
+        Me.BtnAccessPassword.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.BtnAccessPassword.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.lock
+        Me.BtnAccessPassword.Name = "BtnAccessPassword"
+        Me.BtnAccessPassword.Size = New System.Drawing.Size(31, 31)
+        Me.BtnAccessPassword.Text = "ToolStripButton1"
+        '
+        'ServerConnectionForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -609,7 +607,7 @@ Partial Class ServerConnectionForm
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "FrmServerConnection"
+        Me.Name = "ServerConnectionForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "                        "
@@ -618,7 +616,6 @@ Partial Class ServerConnectionForm
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
         Me.Panel8.ResumeLayout(False)
-        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel7.ResumeLayout(False)
         Me.Panel7.PerformLayout()
         Me.ToolStrip2.ResumeLayout(False)
@@ -631,6 +628,7 @@ Partial Class ServerConnectionForm
         Me.GroupBox4.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

@@ -212,6 +212,16 @@ Module DatabaseHelper
         Return servers
     End Function
 
+    'Fill Data Tables
+    Public Sub FillDataTable(ByVal DT As DataTable, ByVal SqlSt As String)
+
+        Dim da As SqlDataAdapter
+        da = New SqlDataAdapter(SqlSt, Con)
+        DT.Clear()
+        da.Fill(DT)
+        da.Dispose()
+    End Sub
+
     ''' <summary>
     ''' جلب قواعد البيانات من سيرفر معين
     ''' </summary>
@@ -321,6 +331,9 @@ Module DatabaseHelper
         Return databases
     End Function
 
+    ''' <summary>
+    ''' دالة لغلق الاتصال
+    ''' </summary>
     Public Sub OpenConnection()
         Try
             ' لا حاجة لهذه الدالة بعد الآن لأننا نستخدم دالة Con() مباشرة
@@ -329,6 +342,9 @@ Module DatabaseHelper
         End Try
     End Sub
 
+    ''' <summary>
+    ''' دالة لفتح الاتصال
+    ''' </summary>
     Public Sub CloseConnection()
         Try
             ' لا حاجة لهذه الدالة بعد الآن لأننا نستخدم Using statements التي تغلق الاتصال تلقائيًا
@@ -337,7 +353,9 @@ Module DatabaseHelper
         End Try
     End Sub
 
-    ' دالة تنفيذ استعلام مع معاملات وإرجاع DataTable
+    ''' <summary>
+    '''  دالة تنفيذ استعلام مع معاملات وإرجاع DataTable
+    ''' </summary>
     Public Function GetData(cmdText As String, params As SqlParameter(), Optional isStoredProc As Boolean = True) As DataTable
         Dim dt As New DataTable
         Try
@@ -419,7 +437,9 @@ Module DatabaseHelper
         Return rowsAffected
     End Function
 
-    ' دالة تنفيذ أمر (غير استعلام) مثل insert, update, delete مع معاملات
+    ''' <summary>
+    ''' دالة تنفيذ أمر (غير استعلام) مثل insert, update, delete مع معاملات
+    ''' </summary>
     Public Sub ExecuteNonQuery(cmdText As String, params As SqlParameter(), Optional isStoredProc As Boolean = True)
         Try
             Using conn As SqlConnection = Con()
@@ -441,38 +461,7 @@ Module DatabaseHelper
         End Try
     End Sub
 
-    '''' <summary>
-    '''' تنفيذ إجراء مخزن وإرجاع DataTable
-    '''' </summary>
-    '''' <param name="procedureName">اسم الإجراء المخزن</param>
-    '''' <param name="parameters">المعاملات (اختيارية)</param>
-    '''' <returns>DataTable</returns>
-    'Public Function ExecuteStoredProcedure(procedureName As String, Optional parameters As SqlParameter() = Nothing) As DataTable
-    '    Dim dataTable As New DataTable()
 
-    '    Try
-    '        Using connection As SqlConnection = Con()
-    '            Using command As New SqlCommand(procedureName, connection)
-    '                command.CommandType = CommandType.StoredProcedure
-
-    '                If parameters IsNot Nothing Then
-    '                    command.Parameters.AddRange(parameters)
-    '                End If
-
-    '                connection.Open()
-    '                Using adapter As New SqlDataAdapter(command)
-    '                    adapter.Fill(dataTable)
-    '                End Using
-    '            End Using
-    '        End Using
-    '    Catch ex As Exception
-    '        Throw New Exception("خطأ في تنفيذ الإجراء المخزن: " & ex.Message)
-    '    End Try
-
-    '    Return dataTable
-    'End Function
-
-    ' إضافة الدالة الجديدة لتنفيذ الإجراءات المخزنة التي تعيد بيانات
     ''' <summary>
     ''' تنفيذ إجراء مخزن وإرجاع DataTable
     ''' </summary>
@@ -748,8 +737,10 @@ Module DatabaseHelper
         Return parameters
     End Function
 
-    ' تعبئة ComboBox
-    Public Sub fillCombo(ByVal cmb As ComboBox, ByVal sql As String, ByVal displayvalue As String)
+    ''' <summary>
+    ''' تعبئة ComboBox
+    ''' </summary>
+    Public Sub FillComboBox(ByVal cmb As ComboBox, ByVal sql As String, ByVal displayvalue As String)
         Try
             Using adp As New SqlDataAdapter(sql, Con())
                 Dim DS As New DataSet

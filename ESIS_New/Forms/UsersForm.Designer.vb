@@ -24,9 +24,9 @@ Partial Class UsersForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.PanelMain = New System.Windows.Forms.Panel()
         Me.PanelButtons = New System.Windows.Forms.Panel()
         Me.btnResetPassword = New System.Windows.Forms.Button()
@@ -57,12 +57,14 @@ Partial Class UsersForm
         Me.lblNumUser = New System.Windows.Forms.Label()
         Me.PanelFormTitle = New System.Windows.Forms.Panel()
         Me.lblFormTitle = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.PanelMain.SuspendLayout()
         Me.PanelButtons.SuspendLayout()
         Me.PanelUserDetails.SuspendLayout()
         CType(Me.dgvUsers, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelFormTitle.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'PanelMain
@@ -192,16 +194,11 @@ Partial Class UsersForm
         '
         'PanelUserDetails
         '
+        Me.PanelUserDetails.Controls.Add(Me.Panel1)
         Me.PanelUserDetails.Controls.Add(Me.dgvUsers)
         Me.PanelUserDetails.Controls.Add(Me.CheckBox1)
         Me.PanelUserDetails.Controls.Add(Me.chkIsActive)
         Me.PanelUserDetails.Controls.Add(Me.chkIsAdmin)
-        Me.PanelUserDetails.Controls.Add(Me.txtConfirmPassword)
-        Me.PanelUserDetails.Controls.Add(Me.lblConfirmPassword)
-        Me.PanelUserDetails.Controls.Add(Me.txtNewPassword)
-        Me.PanelUserDetails.Controls.Add(Me.lblNewPassword)
-        Me.PanelUserDetails.Controls.Add(Me.txtCurrentPassword)
-        Me.PanelUserDetails.Controls.Add(Me.lblCurrentPassword)
         Me.PanelUserDetails.Controls.Add(Me.btnBrowseImage)
         Me.PanelUserDetails.Controls.Add(Me.PictureBox1)
         Me.PanelUserDetails.Controls.Add(Me.txtPassword)
@@ -226,23 +223,23 @@ Partial Class UsersForm
         Me.dgvUsers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvUsers.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
         Me.dgvUsers.BorderStyle = System.Windows.Forms.BorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvUsers.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvUsers.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvUsers.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvUsers.DefaultCellStyle = DataGridViewCellStyle5
         Me.dgvUsers.Dock = System.Windows.Forms.DockStyle.Right
         Me.dgvUsers.EnableHeadersVisualStyles = False
         Me.dgvUsers.GridColor = System.Drawing.Color.Gainsboro
@@ -251,14 +248,14 @@ Partial Class UsersForm
         Me.dgvUsers.MultiSelect = False
         Me.dgvUsers.Name = "dgvUsers"
         Me.dgvUsers.ReadOnly = True
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvUsers.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Cairo SemiBold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvUsers.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvUsers.RowHeadersVisible = False
         Me.dgvUsers.RowTemplate.Height = 25
         Me.dgvUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -297,17 +294,17 @@ Partial Class UsersForm
         '
         'txtConfirmPassword
         '
-        Me.txtConfirmPassword.Location = New System.Drawing.Point(221, 219)
+        Me.txtConfirmPassword.Location = New System.Drawing.Point(9, 86)
         Me.txtConfirmPassword.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.txtConfirmPassword.Name = "txtConfirmPassword"
         Me.txtConfirmPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtConfirmPassword.Size = New System.Drawing.Size(300, 32)
+        Me.txtConfirmPassword.Size = New System.Drawing.Size(301, 32)
         Me.txtConfirmPassword.TabIndex = 11
         '
         'lblConfirmPassword
         '
         Me.lblConfirmPassword.AutoSize = True
-        Me.lblConfirmPassword.Location = New System.Drawing.Point(541, 224)
+        Me.lblConfirmPassword.Location = New System.Drawing.Point(329, 90)
         Me.lblConfirmPassword.Name = "lblConfirmPassword"
         Me.lblConfirmPassword.Size = New System.Drawing.Size(107, 24)
         Me.lblConfirmPassword.TabIndex = 10
@@ -315,17 +312,17 @@ Partial Class UsersForm
         '
         'txtNewPassword
         '
-        Me.txtNewPassword.Location = New System.Drawing.Point(221, 178)
+        Me.txtNewPassword.Location = New System.Drawing.Point(9, 45)
         Me.txtNewPassword.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.txtNewPassword.Name = "txtNewPassword"
         Me.txtNewPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtNewPassword.Size = New System.Drawing.Size(300, 32)
+        Me.txtNewPassword.Size = New System.Drawing.Size(301, 32)
         Me.txtNewPassword.TabIndex = 9
         '
         'lblNewPassword
         '
         Me.lblNewPassword.AutoSize = True
-        Me.lblNewPassword.Location = New System.Drawing.Point(526, 182)
+        Me.lblNewPassword.Location = New System.Drawing.Point(314, 48)
         Me.lblNewPassword.Name = "lblNewPassword"
         Me.lblNewPassword.Size = New System.Drawing.Size(122, 24)
         Me.lblNewPassword.TabIndex = 8
@@ -333,17 +330,17 @@ Partial Class UsersForm
         '
         'txtCurrentPassword
         '
-        Me.txtCurrentPassword.Location = New System.Drawing.Point(221, 137)
+        Me.txtCurrentPassword.Location = New System.Drawing.Point(9, 4)
         Me.txtCurrentPassword.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.txtCurrentPassword.Name = "txtCurrentPassword"
         Me.txtCurrentPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtCurrentPassword.Size = New System.Drawing.Size(300, 32)
+        Me.txtCurrentPassword.Size = New System.Drawing.Size(301, 32)
         Me.txtCurrentPassword.TabIndex = 7
         '
         'lblCurrentPassword
         '
         Me.lblCurrentPassword.AutoSize = True
-        Me.lblCurrentPassword.Location = New System.Drawing.Point(532, 141)
+        Me.lblCurrentPassword.Location = New System.Drawing.Point(320, 7)
         Me.lblCurrentPassword.Name = "lblCurrentPassword"
         Me.lblCurrentPassword.Size = New System.Drawing.Size(116, 24)
         Me.lblCurrentPassword.TabIndex = 6
@@ -444,6 +441,20 @@ Partial Class UsersForm
         Me.lblFormTitle.TabIndex = 0
         Me.lblFormTitle.Text = "إدارة المستخدمين"
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.txtCurrentPassword)
+        Me.Panel1.Controls.Add(Me.lblCurrentPassword)
+        Me.Panel1.Controls.Add(Me.lblNewPassword)
+        Me.Panel1.Controls.Add(Me.txtNewPassword)
+        Me.Panel1.Controls.Add(Me.lblConfirmPassword)
+        Me.Panel1.Controls.Add(Me.txtConfirmPassword)
+        Me.Panel1.Location = New System.Drawing.Point(212, 135)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(453, 130)
+        Me.Panel1.TabIndex = 16
+        Me.Panel1.Visible = False
+        '
         'UsersForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 24.0!)
@@ -469,6 +480,8 @@ Partial Class UsersForm
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelFormTitle.ResumeLayout(False)
         Me.PanelFormTitle.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -503,4 +516,5 @@ Partial Class UsersForm
     Friend WithEvents chkIsActive As CheckBox
     Friend WithEvents chkIsAdmin As CheckBox
     Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents Panel1 As Panel
 End Class

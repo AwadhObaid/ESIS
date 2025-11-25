@@ -2,9 +2,13 @@
 
 Public Class DeletedArchiveForm
     Private archiveClass As New ArchiveClass()
-
+    Private scaler As ControlScaler
     Public Sub New()
+        ' هذا السطر مطلوب لتهيئة النموذج.
         InitializeComponent()
+        ' تهيئة الكلاس مع النموذج الحالي
+        scaler = New ControlScaler(Me)
+        'InitializeDeleteButton()
     End Sub
 
     Private Sub DeletedArchiveForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -27,6 +31,13 @@ Public Class DeletedArchiveForm
         Catch ex As Exception
             System.Diagnostics.Debug.WriteLine($"خطأ في بدء العد التنازلي: {ex.Message}")
         End Try
+    End Sub
+
+    Private Sub DeletedArchiveForm_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        ' التحقق من أن الكائن scaler مهيأ قبل استدعائه
+        If scaler IsNot Nothing Then
+            scaler.ScaleControls(Me)
+        End If
     End Sub
 
     ''' <summary>

@@ -105,6 +105,7 @@ Partial Class MainForm
         Me.lblUser2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBoxUser = New System.Windows.Forms.PictureBox()
+        Me.btnEmail = New System.Windows.Forms.ToolStripMenuItem()
         Me.men.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -241,7 +242,7 @@ Partial Class MainForm
         '
         'إدارةالبريدToolStripMenuItem
         '
-        Me.إدارةالبريدToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnWared, Me.btnSader, Me.btnArchive})
+        Me.إدارةالبريدToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnWared, Me.btnSader, Me.btnArchive, Me.btnEmail})
         Me.إدارةالبريدToolStripMenuItem.ForeColor = System.Drawing.Color.White
         Me.إدارةالبريدToolStripMenuItem.Name = "إدارةالبريدToolStripMenuItem"
         Me.إدارةالبريدToolStripMenuItem.Size = New System.Drawing.Size(81, 28)
@@ -813,6 +814,12 @@ Partial Class MainForm
         Me.PictureBoxUser.TabIndex = 5
         Me.PictureBoxUser.TabStop = False
         '
+        'btnEmail
+        '
+        Me.btnEmail.Name = "btnEmail"
+        Me.btnEmail.Size = New System.Drawing.Size(197, 38)
+        Me.btnEmail.Text = "البريد الاكتروني"
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -925,5 +932,6 @@ Partial Class MainForm
     Friend WithEvents Tasreeh As ToolStripMenuItem
     Friend WithEvents AQuood As ToolStripMenuItem
     Friend WithEvents Kuwait As ToolStripMenuItem
+    Friend WithEvents btnEmail As ToolStripMenuItem
 End Class
 

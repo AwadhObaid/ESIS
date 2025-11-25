@@ -16,6 +16,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     Public xx As Short = 0
     ' متغير لتحديد حالة تسجيل الخروج
     Private isLoggingOut As Boolean = False
+    Private Shared currentInstance As BackupForm = Nothing
 
 #Region "التهيئة والتحميل"
     ''' <summary>
@@ -887,7 +888,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     ''' </summary>
     Private Sub btnSetting_Click(sender As Object, e As EventArgs) Handles btnSetting.Click
         Try
-            OpenMdiForm(Of SettingsForm)(Me)
+            OpenMdiForm(Of ArchiveVariablesForm)(Me)
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج الإعدادات: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -902,10 +903,45 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             'If Not CheckPermission("View", "عرض نموذج النسخ الإحتياطي") Then
             '    Return
             'End If
-            Dim frm As New BackupForm
-            frm.Show(Me)
-            'OpenMdiForm(Of BackupForm)(Function() New BackupForm(), Me)
-            'OpenMdiForm(Of BackupForm)(Me)
+            ' البحث عن نموذج الأرشيف المفتوح
+            Dim currentInstance As BackupForm = TryCast(Application.OpenForms("BackupForm"), BackupForm)
+
+            If currentInstance IsNot Nothing Then
+                ' إذا كان النموذج مفتوحًا، جلبه إلى المقدمة
+                currentInstance.BringToFront()
+                currentInstance.Activate()
+            Else
+                ' إذا لم يكن النموذج مفتوحًا، أنشئ مثيلًا جديدًا واحتفظ به
+                currentInstance = New BackupForm()
+                currentInstance.Show(Me)
+            End If
+
+
+
+
+
+
+
+            '' التحقق مما إذا كان هناك نموذج مفتوح بالفعل
+            'If currentInstance IsNot Nothing AndAlso Not currentInstance.IsDisposed Then
+            '    ' إذا كان النموذج مفتوحًا، جلبه إلى المقدمة
+            '    currentInstance.BringToFront()
+            '    currentInstance.Activate()
+            'Else
+            '    ' إذا لم يكن النموذج مفتوحًا، أنشئ مثيلًا جديدًا واحتفظ به
+            '    currentInstance = New BackupForm()
+            '    currentInstance.Show(Me)
+            '    ' تحديث القائمة بعد إنشاء نسخة احتياطية جديدة
+            '    currentInstance.RefreshBackupsList()
+            '    currentInstance.UpdateDatabaseInfo()
+
+            'End If
+
+
+
+            'Dim frm As New BackupForm
+            'frm.Show(Me)
+
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج النسخ الاحتياطي: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -1948,9 +1984,15 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     End Sub
 
     Private Sub btnServerConnection_Click(sender As Object, e As EventArgs) Handles btnServerConnection.Click
-        Dim frm As New ServerConnectionForm()
-        frm.MdiParent = Me
-        frm.Show()
+        'ValidateAndExecutePasswordProtectedAction(Sub()
+        '                                              Dim Frm As New FrmPassword
+        '                                              'Frm.MdiParent = Me
+        '                                              Frm.Show(Me)
+        '                                          End Sub)
+        If ValidatePassword("ادخل كلمة المرور لفتح هذا النموذج") Then
+            Dim form As New ServerConnectionForm()
+            form.ShowDialog()
+        End If
     End Sub
 
     Private Sub btnDeletedForm_Click_1(sender As Object, e As EventArgs) Handles btnDeletedForm.Click
@@ -1989,6 +2031,19 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             MessageBox.Show($"حدث خطأ أثناء التنظيف: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+    Private Sub btnEmail_Click(sender As Object, e As EventArgs) Handles btnEmail.Click
+        Try
+            '' التحقق من صلاحية عرض نموذج المستخدمين
+            'If Not CheckPermission("View", "عرض نموذج سلة المحذوفات") Then
+            '    Return
+            'End If
+            OpenMdiForm(Of EMailForm)(Me)
+        Catch ex As Exception
+            MessageBox.Show($"حدث خطأ أثناء فتح نموذج البريد الالكتروني: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
 
 
 

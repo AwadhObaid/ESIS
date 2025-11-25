@@ -27,6 +27,8 @@ Partial Class RestoreForm
         Me.lblCurrentDatabaseSize = New System.Windows.Forms.Label()
         Me.lblCurrentDatabaseName = New System.Windows.Forms.Label()
         Me.grpBackupSelection = New System.Windows.Forms.GroupBox()
+        Me.btnRefreshBackupsList = New System.Windows.Forms.Button()
+        Me.btnBrowseBackupFile = New System.Windows.Forms.Button()
         Me.lblBackupsCount = New System.Windows.Forms.Label()
         Me.lstAvailableBackups = New System.Windows.Forms.ListView()
         Me.colFileName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -51,8 +53,6 @@ Partial Class RestoreForm
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnCancelRestore = New System.Windows.Forms.Button()
         Me.btnStartRestore = New System.Windows.Forms.Button()
-        Me.btnRefreshBackupsList = New System.Windows.Forms.Button()
-        Me.btnBrowseBackupFile = New System.Windows.Forms.Button()
         Me.btnBrowseBackupPath = New System.Windows.Forms.Button()
         Me.grpCurrentDatabaseInfo.SuspendLayout()
         Me.grpBackupSelection.SuspendLayout()
@@ -126,6 +126,32 @@ Partial Class RestoreForm
         Me.grpBackupSelection.TabIndex = 1
         Me.grpBackupSelection.TabStop = False
         Me.grpBackupSelection.Text = "اختيار النسخة الاحتياطية"
+        '
+        'btnRefreshBackupsList
+        '
+        Me.btnRefreshBackupsList.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnRefreshBackupsList.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.btnRefreshBackupsList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRefreshBackupsList.Location = New System.Drawing.Point(650, 224)
+        Me.btnRefreshBackupsList.Name = "btnRefreshBackupsList"
+        Me.btnRefreshBackupsList.Size = New System.Drawing.Size(95, 35)
+        Me.btnRefreshBackupsList.TabIndex = 6
+        Me.btnRefreshBackupsList.Text = "تحديث القائمة"
+        Me.btnRefreshBackupsList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRefreshBackupsList.UseVisualStyleBackColor = True
+        '
+        'btnBrowseBackupFile
+        '
+        Me.btnBrowseBackupFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnBrowseBackupFile.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.btnBrowseBackupFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnBrowseBackupFile.Location = New System.Drawing.Point(537, 224)
+        Me.btnBrowseBackupFile.Name = "btnBrowseBackupFile"
+        Me.btnBrowseBackupFile.Size = New System.Drawing.Size(107, 35)
+        Me.btnBrowseBackupFile.TabIndex = 5
+        Me.btnBrowseBackupFile.Text = "تصفح ملف"
+        Me.btnBrowseBackupFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnBrowseBackupFile.UseVisualStyleBackColor = True
         '
         'lblBackupsCount
         '
@@ -406,32 +432,6 @@ Partial Class RestoreForm
         Me.btnStartRestore.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnStartRestore.UseVisualStyleBackColor = True
         '
-        'btnRefreshBackupsList
-        '
-        Me.btnRefreshBackupsList.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRefreshBackupsList.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.btnRefreshBackupsList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRefreshBackupsList.Location = New System.Drawing.Point(650, 224)
-        Me.btnRefreshBackupsList.Name = "btnRefreshBackupsList"
-        Me.btnRefreshBackupsList.Size = New System.Drawing.Size(95, 35)
-        Me.btnRefreshBackupsList.TabIndex = 6
-        Me.btnRefreshBackupsList.Text = "تحديث القائمة"
-        Me.btnRefreshBackupsList.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRefreshBackupsList.UseVisualStyleBackColor = True
-        '
-        'btnBrowseBackupFile
-        '
-        Me.btnBrowseBackupFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowseBackupFile.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.btnBrowseBackupFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnBrowseBackupFile.Location = New System.Drawing.Point(537, 224)
-        Me.btnBrowseBackupFile.Name = "btnBrowseBackupFile"
-        Me.btnBrowseBackupFile.Size = New System.Drawing.Size(107, 35)
-        Me.btnBrowseBackupFile.TabIndex = 5
-        Me.btnBrowseBackupFile.Text = "تصفح ملف"
-        Me.btnBrowseBackupFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnBrowseBackupFile.UseVisualStyleBackColor = True
-        '
         'btnBrowseBackupPath
         '
         Me.btnBrowseBackupPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -479,7 +479,6 @@ Partial Class RestoreForm
     Friend WithEvents lblCurrentDatabaseSize As Label
     Friend WithEvents lblCurrentDatabaseName As Label
     Friend WithEvents grpBackupSelection As GroupBox
-    Friend WithEvents btnBrowseBackupPath As Button
     Friend WithEvents txtBackupPath As TextBox
     Friend WithEvents lblBackupPath As Label
     Friend WithEvents lstAvailableBackups As ListView
@@ -506,4 +505,5 @@ Partial Class RestoreForm
     Friend WithEvents btnStartRestore As Button
     Friend WithEvents btnCancelRestore As Button
     Friend WithEvents btnClose As Button
+    Friend WithEvents btnBrowseBackupPath As Button
 End Class

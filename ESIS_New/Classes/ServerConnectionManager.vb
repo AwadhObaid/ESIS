@@ -2,6 +2,7 @@
 Imports Microsoft.Win32
 Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
+Imports ALquhaliLibrary.DBCLS
 #End Region
 
 
@@ -406,7 +407,7 @@ Public Class ServerConnectionManager
     ''' </summary>
     ''' <param name="newPassword">كلمة المرور الجديدة.</param>
     Private Sub SaveNewPassword(ByVal newPassword As String)
-        My.Settings.FrmConStrPASS = newPassword
+        My.Settings.FrmConStrPASS = Encrypt(newPassword)
         My.Settings.Save()
         MessageBox.Show("تم تعديل كلمة المرور بنجاح.", "تأكيد", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub

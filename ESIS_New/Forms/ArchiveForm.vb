@@ -14,6 +14,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
 #Region "المتغيرات والتهيئة الأساسية"
     ' تعريف المتغيرات
     Private archiveClass As New ArchiveClass()
+    Private scaler As ControlScaler
     Public Property SelectedArchiveID As Integer
 
     ' زر مخفي للإضافة التلقائية
@@ -31,14 +32,20 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
         Public BookCategory As String    ' تصنيف الكتاب (صادر، وارد، مذكرات)
     End Structure
 
-    Private saderData As SaderDataStructure
-    Private isDataFromSader As Boolean = False
-    Private isLoadingData As Boolean = False
+    Public saderData As SaderDataStructure
+    Public isDataFromSader As Boolean = False
+    Public isLoadingData As Boolean = False
 
     Private bookCategories As List(Of String) = New List(Of String)()
 
 
 
+    Private Sub ArchiveForm_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        ' التحقق من أن الكائن scaler مهيأ قبل استدعائه
+        If scaler IsNot Nothing Then
+            scaler.ScaleControls(Me)
+        End If
+    End Sub
 
 
     Private Sub ArchiveForm_DataSelected(filePath As String, fileName As String, fileExtension As String) Handles Me.DataSelected
@@ -64,6 +71,8 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
     Public Sub New()
         InitializeComponent()
         isDataFromSader = False
+        ' تهيئة الكلاس مع النموذج الحالي
+        scaler = New ControlScaler(Me)
     End Sub
 
     ''' <summary>
@@ -129,7 +138,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
             txtUserName.Text = GlobalData.LoggedInUserName
             txtUserName.ReadOnly = True
             'fillCombo(ComboArchiveFolder, "SELECT DISTINCT SUBSTRING(ArchiveFolder, 1, CHARINDEX('\', ArchiveFolder + '\') - 1) AS MainFolder FROM TbArchive WHERE ArchiveFolder IS NOT NULL ORDER BY MainFolder", "MainFolder")
-            fillCombo(ComboArchiveFolder, "SELECT ArchiveFolder FROM TbArchive ORDER BY ArchiveFolder", "ArchiveFolder")
+            FillComboBox(ComboArchiveFolder, "SELECT ArchiveFolder FROM TbArchive ORDER BY ArchiveFolder", "ArchiveFolder")
             ' الاشتراك في الحدث
             AddHandler DataHelper.ArchiveCountChanged, AddressOf HandleDataCountChanged
             AddHandler DataHelper.FileSelectedForArchive, AddressOf HandleFileSelectedForArchive
@@ -247,42 +256,6 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
-
-    'Private Sub ArchiveForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    '    Try
-    '        isLoadingData = True
-    '        dgvArchive.ClearSelection()
-
-    '        ' إذا كانت البيانات من فورم الصادر، قم بتعبئتها
-    '        If isDataFromSader Then
-    '            FillFieldsFromSader()
-    '        End If
-
-    '        ' إنشاء مجلدات التصنيف عند تحميل الفورم
-    '        archiveClass.CreateCategoryFolders()
-    '        ApplyPermissions()
-    '        LoadArchive()
-    '        LoadFileTypes()
-
-    '        ' تهيئة العناصر
-    '        Me.RightToLeft = RightToLeft.Yes
-    '        Me.RightToLeftLayout = True
-    '        dtpArchiveDate.Value = DateTime.Now
-    '        txtUserName.Text = GlobalData.LoggedInUserName
-    '        txtUserName.ReadOnly = True
-    '        fillCombo(ComboArchiveFolder, "SELECT ArchiveFolder FROM TbArchive ORDER BY ArchiveFolder", "ArchiveFolder")
-
-    '        ' الاشتراك في الحدث
-    '        AddHandler DataHelper.ArchiveCountChanged, AddressOf HandleDataCountChanged
-    '        ' تحديث العداد في الواجهة
-    '        UpdateRecordCount()
-    '    Catch ex As Exception
-    '        MessageBox.Show("خطأ في تحميل فورم الأرشيف: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    Finally
-    '        isLoadingData = False
-    '    End Try
-    'End Sub
-
     ''' <summary>
     ''' معالج الحدث لتغيير العدد
     ''' </summary>
@@ -301,17 +274,6 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
         lblRecordCount.Text = $"عدد السجلات في الأرشيف: {count}"
     End Sub
 
-    '''' <summary>
-    '''' تحميل الأرشيفات النشطة (غير المحذوفة)
-    '''' </summary>
-    'Public Sub LoadActiveArchive()
-    '    Try
-    '        dgvArchive.DataSource = archiveClass.GetActiveArchives()
-    '        UpdateRecordCount()
-    '    Catch ex As Exception
-    '        MessageBox.Show("خطأ في تحميل بيانات الأرشيف: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
 
     ''' <summary>
     ''' تحميل البيانات إلى جدول العرض
@@ -398,6 +360,17 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
             MessageBox.Show("خطأ في تحميل أنواع الملفات: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+    Public Sub LoadPDFViewer()
+        Try
+            If Not String.IsNullOrEmpty(txtOriginalPath.Text) AndAlso IO.File.Exists(txtOriginalPath.Text) Then
+                WebBrowser1.Navigate(txtOriginalPath.Text)
+            End If
+        Catch ex As Exception
+            MessageBox.Show("تعذر عرض الملف: " & ex.Message)
+        End Try
+    End Sub
+
 
     '''' <summary>
     '''' دالة لتعبئة الحقول من بيانات فورم الصادر
@@ -895,6 +868,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
                                 Dim saderClass As New SaderClass()
                                 If saderClass.UpdateArchiveIDByNumberBook(saderData.NumberBook, selectedId) Then
                                     'MessageBox.Show($"تم ربط الأرشيف رقم {selectedId} بالصادر رقم {saderData.NumberBook} بنجاح", "ربط الأرشيف", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
                                     ' تحديث فورم الصادر إذا كان مفتوحًا
                                     For Each form As Form In Application.OpenForms
                                         If TypeOf form Is SaderForm Then
@@ -913,6 +887,7 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
                         End If
 
                         LoadActiveArchive()
+
                         If File.Exists(txtFilepath.Text) Then
                             WebBrowser1.Navigate(txtFilepath.Text)
                         Else
@@ -2659,6 +2634,26 @@ Public Class ArchiveForm : Inherits BaseFormWithPermissions
     Private Sub TimerMsg_Tick(sender As Object, e As EventArgs) Handles TimerMsg.Tick
         ClearConfirmMsgTools(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
     End Sub
+    Private Sub txtFilepath_TextChanged(sender As Object, e As EventArgs) Handles txtFilepath.TextChanged
+        LoadFileIntoViewer()
+    End Sub
+    Public Sub LoadFileIntoViewer()
+        Try
+            Dim path As String = txtFilepath.Text.Trim()
+
+            If String.IsNullOrEmpty(path) OrElse Not IO.File.Exists(path) Then
+                WebBrowser1.DocumentText = "<h3 style='color:red;text-align:center'>الملف غير موجود</h3>"
+                Return
+            End If
+
+            WebBrowser1.Navigate(path)
+
+        Catch ex As Exception
+            WebBrowser1.DocumentText = "<h3 style='color:red;text-align:center'>خطأ في عرض الملف</h3>"
+        End Try
+    End Sub
+
+
 #End Region
 
 

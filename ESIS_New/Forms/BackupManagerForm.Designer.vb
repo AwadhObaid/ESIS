@@ -51,7 +51,7 @@ Partial Class BackupManagerForm
         Me.btnDeleteBackup = New System.Windows.Forms.Button()
         Me.btnRestoreBackup = New System.Windows.Forms.Button()
         Me.btnCreateBackup = New System.Windows.Forms.Button()
-        Me.timerRefresh = New System.Windows.Forms.Timer(Me.components)
+        Me.timerRefreshManager = New System.Windows.Forms.Timer(Me.components)
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnRefresh = New System.Windows.Forms.Button()
         Me.grpDatabaseInfo.SuspendLayout()
@@ -127,7 +127,6 @@ Partial Class BackupManagerForm
         '
         Me.btnBrowsePath.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnBrowsePath.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnBrowsePath.Location = New System.Drawing.Point(12, 28)
         Me.btnBrowsePath.Name = "btnBrowsePath"
         Me.btnBrowsePath.Size = New System.Drawing.Size(35, 30)
@@ -305,7 +304,6 @@ Partial Class BackupManagerForm
         'btnCleanOldBackups
         '
         Me.btnCleanOldBackups.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnCleanOldBackups.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnCleanOldBackups.Location = New System.Drawing.Point(10, 254)
         Me.btnCleanOldBackups.Name = "btnCleanOldBackups"
@@ -317,7 +315,6 @@ Partial Class BackupManagerForm
         'btnExportBackup
         '
         Me.btnExportBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnExportBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnExportBackup.Location = New System.Drawing.Point(10, 212)
         Me.btnExportBackup.Name = "btnExportBackup"
@@ -329,7 +326,6 @@ Partial Class BackupManagerForm
         'btnViewBackupInfo
         '
         Me.btnViewBackupInfo.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnViewBackupInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnViewBackupInfo.Location = New System.Drawing.Point(10, 170)
         Me.btnViewBackupInfo.Name = "btnViewBackupInfo"
@@ -341,7 +337,6 @@ Partial Class BackupManagerForm
         'btnDeleteBackup
         '
         Me.btnDeleteBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnDeleteBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnDeleteBackup.Location = New System.Drawing.Point(10, 128)
         Me.btnDeleteBackup.Name = "btnDeleteBackup"
@@ -353,7 +348,6 @@ Partial Class BackupManagerForm
         'btnRestoreBackup
         '
         Me.btnRestoreBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnRestoreBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnRestoreBackup.Location = New System.Drawing.Point(10, 86)
         Me.btnRestoreBackup.Name = "btnRestoreBackup"
@@ -365,7 +359,6 @@ Partial Class BackupManagerForm
         'btnCreateBackup
         '
         Me.btnCreateBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnCreateBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnCreateBackup.Location = New System.Drawing.Point(10, 44)
         Me.btnCreateBackup.Name = "btnCreateBackup"
@@ -374,15 +367,14 @@ Partial Class BackupManagerForm
         Me.btnCreateBackup.Text = "إنشاء نسخة احتياطية"
         Me.btnCreateBackup.UseVisualStyleBackColor = True
         '
-        'timerRefresh
+        'timerRefreshManager
         '
-        Me.timerRefresh.Interval = 1000
+        Me.timerRefreshManager.Interval = 1000
         '
         'btnClose
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnClose.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
         Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnClose.Location = New System.Drawing.Point(12, 695)
         Me.btnClose.Name = "btnClose"
@@ -466,5 +458,5 @@ Partial Class BackupManagerForm
     Friend WithEvents btnCleanOldBackups As Button
     Friend WithEvents btnRefresh As Button
     Friend WithEvents btnClose As Button
-    Friend WithEvents timerRefresh As Timer
+    Friend WithEvents timerRefreshManager As Timer
 End Class

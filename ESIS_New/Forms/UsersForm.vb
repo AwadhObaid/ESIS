@@ -8,6 +8,7 @@ Public Class UsersForm
     Inherits BaseFormWithPermissions
 
     Private usersClass As New UsersClass()
+    Private scaler As ControlScaler
     Private currentUserID As Integer = 0
     Private currentUserImage As Byte() = Nothing ' لتخزين صورة المستخدم الحالية
     Private isLoading As Boolean = False ' متغير للتحكم في حالة التحميل
@@ -36,6 +37,21 @@ Public Class UsersForm
             ' انتهاء عملية التحميل
             isLoading = False
         End Try
+    End Sub
+
+    Public Sub New()
+        ' هذا السطر مطلوب لتهيئة النموذج.
+        InitializeComponent()
+        ' تهيئة الكلاس مع النموذج الحالي
+        scaler = New ControlScaler(Me)
+        'InitializeDeleteButton()
+    End Sub
+
+    Private Sub UsersForm_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        ' التحقق من أن الكائن scaler مهيأ قبل استدعائه
+        If scaler IsNot Nothing Then
+            scaler.ScaleControls(Me)
+        End If
     End Sub
 
     ''' <summary>
@@ -517,6 +533,12 @@ Public Class UsersForm
         btnDelete.Enabled = False
         btnChangePassword.Enabled = False
         btnResetPassword.Enabled = False
+
+        Panel1.Visible = False
+        txtConfirmPassword.Enabled = False
+        txtCurrentPassword.Enabled = False
+        txtNewPassword.Enabled = False
+        CheckBox1.Checked = False
     End Sub
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
@@ -630,10 +652,12 @@ Public Class UsersForm
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         If CheckBox1.Checked Then
+            Panel1.Visible = True
             txtConfirmPassword.Enabled = True
             txtCurrentPassword.Enabled = True
             txtNewPassword.Enabled = True
         Else
+            Panel1.Visible = False
             txtConfirmPassword.Enabled = False
             txtCurrentPassword.Enabled = False
             txtNewPassword.Enabled = False

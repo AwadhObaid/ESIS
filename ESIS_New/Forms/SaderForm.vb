@@ -1,6 +1,7 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Drawing.Printing
 Imports System.IO
+Imports System.Reflection
 Imports System.Threading
 Imports FastReport
 Imports FastReport.Export.PdfSimple
@@ -22,6 +23,9 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
     Private dt_TbSader As New DataTable
     Private hasPendingPolicyChanges As Boolean = False ' تم تغيير الاسم هنا لتجنب التضارب
     Private DGV As New DataGridViewHelper
+    ' متغير لتخزين معرف سجل الصادر الحالي
+    ' يفترض أن يتم تعيينه بعد حفظ سجل الصادر
+    Private currentSaderID As Integer = 0
     Public Sub New()
         ' هذا السطر مطلوب لتهيئة النموذج.
         InitializeComponent()
@@ -83,7 +87,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             saderClass.AutoCompleteForTextBox("WillSub", "TbSader", txtWillSub)
             saderClass.AutoCompleteForTextBox("NumberBook", "TbSader", txtSearch)
             ' تعبئة القائمة المنسدلة بالبيانات
-            fillCombo(ComboSubjBook, "SELECT Subject_Book FROM TbSubjBooks ORDER BY Subject_Book", "Subject_Book")
+            FillComboBox(ComboSubjBook, "SELECT Subject_Book FROM TbSubjBooks ORDER BY Subject_Book", "Subject_Book")
             Me.RightToLeft = RightToLeft.Yes
             Me.RightToLeftLayout = True
             dtpDateBook.Value = DateTime.Now
@@ -543,8 +547,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 #End Region
 
-
-#Region "CRUD Operations       عمليات CRUD"
+#Region "CRUD Operations  عمليات CRUD"
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
         'RBDirectPrint.Checked = True
         SelectAll_TbSader(dgvSader)
@@ -1215,7 +1218,16 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                         Dim newArchiveForm As New ArchiveForm(numberBook, dateBook, subjBook, willMaster, willSub, bookCategory)
                         newArchiveForm.MdiParent = main
                         newArchiveForm.Show()
-                        newArchiveForm.btnBrowseFile.PerformClick()
+                        Select Case MessageBox.Show("هل تريد مسح الملف ضوئيا؟", "رسالة تنبيه", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
+                            Case DialogResult.Yes
+                                Dim scanForm As New ScannerForm
+                                scanForm.Show(Me)
+                            Case DialogResult.No
+                                newArchiveForm.btnBrowseFile.PerformClick()
+                            Case DialogResult.Cancel
+                                newArchiveForm.Close()
+                        End Select
+
                     Else
                         MessageBox.Show("لا يمكن العثور على الفورم الرئيسي")
                     End If
@@ -1615,6 +1627,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             dtpDateBook.Enabled = False
         End If
     End Sub
+
 
 
 

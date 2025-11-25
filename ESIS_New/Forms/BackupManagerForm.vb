@@ -9,6 +9,7 @@ Public Class BackupManagerForm
 
     Private backupHelper As New DatabaseBackupHelper()
     Private currentBackupPath As String = ""
+    Private Shared currentInstance As BackupForm = Nothing
 
     Public Sub New()
         InitializeComponent()
@@ -243,12 +244,12 @@ Public Class BackupManagerForm
 
     Private Sub txtBackupPath_TextChanged(sender As Object, e As EventArgs) Handles txtBackupPath.TextChanged
         ' تأخير التحديث لتجنب التحديث المستمر أثناء الكتابة
-        timerRefresh.Stop()
-        timerRefresh.Start()
+        timerRefreshManager.Stop()
+        timerRefreshManager.Start()
     End Sub
 
-    Private Sub timerRefresh_Tick(sender As Object, e As EventArgs) Handles timerRefresh.Tick
-        timerRefresh.Stop()
+    Private Sub timerRefreshManager_Tick(sender As Object, e As EventArgs) Handles timerRefreshManager.Tick
+        timerRefreshManager.Stop()
         RefreshBackupsList()
     End Sub
 
@@ -297,20 +298,43 @@ Public Class BackupManagerForm
     Private Sub lstBackups_DoubleClick(sender As Object, e As EventArgs) Handles lstBackups.DoubleClick
         btnViewBackupInfo_Click(sender, e)
     End Sub
-
     Private Sub btnCreateBackup_Click(sender As Object, e As EventArgs) Handles btnCreateBackup.Click
         Try
-            ' فتح نموذج النسخ الاحتياطي
-            Using backupForm As New BackupForm()
-                If backupForm.ShowDialog() = DialogResult.OK Then
-                    ' تحديث القائمة بعد إنشاء نسخة احتياطية جديدة
-                    RefreshBackupsList()
-                    UpdateDatabaseInfo()
-                End If
-            End Using
+            'OpenSingleInstance(Function() New BackupForm(),
+            '                                                Sub()
+            '                                                    RefreshBackupsList()
+            '                                                    UpdateDatabaseInfo()
+            '                                                End Sub
+            '                                                )
+
+
+
+
+            'التحقق مما إذا كان هناك نموذج مفتوح بالفعل
+            If currentInstance IsNot Nothing AndAlso Not currentInstance.IsDisposed Then
+                ' إذا كان النموذج مفتوحًا، جلبه إلى المقدمة
+                currentInstance.BringToFront()
+                currentInstance.Activate()
+            Else
+                ' إذا لم يكن النموذج مفتوحًا، أنشئ مثيلًا جديدًا واحتفظ به
+                currentInstance = New BackupForm()
+                AddHandler currentInstance.FormClosed, AddressOf BackupForm_FormClosed
+
+                ' عرض النموذج
+                currentInstance.Show(Me)
+                ' تحديث القائمة بعد إنشاء نسخة احتياطية جديدة
+                RefreshBackupsList()
+                UpdateDatabaseInfo()
+            End If
+
         Catch ex As Exception
             MessageBox.Show($"خطأ في فتح نموذج النسخ الاحتياطي: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+
+    Public Sub BackupForm_FormClosed(sender As Object, e As FormClosedEventArgs)
+        ' إعادة تعيين المتغير عندما يتم إغلاق النموذج
+        currentInstance = Nothing
     End Sub
 
     Private Sub btnRestoreBackup_Click(sender As Object, e As EventArgs) Handles btnRestoreBackup.Click

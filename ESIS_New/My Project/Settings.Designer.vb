@@ -467,6 +467,102 @@ Namespace My
                 Me("NotificationsFormInterval") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\ESIS_Archive\PDF")>  _
+        Public Property PDFFolderPath() As String
+            Get
+                Return CType(Me("PDFFolderPath"),String)
+            End Get
+            Set
+                Me("PDFFolderPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property DefaultScaner() As String
+            Get
+                Return CType(Me("DefaultScaner"),String)
+            End Get
+            Set
+                Me("DefaultScaner") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property DefualtImgName() As String
+            Get
+                Return CType(Me("DefualtImgName"),String)
+            End Get
+            Set
+                Me("DefualtImgName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property ImageFormat() As Short
+            Get
+                Return CType(Me("ImageFormat"),Short)
+            End Get
+            Set
+                Me("ImageFormat") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property ImgFolderPath() As String
+            Get
+                Return CType(Me("ImgFolderPath"),String)
+            End Get
+            Set
+                Me("ImgFolderPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property FilePath() As String
+            Get
+                Return CType(Me("FilePath"),String)
+            End Get
+            Set
+                Me("FilePath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property FileStoringMethod() As Short
+            Get
+                Return CType(Me("FileStoringMethod"),Short)
+            End Get
+            Set
+                Me("FileStoringMethod") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property AttachesStordInternally() As Boolean
+            Get
+                Return CType(Me("AttachesStordInternally"),Boolean)
+            End Get
+            Set
+                Me("AttachesStordInternally") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

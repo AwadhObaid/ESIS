@@ -110,6 +110,6 @@ Public Class ServerConnectionForm
     End Sub
 
     Private Sub BtnAccessPassword_Click(sender As Object, e As EventArgs) Handles BtnAccessPassword.Click
-        Cls.ChangeAccessFrmServerConnectionPassword()
+        ChangeAccessFrmServerConnectionPassword()
     End Sub
 End Class

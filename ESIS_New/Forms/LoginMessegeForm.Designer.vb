@@ -24,7 +24,7 @@ Partial Class LoginMessegeForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnOk = New System.Windows.Forms.Button()
         Me.iconTimer = New System.Windows.Forms.Timer(Me.components)
         Me.lblUser = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -43,17 +43,18 @@ Partial Class LoginMessegeForm
         Me.Label1.Text = "تم تسجيل دخولك بنجاح أستاذ :   "
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Button1
+        'btnOk
         '
-        Me.Button1.Font = New System.Drawing.Font("Times New Roman", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(116, Byte), Integer), CType(CType(177, Byte), Integer), CType(CType(61, Byte), Integer))
-        Me.Button1.Location = New System.Drawing.Point(223, 197)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(123, 41)
-        Me.Button1.TabIndex = 10
-        Me.Button1.Text = "موافق"
-        Me.Button1.UseVisualStyleBackColor = True
-        Me.Button1.Visible = False
+        Me.btnOk.Font = New System.Drawing.Font("Times New Roman", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnOk.ForeColor = System.Drawing.Color.FromArgb(CType(CType(116, Byte), Integer), CType(CType(177, Byte), Integer), CType(CType(61, Byte), Integer))
+        Me.btnOk.Location = New System.Drawing.Point(223, 197)
+        Me.btnOk.Name = "btnOk"
+        Me.btnOk.Size = New System.Drawing.Size(123, 41)
+        Me.btnOk.TabIndex = 10
+        Me.btnOk.Text = "موافق"
+        Me.btnOk.UseVisualStyleBackColor = True
+        Me.btnOk.Visible = False
+        AddHandler Me.btnOk.Click, AddressOf Me.btnOk_Click
         '
         'iconTimer
         '
@@ -82,19 +83,19 @@ Partial Class LoginMessegeForm
         Me.PictureBox1.TabIndex = 11
         Me.PictureBox1.TabStop = False
         '
-        'Frm_dailogLogin
+        'LoginMessegeForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(570, 268)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnOk)
         Me.Controls.Add(Me.lblUser)
         Me.Controls.Add(Me.PictureBox1)
         Me.Font = New System.Drawing.Font("LBC", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "Frm_dailogLogin"
+        Me.Name = "LoginMessegeForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RightToLeftLayout = True
         Me.ShowInTaskbar = False
@@ -108,7 +109,7 @@ Partial Class LoginMessegeForm
     End Sub
 
     Friend WithEvents Label1 As Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnOk As Button
     Friend WithEvents iconTimer As Timer
     Friend WithEvents lblUser As Label
     Friend WithEvents PictureBox1 As PictureBox

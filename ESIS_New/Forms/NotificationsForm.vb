@@ -170,10 +170,22 @@ Public Class NotificationsForm : Inherits System.Windows.Forms.Form
 
     Private Sub NotificationsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         ShowBalloonNotification()
+
+        ' التحقق من قيمة Interval للتأكد من أنها صالحة
+        Dim interval As Integer = If(My.Settings.NotificationsFormInterval > 0, My.Settings.NotificationsFormInterval, 5) ' 5 ثوانٍ كقيمة افتراضية
+
         ' بدء المؤقت مع المدة المحددة من الإعدادات
-        Timer1.Interval = My.Settings.NotificationsFormInterval * 1000 ' تحويل الثواني إلى مللي ثانية
+        Timer1.Interval = interval * 1000 ' تحويل الثواني إلى مللي ثانية
         Timer1.Start()
     End Sub
+
+
+    'Private Sub NotificationsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
+    '    ShowBalloonNotification()
+    '    ' بدء المؤقت مع المدة المحددة من الإعدادات
+    '    Timer1.Interval = 5 * 1000 ' تحويل الثواني إلى مللي ثانية
+    '    Timer1.Start()
+    'End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         ' إيقاف المؤقت أولاً

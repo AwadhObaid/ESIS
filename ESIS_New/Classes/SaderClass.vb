@@ -44,33 +44,6 @@ Public Class SaderClass
     End Function
 
 
-    'Public Function UpdateArchiveIDByNumberBook(numberBook As String, archiveID As Integer) As Boolean
-    '    Try
-    '        If String.IsNullOrWhiteSpace(numberBook) OrElse archiveID <= 0 Then
-    '            Return False
-    '        End If
-
-    '        Dim query As String = "UPDATE TbSader SET ArchiveID = @archiveID WHERE NumberBook = @numberBook"
-
-    '        Using connection As SqlConnection = GetConnection()
-    '            connection.Open()
-
-    '            Using command As New SqlCommand(query, connection)
-    '                command.Parameters.AddWithValue("@archiveID", archiveID)
-    '                command.Parameters.AddWithValue("@numberBook", numberBook.Trim())
-
-    '                Return command.ExecuteNonQuery() > 0
-    '            End Using
-    '        End Using
-
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في UpdateArchiveIDByNumberBook: {ex.Message}")
-    '        Return False
-    '    End Try
-    'End Function
-
-
-    ' دالة للحصول على اتصال قاعدة البيانات
     Private Function GetConnection() As SqlConnection
         Return DatabaseHelper.GetConnection()
     End Function
@@ -83,8 +56,8 @@ Public Class SaderClass
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
                 Dim nextNumber As String = dt.Rows(0)("NextNumber").ToString()
                 ' حفظ الرقم الجديد في إعدادات النظام
-                My.Settings.LastSaderNumber = nextNumber
-                My.Settings.Save()
+                'My.Settings.LastSaderNumber = nextNumber
+                'My.Settings.Save()
                 Return nextNumber
             Else
                 ' إذا فشل الاستعلام أو لم يُعثر على نتيجة صالحة، استخدم الرقم الافتراضي واحفظه أيضًا

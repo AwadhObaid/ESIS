@@ -993,51 +993,65 @@ Module GlobalData
     Public Sub SaveArchiveVariables(ByVal xx As ArchiveVariablesForm)
         Try
             Dim dt As New DataTable
-            Dim da As SqlDataAdapter
-            da = New SqlDataAdapter("Select * FROM ArchiveVariables where ID = 1 ", Con)
+            Dim da As New SqlDataAdapter("SELECT * FROM ArchiveVariables WHERE ID = 1", Con)
             da.Fill(dt)
 
             If dt.Rows.Count = 0 Then
                 dt.Rows.Add()
                 Dim last As Short = dt.Rows.Count - 1
-                dt.Rows(last).Item("ID") = 1
-                dt.Rows(last).Item("ExternalSoredPath") = xx.ExternalSoredPath.Text.Trim
-                dt.Rows(last).Item("ScandImagePath") = xx.ScandImagePath.Text.Trim
-                dt.Rows(last).Item("ScandImageName") = xx.ScandImageName.Text
-                dt.Rows(last).Item("ImageExtension") = xx.ImageExtension.SelectedIndex
-                dt.Rows(last).Item("PDFStoredPath") = xx.PDFStoredPath.Text.Trim
+                With dt.Rows(last)
+                    .Item("ID") = 1
+                    .Item("ExternalSoredPath") = If(String.IsNullOrEmpty(xx.ExternalSoredPath.Text), DBNull.Value, xx.ExternalSoredPath.Text.Trim)
+                    .Item("ScandImagePath") = If(String.IsNullOrEmpty(xx.ScandImagePath.Text), DBNull.Value, xx.ScandImagePath.Text.Trim)
+                    .Item("ScandImageName") = If(String.IsNullOrEmpty(xx.ScandImageName.Text), DBNull.Value, xx.ScandImageName.Text)
+                    .Item("ImageExtension") = If(xx.ImageExtension.SelectedIndex = -1, DBNull.Value, xx.ImageExtension.SelectedIndex)
+                    .Item("PDFStoredPath") = If(String.IsNullOrEmpty(xx.PDFStoredPath.Text), DBNull.Value, xx.PDFStoredPath.Text.Trim)
 
-                dt.Rows(last).Item("DefualtSenderEmail") = xx.DefualtSenderEmail.Text
-                dt.Rows(last).Item("EmailAppPassword") = xx.EmailAppPassword.Text
-                dt.Rows(last).Item("SMTPServer") = xx.SMTPServer.Text
-                dt.Rows(last).Item("PortNumber") = xx.PortNumber.Text
-                dt.Rows(last).Item("FrmConStrPASS") = Encrypt(xx.txtPassCon.Text.Trim)
+                    .Item("DefualtSenderEmail") = If(String.IsNullOrEmpty(xx.DefualtSenderEmail.Text), DBNull.Value, xx.DefualtSenderEmail.Text)
+                    .Item("EmailAppPassword") = If(String.IsNullOrEmpty(xx.EmailAppPassword.Text), DBNull.Value, xx.EmailAppPassword.Text)
+                    .Item("SMTPServer") = If(String.IsNullOrEmpty(xx.SMTPServer.Text), DBNull.Value, xx.SMTPServer.Text)
+                    .Item("PortNumber") = If(String.IsNullOrEmpty(xx.PortNumber.Text), DBNull.Value, xx.PortNumber.Text)
+                    .Item("FrmConStrPASS") = If(String.IsNullOrEmpty(xx.txtPassCon.Text), DBNull.Value, Encrypt(xx.txtPassCon.Text.Trim))
 
-                dt.Rows(last).Item("AddDate") = Now
-                dt.Rows(last).Item("AddUser") = LoggedInUserID
+                    .Item("PathSearch") = If(String.IsNullOrEmpty(xx.txtSearchDefaultPath.Text), DBNull.Value, xx.txtSearchDefaultPath.Text)
+                    .Item("LastSaderNumber") = If(String.IsNullOrEmpty(xx.txtlastSavedNumber.Text), DBNull.Value, xx.txtlastSavedNumber.Text)
+                    .Item("daysToKeep") = If(String.IsNullOrEmpty(xx.txtdaysToKeep.Text), DBNull.Value, CInt(xx.txtdaysToKeep.Text))
+                    .Item("NotificationsFormInterval") = If(xx.nudNotificationInterval.Value = 5, DBNull.Value, CInt(xx.nudNotificationInterval.Value))
 
-
-                RowInsert(dt, da)
-                SaveVariablesAtSettings(xx)
-                SavedSuccessfully(xx.lblConfirmMsg, xx.PicMsg, xx.Timer1)
-                ClearContolOfFrmArchiveVariables(xx)
-                xx.btnClose.Enabled = True
+                    .Item("AddDate") = Now
+                    .Item("AddUser") = LoggedInUserID
+                End With
             End If
+
+            RowInsert(dt, da)
+            SaveVariablesAtSettings(xx)
+            SavedSuccessfully(xx.lblConfirmMsg, xx.PicMsg, xx.Timer1)
+            ClearContolOfFrmArchiveVariables(xx)
+            xx.btnClose.Enabled = True
+
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
+
     Private Sub SaveVariablesAtSettings(ByVal xx As ArchiveVariablesForm)
 
-        My.Settings.FilePath = xx.ExternalSoredPath.Text.Trim
+        My.Settings.ARCHIVE_DEFAULT_PATH = xx.ExternalSoredPath.Text.Trim
         My.Settings.ImgFolderPath = xx.ScandImagePath.Text.Trim
         My.Settings.ImageFormat = xx.ImageExtension.SelectedIndex
         My.Settings.DefualtImgName = xx.ScandImageName.Text
         My.Settings.PDFFolderPath = xx.PDFStoredPath.Text.Trim
         My.Settings.FrmConStrPASS = Encrypt(xx.txtPassCon.Text.Trim)
+
+        My.Settings.DefaultPathSearch = xx.txtSearchDefaultPath.Text.Trim()
+        My.Settings.LastSaderNumber = xx.txtlastSavedNumber.Text.Trim()
+        My.Settings.daysToKeep = CInt(xx.txtdaysToKeep.Text.Trim())
+        My.Settings.NotificationsFormInterval = CInt(xx.nudNotificationInterval.Value)
+
         My.Settings.Save()
     End Sub
+
 
     'Updat Archive Variables
     Public Sub UpdateArchiveVariables(ByVal xx As ArchiveVariablesForm)
@@ -1061,6 +1075,12 @@ Module GlobalData
                 dt.Rows(0).Item("SMTPServer") = xx.SMTPServer.Text
                 dt.Rows(0).Item("PortNumber") = xx.PortNumber.Text
                 dt.Rows(0).Item("FrmConStrPASS") = Encrypt(xx.txtPassCon.Text.Trim)
+
+                dt.Rows(0).Item("PathSearch") = xx.txtSearchDefaultPath.Text
+                dt.Rows(0).Item("LastSaderNumber") = xx.txtlastSavedNumber.Text
+                dt.Rows(0).Item("daysToKeep") = CInt(xx.txtdaysToKeep.Text)
+                dt.Rows(0).Item("NotificationsFormInterval") = CInt(xx.nudNotificationInterval.Value)
+
 
                 dt.Rows(0).Item("EditDate") = Now
                 dt.Rows(0).Item("EditUser") = LoggedInUserID
@@ -1086,38 +1106,102 @@ Module GlobalData
 
     End Sub
 
-    'Show Archive Variables
+    Private Function SafeGetString(row As DataRow, columnName As String) As String
+        If row.IsNull(columnName) Then
+            Return ""
+        Else
+            Return row.Item(columnName).ToString()
+        End If
+    End Function
+
+    ''Show Archive Variables
     Public Sub ShowArchiveVariables(ByVal xx As ArchiveVariablesForm)
         Try
             Dim DT As New DataTable
-            Dim sqlst As String
-            sqlst = "Select * FROM ArchiveVariables where ID = 1 "
+            Dim sqlst As String = "SELECT * FROM ArchiveVariables WHERE ID = 1"
             FillDataTable(DT, sqlst)
 
             If DT.Rows.Count > 0 Then
+                With DT.Rows(0)
+                    ' الحقول النصية
+                    xx.ExternalSoredPath.Text = SafeGetString(DT.Rows(0), "ExternalSoredPath")
+                    xx.ScandImagePath.Text = SafeGetString(DT.Rows(0), "ScandImagePath")
+                    xx.PDFStoredPath.Text = SafeGetString(DT.Rows(0), "PDFStoredPath")
+                    xx.txtSearchDefaultPath.Text = SafeGetString(DT.Rows(0), "PathSearch")
+                    xx.txtlastSavedNumber.Text = SafeGetString(DT.Rows(0), "LastSaderNumber")
+
+                    ' الحقول الرقمية
+                    xx.txtdaysToKeep.Text = If(IsDBNull(.Item("daysToKeep")), "0", .Item("daysToKeep").ToString())
+                    xx.nudNotificationInterval.Value = If(IsDBNull(.Item("NotificationsFormInterval")), 5, CInt(.Item("NotificationsFormInterval")))
+
+                    ' الحقول المتعلقة بالإعدادات البريدية
+                    xx.DefualtSenderEmail.Text = SafeGetString(DT.Rows(0), "DefualtSenderEmail")
+                    xx.EmailAppPassword.Text = SafeGetString(DT.Rows(0), "EmailAppPassword")
+                    xx.SMTPServer.Text = SafeGetString(DT.Rows(0), "SMTPServer")
+                    xx.PortNumber.Text = SafeGetString(DT.Rows(0), "PortNumber")
+
+                    ' فك تشفير كلمة المرور
+                    Dim encryptedPass = .Item("FrmConStrPASS")
+                    xx.txtPassCon.Text = If(IsDBNull(encryptedPass), "", Decrypt(encryptedPass.ToString()))
 
 
-                xx.ExternalSoredPath.Text = DT.Rows(0).Item("ExternalSoredPath").ToString()
+                    ' الحقول الأخرى
+                    Dim imageExtValue = .Item("ImageExtension")
+                    xx.ImageExtension.SelectedIndex = If(IsDBNull(imageExtValue), -1, CInt(imageExtValue))
+                End With
 
-                xx.ScandImagePath.Text = DT.Rows(0).Item("ScandImagePath").ToString()
-                xx.ScandImageName.Text = DT.Rows(0).Item("ScandImageName").ToString()
-                xx.ImageExtension.SelectedIndex = DT.Rows(0).Item("ImageExtension")
-                xx.PDFStoredPath.Text = DT.Rows(0).Item("PDFStoredPath").ToString()
-
-                xx.DefualtSenderEmail.Text = DT.Rows(0).Item("DefualtSenderEmail")
-                xx.EmailAppPassword.Text = DT.Rows(0).Item("EmailAppPassword")
-                xx.SMTPServer.Text = DT.Rows(0).Item("SMTPServer")
-                xx.PortNumber.Text = DT.Rows(0).Item("PortNumber")
-                xx.txtPassCon.Text = Decrypt(DT.Rows(0).Item("FrmConStrPASS").ToString())
+                ' تمكين وإعاقة الأزرار
                 xx.btnSave.Enabled = False
                 xx.btnUpdate.Enabled = True
                 xx.btnDelete.Enabled = True
             End If
+
             DT.Dispose()
+
         Catch ex As Exception
-            MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, "Error Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
         End Try
     End Sub
+
+
+    'Public Sub ShowArchiveVariables(ByVal xx As ArchiveVariablesForm)
+    '    Try
+    '        Dim DT As New DataTable
+    '        Dim sqlst As String
+    '        sqlst = "Select * FROM ArchiveVariables where ID = 1 "
+    '        FillDataTable(DT, sqlst)
+
+    '        If DT.Rows.Count > 0 Then
+
+
+    '            xx.ExternalSoredPath.Text = DT.Rows(0).Item("ExternalSoredPath").ToString()
+
+    '            xx.ScandImagePath.Text = DT.Rows(0).Item("ScandImagePath").ToString()
+    '            xx.ScandImageName.Text = DT.Rows(0).Item("ScandImageName").ToString()
+    '            xx.ImageExtension.SelectedIndex = DT.Rows(0).Item("ImageExtension")
+    '            xx.PDFStoredPath.Text = DT.Rows(0).Item("PDFStoredPath").ToString()
+
+
+    '            xx.txtSearchDefaultPath.Text = DT.Rows(0).Item("PathSearch").ToString
+    '            xx.txtlastSavedNumber.Text = DT.Rows(0).Item("LastSaderNumber").ToString
+    '            xx.txtdaysToKeep.Text = CInt(DT.Rows(0).Item("daysToKeep"))
+    '            xx.nudNotificationInterval.Value = CInt(DT.Rows(0).Item("NotificationsFormInterval"))
+
+
+    '            xx.DefualtSenderEmail.Text = DT.Rows(0).Item("DefualtSenderEmail")
+    '            xx.EmailAppPassword.Text = DT.Rows(0).Item("EmailAppPassword")
+    '            xx.SMTPServer.Text = DT.Rows(0).Item("SMTPServer")
+    '            xx.PortNumber.Text = DT.Rows(0).Item("PortNumber")
+    '            xx.txtPassCon.Text = Decrypt(DT.Rows(0).Item("FrmConStrPASS").ToString())
+    '            xx.btnSave.Enabled = False
+    '            xx.btnUpdate.Enabled = True
+    '            xx.btnDelete.Enabled = True
+    '        End If
+    '        DT.Dispose()
+    '    Catch ex As Exception
+    '        MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
 
     'Clear Control On TabControls
 

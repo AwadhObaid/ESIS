@@ -80,5 +80,13 @@ Public Class ArchiveVariablesForm
         End If
     End Sub
 
+    Private Sub btnBrowseSearchDefaultPath_Click(sender As Object, e As EventArgs) Handles btnBrowseSearchDefaultPath.Click
+        Dim FBD As New FolderBrowserDialog
+        FBD.RootFolder = Environment.SpecialFolder.MyComputer
+        If FBD.ShowDialog = DialogResult.OK Then
+            Me.txtSearchDefaultPath.Text = FBD.SelectedPath
+        End If
+    End Sub
+
 
 End Class

@@ -30,7 +30,7 @@ Partial Class LoginForm
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.ComboUsername = New System.Windows.Forms.ComboBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.btnConn = New System.Windows.Forms.Label()
+        Me.ckConSettings = New System.Windows.Forms.CheckBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -39,7 +39,6 @@ Partial Class LoginForm
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.cbShowPass = New System.Windows.Forms.CheckBox()
         Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.ckConSettings = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -136,7 +135,6 @@ Partial Class LoginForm
         '
         Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.Panel1.Controls.Add(Me.ckConSettings)
-        Me.Panel1.Controls.Add(Me.btnConn)
         Me.Panel1.Controls.Add(Me.PictureBox3)
         Me.Panel1.Controls.Add(Me.PictureBox2)
         Me.Panel1.Controls.Add(Me.Label1)
@@ -153,19 +151,21 @@ Partial Class LoginForm
         Me.Panel1.Size = New System.Drawing.Size(446, 429)
         Me.Panel1.TabIndex = 8
         '
-        'btnConn
+        'ckConSettings
         '
-        Me.btnConn.AutoSize = True
-        Me.btnConn.Font = New System.Drawing.Font("Cairo", 4.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnConn.Location = New System.Drawing.Point(420, 333)
-        Me.btnConn.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.btnConn.Name = "btnConn"
-        Me.btnConn.Size = New System.Drawing.Size(24, 11)
-        Me.btnConn.TabIndex = 12
-        Me.btnConn.Text = "الاتصال"
+        Me.ckConSettings.AutoSize = True
+        Me.ckConSettings.Location = New System.Drawing.Point(273, 313)
+        Me.ckConSettings.Name = "ckConSettings"
+        Me.ckConSettings.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.ckConSettings.Size = New System.Drawing.Size(167, 28)
+        Me.ckConSettings.TabIndex = 13
+        Me.ckConSettings.Text = "إعدادات الاتصال بالسيرفر"
+        Me.ckConSettings.UseVisualStyleBackColor = True
+
         '
         'PictureBox3
         '
+        Me.PictureBox3.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.ActivationIcon
         Me.PictureBox3.Location = New System.Drawing.Point(32, 223)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(32, 36)
@@ -175,6 +175,7 @@ Partial Class LoginForm
         '
         'PictureBox2
         '
+        Me.PictureBox2.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.UserDefault1
         Me.PictureBox2.Location = New System.Drawing.Point(32, 166)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(32, 36)
@@ -205,6 +206,7 @@ Partial Class LoginForm
         '
         'PictureBox1
         '
+        Me.PictureBox1.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.lock
         Me.PictureBox1.Location = New System.Drawing.Point(191, 3)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(65, 65)
@@ -243,17 +245,6 @@ Partial Class LoginForm
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(543, 89)
         Me.Panel3.TabIndex = 10
-        '
-        'ckConSettings
-        '
-        Me.ckConSettings.AutoSize = True
-        Me.ckConSettings.Location = New System.Drawing.Point(217, 313)
-        Me.ckConSettings.Name = "ckConSettings"
-        Me.ckConSettings.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.ckConSettings.Size = New System.Drawing.Size(167, 28)
-        Me.ckConSettings.TabIndex = 13
-        Me.ckConSettings.Text = "إعدادات الاتصال بالسيرفر"
-        Me.ckConSettings.UseVisualStyleBackColor = True
         '
         'LoginForm
         '
@@ -302,7 +293,6 @@ Partial Class LoginForm
     Friend WithEvents Panel3 As Panel
     Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents btnConn As Label
     Friend WithEvents ckConSettings As CheckBox
 End Class
 

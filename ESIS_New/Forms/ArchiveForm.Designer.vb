@@ -414,7 +414,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnNew.Name = "btnNew"
         Me.btnNew.Size = New System.Drawing.Size(148, 33)
         Me.btnNew.TabIndex = 27
-        Me.btnNew.Text = "جديد"
+        Me.btnNew.Text = "جديد 🆕"
         Me.btnNew.UseVisualStyleBackColor = False
         '
         'btnAdd
@@ -429,7 +429,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Size = New System.Drawing.Size(148, 33)
         Me.btnAdd.TabIndex = 22
-        Me.btnAdd.Text = "إضافة"
+        Me.btnAdd.Text = "إضافة 💾"
         Me.btnAdd.UseVisualStyleBackColor = False
         '
         'btnBrowseFile
@@ -460,7 +460,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(148, 33)
         Me.btnUpdate.TabIndex = 23
-        Me.btnUpdate.Text = "تعديل"
+        Me.btnUpdate.Text = "تعديل 📝"
         Me.btnUpdate.UseVisualStyleBackColor = False
         '
         'btnDelete
@@ -476,7 +476,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(148, 33)
         Me.btnDelete.TabIndex = 24
-        Me.btnDelete.Text = "حذف"
+        Me.btnDelete.Text = "حذف 🗑"
         Me.btnDelete.UseVisualStyleBackColor = False
         '
         'btnSelectArchive

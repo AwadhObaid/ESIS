@@ -217,7 +217,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox5.Size = New System.Drawing.Size(257, 290)
         Me.GroupBox5.TabIndex = 21
         Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "خيارات البحث"
+        Me.GroupBox5.Text = "خيارات البحث 🔎"
         '
         'TableLayoutPanel3
         '
@@ -422,7 +422,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox4.Size = New System.Drawing.Size(486, 351)
         Me.GroupBox4.TabIndex = 26
         Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "رقم الصادر"
+        Me.GroupBox4.Text = "رقم الصادر 📄"
         '
         'AxAcroPDF1
         '
@@ -445,7 +445,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox3.Size = New System.Drawing.Size(231, 290)
         Me.GroupBox3.TabIndex = 25
         Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "الطابعات"
+        Me.GroupBox3.Text = "الطابعات 🖨️"
         '
         'ListPrinter
         '
@@ -728,7 +728,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnAddNewSubj.Name = "btnAddNewSubj"
         Me.btnAddNewSubj.Size = New System.Drawing.Size(136, 31)
         Me.btnAddNewSubj.TabIndex = 8
-        Me.btnAddNewSubj.Text = "إضافة موضوع جديد"
+        Me.btnAddNewSubj.Text = "إضافة موضوع  📄"
         Me.btnAddNewSubj.UseVisualStyleBackColor = False
         '
         'TableLayoutPanel1
@@ -784,7 +784,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(120, 42)
         Me.btnClose.TabIndex = 4
-        Me.btnClose.Text = "إغلاق"
+        Me.btnClose.Text = "إغلاق ❌"
         Me.btnClose.UseVisualStyleBackColor = False
         '
         'btnNew
@@ -799,7 +799,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnNew.Name = "btnNew"
         Me.btnNew.Size = New System.Drawing.Size(120, 42)
         Me.btnNew.TabIndex = 17
-        Me.btnNew.Text = "جديد"
+        Me.btnNew.Text = "جديد 🆕"
         Me.btnNew.UseVisualStyleBackColor = False
         '
         'btnAdd
@@ -814,7 +814,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Size = New System.Drawing.Size(120, 42)
         Me.btnAdd.TabIndex = 14
-        Me.btnAdd.Text = "إضافة"
+        Me.btnAdd.Text = "إضافة 💾"
         Me.btnAdd.UseVisualStyleBackColor = False
         '
         'btnPrint
@@ -829,7 +829,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnPrint.Name = "btnPrint"
         Me.btnPrint.Size = New System.Drawing.Size(120, 42)
         Me.btnPrint.TabIndex = 18
-        Me.btnPrint.Text = "طباعة"
+        Me.btnPrint.Text = "طباعة 🖨️"
         Me.btnPrint.UseVisualStyleBackColor = False
         '
         'btnUpdate
@@ -844,7 +844,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(120, 42)
         Me.btnUpdate.TabIndex = 15
-        Me.btnUpdate.Text = "تعديل"
+        Me.btnUpdate.Text = "تعديل 📝"
         Me.btnUpdate.UseVisualStyleBackColor = False
         '
         'btnDelete
@@ -859,7 +859,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(120, 42)
         Me.btnDelete.TabIndex = 16
-        Me.btnDelete.Text = "حذف"
+        Me.btnDelete.Text = "حذف 🗑"
         Me.btnDelete.UseVisualStyleBackColor = False
         '
         'GroupBox2
@@ -877,7 +877,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox2.Size = New System.Drawing.Size(276, 114)
         Me.GroupBox2.TabIndex = 23
         Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "البحث بين تاريخين"
+        Me.GroupBox2.Text = "البحث بين تاريخين 🔎"
         '
         'btnSearchByDate
         '
@@ -890,7 +890,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnSearchByDate.Name = "btnSearchByDate"
         Me.btnSearchByDate.Size = New System.Drawing.Size(250, 34)
         Me.btnSearchByDate.TabIndex = 7
-        Me.btnSearchByDate.Text = "بحث بالتاريخ"
+        Me.btnSearchByDate.Text = "بحث بالتاريخ 🔎"
         Me.btnSearchByDate.UseVisualStyleBackColor = False
         '
         'dtpEndDate

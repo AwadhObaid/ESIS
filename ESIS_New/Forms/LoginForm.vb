@@ -442,10 +442,6 @@ Public Class LoginForm
         DatabaseError
     End Enum
 
-    Private Sub btnConn_Click(sender As Object, e As EventArgs) Handles btnConn.Click
-        Dim frm As New ServerConnectionForm
-        frm.ShowDialog()
-    End Sub
 
 #End Region
 
@@ -537,6 +533,8 @@ Public Class LoginForm
             MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Try
     End Sub
+
+
 #End Region
 
 End Class

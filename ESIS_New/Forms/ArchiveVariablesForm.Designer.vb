@@ -144,8 +144,8 @@ Partial Class ArchiveVariablesForm
         Me.ToolStripLabel1.ForeColor = System.Drawing.Color.White
         Me.ToolStripLabel1.Margin = New System.Windows.Forms.Padding(18, 8, 0, 8)
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(462, 56)
-        Me.ToolStripLabel1.Text = "المتغيرات العامة للإرشيف الإلكتروني"
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(514, 56)
+        Me.ToolStripLabel1.Text = "⚙ المتغيرات العامة للإرشيف الإلكتروني"
         Me.ToolStripLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Panel7
@@ -182,8 +182,8 @@ Partial Class ArchiveVariablesForm
         Me.btnNew.Margin = New System.Windows.Forms.Padding(0, 6, 6, 6)
         Me.btnNew.Name = "btnNew"
         Me.btnNew.Padding = New System.Windows.Forms.Padding(8, 6, 8, 6)
-        Me.btnNew.Size = New System.Drawing.Size(63, 36)
-        Me.btnNew.Text = "جديد"
+        Me.btnNew.Size = New System.Drawing.Size(93, 36)
+        Me.btnNew.Text = "جديد 🆕"
         '
         'ToolStripSeparator1
         '
@@ -200,8 +200,8 @@ Partial Class ArchiveVariablesForm
         Me.btnSave.Margin = New System.Windows.Forms.Padding(0, 6, 6, 6)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Padding = New System.Windows.Forms.Padding(8, 6, 8, 6)
-        Me.btnSave.Size = New System.Drawing.Size(65, 36)
-        Me.btnSave.Text = "حفظ"
+        Me.btnSave.Size = New System.Drawing.Size(95, 36)
+        Me.btnSave.Text = "حفظ 💾"
         '
         'ToolStripSeparator2
         '
@@ -218,8 +218,8 @@ Partial Class ArchiveVariablesForm
         Me.btnUpdate.Margin = New System.Windows.Forms.Padding(0, 6, 6, 6)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Padding = New System.Windows.Forms.Padding(8, 6, 8, 6)
-        Me.btnUpdate.Size = New System.Drawing.Size(72, 36)
-        Me.btnUpdate.Text = "تعديل"
+        Me.btnUpdate.Size = New System.Drawing.Size(102, 36)
+        Me.btnUpdate.Text = "تعديل 📝"
         '
         'ToolStripSeparator3
         '
@@ -236,8 +236,8 @@ Partial Class ArchiveVariablesForm
         Me.btnDelete.Margin = New System.Windows.Forms.Padding(0, 6, 6, 6)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Padding = New System.Windows.Forms.Padding(8, 6, 8, 6)
-        Me.btnDelete.Size = New System.Drawing.Size(66, 36)
-        Me.btnDelete.Text = "حذف"
+        Me.btnDelete.Size = New System.Drawing.Size(96, 36)
+        Me.btnDelete.Text = "حذف 🗑"
         '
         'ToolStripSeparator5
         '
@@ -253,8 +253,8 @@ Partial Class ArchiveVariablesForm
         Me.btnClose.Margin = New System.Windows.Forms.Padding(0, 6, 6, 6)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Padding = New System.Windows.Forms.Padding(8, 6, 8, 6)
-        Me.btnClose.Size = New System.Drawing.Size(72, 36)
-        Me.btnClose.Text = "إغلاق"
+        Me.btnClose.Size = New System.Drawing.Size(102, 36)
+        Me.btnClose.Text = "إغلاق ❌"
         '
         'ToolStripSeparator6
         '

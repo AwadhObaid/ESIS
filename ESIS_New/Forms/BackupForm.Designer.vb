@@ -34,19 +34,19 @@ Partial Class BackupForm
         Me.lblBackupDescription = New System.Windows.Forms.Label()
         Me.chkIncludeArchiveFiles = New System.Windows.Forms.CheckBox()
         Me.chkCompressBackup = New System.Windows.Forms.CheckBox()
+        Me.btnBrowseBackupPath = New System.Windows.Forms.Button()
         Me.txtBackupPath = New System.Windows.Forms.TextBox()
         Me.lblBackupPath = New System.Windows.Forms.Label()
         Me.grpBackupProgress = New System.Windows.Forms.GroupBox()
         Me.lblBackupStatus = New System.Windows.Forms.Label()
         Me.progressBarBackup = New System.Windows.Forms.ProgressBar()
         Me.grpExistingBackups = New System.Windows.Forms.GroupBox()
+        Me.btnDeleteSelectedBackup = New System.Windows.Forms.Button()
         Me.lblBackupsCount = New System.Windows.Forms.Label()
         Me.lstExistingBackups = New System.Windows.Forms.ListBox()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnCancelBackup = New System.Windows.Forms.Button()
         Me.btnStartBackup = New System.Windows.Forms.Button()
-        Me.btnDeleteSelectedBackup = New System.Windows.Forms.Button()
-        Me.btnBrowseBackupPath = New System.Windows.Forms.Button()
         Me.grpDatabaseInfo.SuspendLayout()
         Me.grpBackupSettings.SuspendLayout()
         CType(Me.nudKeepBackupsFor, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -200,6 +200,18 @@ Partial Class BackupForm
         Me.chkCompressBackup.Text = "ضغط النسخة الاحتياطية"
         Me.chkCompressBackup.UseVisualStyleBackColor = True
         '
+        'btnBrowseBackupPath
+        '
+        Me.btnBrowseBackupPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnBrowseBackupPath.Font = New System.Drawing.Font("Tahoma", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBrowseBackupPath.ForeColor = System.Drawing.Color.FromArgb(CType(CType(142, Byte), Integer), CType(CType(104, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.btnBrowseBackupPath.Location = New System.Drawing.Point(6, 44)
+        Me.btnBrowseBackupPath.Name = "btnBrowseBackupPath"
+        Me.btnBrowseBackupPath.Size = New System.Drawing.Size(39, 30)
+        Me.btnBrowseBackupPath.TabIndex = 2
+        Me.btnBrowseBackupPath.Text = "📂"
+        Me.btnBrowseBackupPath.UseVisualStyleBackColor = True
+        '
         'txtBackupPath
         '
         Me.txtBackupPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -274,6 +286,19 @@ Partial Class BackupForm
         Me.grpExistingBackups.TabStop = False
         Me.grpExistingBackups.Text = "النسخ الاحتياطية الموجودة"
         '
+        'btnDeleteSelectedBackup
+        '
+        Me.btnDeleteSelectedBackup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnDeleteSelectedBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.btnDeleteSelectedBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnDeleteSelectedBackup.Location = New System.Drawing.Point(529, 144)
+        Me.btnDeleteSelectedBackup.Name = "btnDeleteSelectedBackup"
+        Me.btnDeleteSelectedBackup.Size = New System.Drawing.Size(116, 31)
+        Me.btnDeleteSelectedBackup.TabIndex = 2
+        Me.btnDeleteSelectedBackup.Text = "حذف المحدد 🗑"
+        Me.btnDeleteSelectedBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnDeleteSelectedBackup.UseVisualStyleBackColor = True
+        '
         'lblBackupsCount
         '
         Me.lblBackupsCount.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -302,7 +327,7 @@ Partial Class BackupForm
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnClose.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
+        Me.btnClose.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.Close_16x16
         Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnClose.Location = New System.Drawing.Point(12, 665)
         Me.btnClose.Name = "btnClose"
@@ -316,7 +341,6 @@ Partial Class BackupForm
         '
         Me.btnCancelBackup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancelBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
         Me.btnCancelBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnCancelBackup.Location = New System.Drawing.Point(388, 665)
         Me.btnCancelBackup.Name = "btnCancelBackup"
@@ -330,40 +354,15 @@ Partial Class BackupForm
         '
         Me.btnStartBackup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnStartBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
+        Me.btnStartBackup.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.backup
         Me.btnStartBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnStartBackup.Location = New System.Drawing.Point(504, 665)
         Me.btnStartBackup.Name = "btnStartBackup"
         Me.btnStartBackup.Size = New System.Drawing.Size(168, 35)
         Me.btnStartBackup.TabIndex = 4
-        Me.btnStartBackup.Text = "بدء النسخ الاحتياطي"
+        Me.btnStartBackup.Text = "بدء النسخ الاحتياطي "
         Me.btnStartBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnStartBackup.UseVisualStyleBackColor = True
-        '
-        'btnDeleteSelectedBackup
-        '
-        Me.btnDeleteSelectedBackup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnDeleteSelectedBackup.Font = New System.Drawing.Font("Cairo Medium", 8.999999!, System.Drawing.FontStyle.Bold)
-
-        Me.btnDeleteSelectedBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnDeleteSelectedBackup.Location = New System.Drawing.Point(531, 144)
-        Me.btnDeleteSelectedBackup.Name = "btnDeleteSelectedBackup"
-        Me.btnDeleteSelectedBackup.Size = New System.Drawing.Size(114, 31)
-        Me.btnDeleteSelectedBackup.TabIndex = 2
-        Me.btnDeleteSelectedBackup.Text = "حذف المحدد"
-        Me.btnDeleteSelectedBackup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnDeleteSelectedBackup.UseVisualStyleBackColor = True
-        '
-        'btnBrowseBackupPath
-        '
-        Me.btnBrowseBackupPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowseBackupPath.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-
-        Me.btnBrowseBackupPath.Location = New System.Drawing.Point(6, 44)
-        Me.btnBrowseBackupPath.Name = "btnBrowseBackupPath"
-        Me.btnBrowseBackupPath.Size = New System.Drawing.Size(39, 30)
-        Me.btnBrowseBackupPath.TabIndex = 2
-        Me.btnBrowseBackupPath.UseVisualStyleBackColor = True
         '
         'BackupForm
         '

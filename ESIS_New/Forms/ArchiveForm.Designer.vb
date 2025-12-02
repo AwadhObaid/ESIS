@@ -110,7 +110,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.GroupBox1.Size = New System.Drawing.Size(764, 379)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "بيانات الأرشيف"
+        Me.GroupBox1.Text = "بيانات الأرشيف 🧮"
         '
         'lblWarning
         '
@@ -444,7 +444,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnBrowseFile.Name = "btnBrowseFile"
         Me.btnBrowseFile.Size = New System.Drawing.Size(148, 33)
         Me.btnBrowseFile.TabIndex = 25
-        Me.btnBrowseFile.Text = "استعراض ملف"
+        Me.btnBrowseFile.Text = "استعراض ملف 🗂️"
         Me.btnBrowseFile.UseVisualStyleBackColor = False
         '
         'btnUpdate
@@ -488,9 +488,9 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnSelectArchive.Location = New System.Drawing.Point(8, 304)
         Me.btnSelectArchive.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnSelectArchive.Name = "btnSelectArchive"
-        Me.btnSelectArchive.Size = New System.Drawing.Size(104, 23)
+        Me.btnSelectArchive.Size = New System.Drawing.Size(116, 23)
         Me.btnSelectArchive.TabIndex = 26
-        Me.btnSelectArchive.Text = "فتح موقع الملف المحدد"
+        Me.btnSelectArchive.Text = "فتح موقع الملف المحدد 📌"
         Me.btnSelectArchive.UseVisualStyleBackColor = False
         '
         'txtFilepath
@@ -622,7 +622,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnSearchByDate.Name = "btnSearchByDate"
         Me.btnSearchByDate.Size = New System.Drawing.Size(273, 26)
         Me.btnSearchByDate.TabIndex = 7
-        Me.btnSearchByDate.Text = "بحث بالتاريخ"
+        Me.btnSearchByDate.Text = "بحث بالتاريخ 🔎"
         Me.btnSearchByDate.UseVisualStyleBackColor = False
         '
         'dtpEndDate
@@ -682,7 +682,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnSearch.Name = "btnSearch"
         Me.btnSearch.Size = New System.Drawing.Size(221, 26)
         Me.btnSearch.TabIndex = 2
-        Me.btnSearch.Text = "بحث"
+        Me.btnSearch.Text = "بحث عام 🔎"
         Me.btnSearch.UseVisualStyleBackColor = False
         '
         'txtSearch
@@ -783,7 +783,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.GroupBox3.Size = New System.Drawing.Size(660, 503)
         Me.GroupBox3.TabIndex = 7
         Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "مستعرض الملفات"
+        Me.GroupBox3.Text = "مستعرض الملفات 📂"
         '
         'Panel1
         '

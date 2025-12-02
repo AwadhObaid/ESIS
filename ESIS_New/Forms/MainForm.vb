@@ -899,10 +899,10 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     ''' </summary>
     Private Sub btnBackup_Click(sender As Object, e As EventArgs) Handles btnBackup.Click
         Try
-            '' التحقق من صلاحية عرض نموذج المستخدمين
-            'If Not CheckPermission("View", "عرض نموذج النسخ الإحتياطي") Then
-            '    Return
-            'End If
+            ' التحقق من صلاحية عرض نموذج المستخدمين
+            If Not CheckPermission("View", "عرض نموذج النسخ الإحتياطي") Then
+                Return
+            End If
             ' البحث عن نموذج الأرشيف المفتوح
             Dim currentInstance As BackupForm = TryCast(Application.OpenForms("BackupForm"), BackupForm)
 
@@ -915,33 +915,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
                 currentInstance = New BackupForm()
                 currentInstance.Show(Me)
             End If
-
-
-
-
-
-
-
-            '' التحقق مما إذا كان هناك نموذج مفتوح بالفعل
-            'If currentInstance IsNot Nothing AndAlso Not currentInstance.IsDisposed Then
-            '    ' إذا كان النموذج مفتوحًا، جلبه إلى المقدمة
-            '    currentInstance.BringToFront()
-            '    currentInstance.Activate()
-            'Else
-            '    ' إذا لم يكن النموذج مفتوحًا، أنشئ مثيلًا جديدًا واحتفظ به
-            '    currentInstance = New BackupForm()
-            '    currentInstance.Show(Me)
-            '    ' تحديث القائمة بعد إنشاء نسخة احتياطية جديدة
-            '    currentInstance.RefreshBackupsList()
-            '    currentInstance.UpdateDatabaseInfo()
-
-            'End If
-
-
-
-            'Dim frm As New BackupForm
-            'frm.Show(Me)
-
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج النسخ الاحتياطي: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -1984,14 +1957,16 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     End Sub
 
     Private Sub btnServerConnection_Click(sender As Object, e As EventArgs) Handles btnServerConnection.Click
-        'ValidateAndExecutePasswordProtectedAction(Sub()
-        '                                              Dim Frm As New FrmPassword
-        '                                              'Frm.MdiParent = Me
-        '                                              Frm.Show(Me)
-        '                                          End Sub)
-        If ValidatePassword("ادخل كلمة المرور لفتح هذا النموذج") Then
-            Dim form As New ServerConnectionForm()
-            form.ShowDialog()
+
+        Dim zz As New PasswordForm
+        zz.Label1.Text = "ادخل كملة المرور لفتح شاشة إعدادات الاتصال"
+        zz.ShowDialog()
+        If zz.InputText = Nothing Then Return
+        If zz.InputText = My.Settings.FrmConStrPASS Then
+            Dim Frm As New ServerConnectionForm
+            Frm.ShowDialog()
+        Else
+            MessageBox.Show("معذرة، كلمة المرور الذي ادخلتها غير صحيحة", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
 

@@ -186,11 +186,12 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnAddCategory.FlatAppearance.BorderSize = 0
         Me.btnAddCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAddCategory.Font = New System.Drawing.Font("Cairo", 8.999999!)
+        Me.btnAddCategory.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCategory.Location = New System.Drawing.Point(788, 12)
         Me.btnAddCategory.Name = "btnAddCategory"
         Me.btnAddCategory.Size = New System.Drawing.Size(191, 32)
         Me.btnAddCategory.TabIndex = 28
-        Me.btnAddCategory.Text = "إدارة التصنيفات"
+        Me.btnAddCategory.Text = "إدارة التصنيفات  | 🧮"
         Me.btnAddCategory.UseVisualStyleBackColor = False
         '
         'lblFilterStatus
@@ -503,13 +504,13 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.RBDirectPrint.Checked = True
         Me.RBDirectPrint.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.RBDirectPrint.ForeColor = System.Drawing.Color.DarkRed
-        Me.RBDirectPrint.Location = New System.Drawing.Point(764, 219)
+        Me.RBDirectPrint.Location = New System.Drawing.Point(739, 219)
         Me.RBDirectPrint.Margin = New System.Windows.Forms.Padding(2)
         Me.RBDirectPrint.Name = "RBDirectPrint"
-        Me.RBDirectPrint.Size = New System.Drawing.Size(101, 27)
+        Me.RBDirectPrint.Size = New System.Drawing.Size(126, 27)
         Me.RBDirectPrint.TabIndex = 51
         Me.RBDirectPrint.TabStop = True
-        Me.RBDirectPrint.Text = "طباعة مباشرة"
+        Me.RBDirectPrint.Text = "طباعة مباشرة 🖨️"
         Me.RBDirectPrint.UseVisualStyleBackColor = True
         '
         'RBPreviewBeforePrint
@@ -518,13 +519,13 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.RBPreviewBeforePrint.AutoSize = True
         Me.RBPreviewBeforePrint.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.RBPreviewBeforePrint.ForeColor = System.Drawing.Color.DarkRed
-        Me.RBPreviewBeforePrint.Location = New System.Drawing.Point(630, 219)
+        Me.RBPreviewBeforePrint.Location = New System.Drawing.Point(580, 219)
         Me.RBPreviewBeforePrint.Margin = New System.Windows.Forms.Padding(2)
         Me.RBPreviewBeforePrint.Name = "RBPreviewBeforePrint"
-        Me.RBPreviewBeforePrint.Size = New System.Drawing.Size(130, 27)
+        Me.RBPreviewBeforePrint.Size = New System.Drawing.Size(155, 27)
         Me.RBPreviewBeforePrint.TabIndex = 50
         Me.RBPreviewBeforePrint.TabStop = True
-        Me.RBPreviewBeforePrint.Text = "معاينة قبل الطباعة"
+        Me.RBPreviewBeforePrint.Text = "معاينة قبل الطباعة 🔎"
         Me.RBPreviewBeforePrint.UseVisualStyleBackColor = True
         '
         'lblWarning
@@ -570,12 +571,12 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'CbDateBook
         '
         Me.CbDateBook.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.CbDateBook.Font = New System.Drawing.Font("Cairo ExtraBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CbDateBook.Font = New System.Drawing.Font("Cairo", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CbDateBook.Location = New System.Drawing.Point(474, 79)
         Me.CbDateBook.Name = "CbDateBook"
         Me.CbDateBook.Size = New System.Drawing.Size(112, 31)
         Me.CbDateBook.TabIndex = 35
-        Me.CbDateBook.Text = "تــاريـخ الكتـــاب :"
+        Me.CbDateBook.Text = "تــاريـخ الكتـــاب | 📆"
         Me.CbDateBook.UseVisualStyleBackColor = True
         '
         'CbArchiveNum
@@ -709,7 +710,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.ComboSubjBook.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboSubjBook.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ComboSubjBook.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.ComboSubjBook.ForeColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(69, Byte), Integer))
+        Me.ComboSubjBook.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.ComboSubjBook.FormattingEnabled = True
         Me.ComboSubjBook.IntegralHeight = False
         Me.ComboSubjBook.Location = New System.Drawing.Point(428, 146)
@@ -762,20 +763,21 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnShowUnarchivedOnly.BackColor = System.Drawing.Color.FromArgb(CType(CType(200, Byte), Integer), CType(CType(200, Byte), Integer), CType(CType(100, Byte), Integer))
         Me.btnShowUnarchivedOnly.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnShowUnarchivedOnly.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnShowUnarchivedOnly.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.btnShowUnarchivedOnly.Font = New System.Drawing.Font("Cairo", 7.0!, System.Drawing.FontStyle.Bold)
         Me.btnShowUnarchivedOnly.ForeColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(155, Byte), Integer))
         Me.btnShowUnarchivedOnly.Location = New System.Drawing.Point(2, 4)
         Me.btnShowUnarchivedOnly.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnShowUnarchivedOnly.Name = "btnShowUnarchivedOnly"
         Me.btnShowUnarchivedOnly.Size = New System.Drawing.Size(124, 42)
         Me.btnShowUnarchivedOnly.TabIndex = 54
-        Me.btnShowUnarchivedOnly.Text = "عرض الغير مؤرشف"
+        Me.btnShowUnarchivedOnly.Text = "عرض الغير مؤرشف 📄"
         Me.btnShowUnarchivedOnly.UseVisualStyleBackColor = False
         '
         'btnClose
         '
         Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(108, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(125, Byte), Integer))
         Me.btnClose.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnClose.FlatAppearance.BorderSize = 0
         Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnClose.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClose.ForeColor = System.Drawing.Color.White
@@ -784,7 +786,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(120, 42)
         Me.btnClose.TabIndex = 4
-        Me.btnClose.Text = "إغلاق ❌"
+        Me.btnClose.Text = "إغـلاق ❌"
         Me.btnClose.UseVisualStyleBackColor = False
         '
         'btnNew

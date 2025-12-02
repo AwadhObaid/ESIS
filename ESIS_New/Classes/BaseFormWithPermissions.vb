@@ -1,9 +1,4 @@
 ﻿Imports System.Data.SqlClient
-Imports System.Windows.Forms
-
-
-
-'Namespace ElectronicSystemforIntegratedServices
 
 ''' <summary>
 ''' نموذج أساسي مع دعم الصلاحيات
@@ -89,94 +84,66 @@ Public Class BaseFormWithPermissions
             MyBase.OnFormClosing(e)
         End Sub
 
-        ''' <summary>
-        ''' التحقق من صلاحية معينة
-        ''' </summary>
-        Protected Function CheckPermission(permissionType As String, friendlyName As String) As Boolean
+    ''' <summary>
+    ''' التحقق من صلاحية معينة
+    ''' </summary>
+
+    Protected Function CheckPermission(permissionType As String, friendlyName As String) As Boolean
+        Try
+            ' أولاً: التحقق مما إذا كان المستخدم هو المدير
+            Dim isAdmin As Boolean = False
             Try
-                ' أولاً: التحقق مما إذا كان المستخدم هو المدير
-                Dim isAdmin As Boolean = False
-                Try
-                    Dim query As String = "SELECT IsAdmin FROM TbUsers WHERE ID = @UserID AND IsActive = 1"
-                    Using connection As SqlConnection = DatabaseHelper.Con()
-                        connection.Open()
-                        Using command As New SqlCommand(query, connection)
-                            command.Parameters.AddWithValue("@UserID", GlobalData.LoggedInUserID)
-                            Dim result As Object = command.ExecuteScalar()
-                            isAdmin = If(result IsNot Nothing, Convert.ToBoolean(result), False)
-                        End Using
+                Dim query As String = "SELECT IsAdmin FROM TbUsers WHERE ID = @UserID AND IsActive = 1"
+                Using connection As SqlConnection = DatabaseHelper.Con()
+                    connection.Open()
+                    Using command As New SqlCommand(query, connection)
+                        command.Parameters.AddWithValue("@UserID", GlobalData.LoggedInUserID)
+                        Dim result As Object = command.ExecuteScalar()
+                        isAdmin = If(result IsNot Nothing, Convert.ToBoolean(result), False)
                     End Using
-                Catch userEx As Exception
-                    System.Diagnostics.Debug.WriteLine($"خطأ في التحقق من كون المستخدم مديرًا: {userEx.Message}")
-                    isAdmin = False ' الافتراضي
-                End Try
-
-                ' إذا كان المدير، لديه جميع الصلاحيات
-                If isAdmin Then
-                    Return True
-                End If
-
-                ' ثانيًا: التحقق من الصلاحية العادية
-                Dim hasPermission As Boolean = False
-                Try
-                    Dim query As String = "
-            SELECT HasPermission 
-            FROM TbPermissions 
-            WHERE UserID = @UserID AND FormName = @FormName AND PermissionType = @PermissionType"
-
-                    Using connection As SqlConnection = DatabaseHelper.Con()
-                        connection.Open()
-                        Using command As New SqlCommand(query, connection)
-                            command.Parameters.AddWithValue("@UserID", GlobalData.LoggedInUserID)
-                            command.Parameters.AddWithValue("@FormName", Me.GetType().Name)
-                            command.Parameters.AddWithValue("@PermissionType", permissionType)
-
-                            Dim result As Object = command.ExecuteScalar()
-                            hasPermission = If(result IsNot Nothing, Convert.ToBoolean(result), False)
-                        End Using
-                    End Using
-                Catch permEx As Exception
-                    System.Diagnostics.Debug.WriteLine($"خطأ في التحقق من الصلاحية العادية: {permEx.Message}")
-                    hasPermission = False ' الافتراضي
-                End Try
-
-                If Not hasPermission Then
-                    MessageBox.Show($"ليس لديك صلاحية {friendlyName}. يرجى الاتصال بمدير النظام.",
-                          "صلاحيات محدودة", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End If
-
-                Return hasPermission
-
-            Catch ex As Exception
-                System.Diagnostics.Debug.WriteLine($"خطأ عام في التحقق من الصلاحية: {ex.Message}")
-                Return False
+                End Using
+            Catch userEx As Exception
+                System.Diagnostics.Debug.WriteLine($"خطأ في التحقق من كون المستخدم مديرًا: {userEx.Message}")
+                isAdmin = False ' الافتراضي
             End Try
-        End Function
 
+            ' إذا كان المدير، لديه جميع الصلاحيات
+            If isAdmin Then
+                Return True
+            End If
 
+            ' ثانيًا: التحقق من الصلاحية العادية
+            Dim hasPermission As Boolean = False
+            Try
+                Dim query As String = "SELECT HasPermission FROM TbPermissions WHERE UserID = @UserID AND FormName = @FormName AND PermissionType = @PermissionType"
 
+                Using connection As SqlConnection = DatabaseHelper.Con()
+                    connection.Open()
+                    Using command As New SqlCommand(query, connection)
+                        command.Parameters.AddWithValue("@UserID", GlobalData.LoggedInUserID)
+                        command.Parameters.AddWithValue("@FormName", Me.GetType().Name)
+                        command.Parameters.AddWithValue("@PermissionType", permissionType)
 
-        '''' <summary>
-        '''' التحقق من صلاحية معينة
-        '''' </summary>
-        'Protected Function CheckPermission(permissionType As String, friendlyName As String) As Boolean
-        '    Try
-        '        Dim hasPermission As Boolean = PermissionsManager.Instance.HasPermission(
-        '        GlobalData.LoggedInUserID, Me.GetType().Name, permissionType)
+                        Dim result As Object = command.ExecuteScalar()
+                        hasPermission = If(result IsNot Nothing, Convert.ToBoolean(result), False)
+                    End Using
+                End Using
+            Catch permEx As Exception
+                System.Diagnostics.Debug.WriteLine($"خطأ في التحقق من الصلاحية العادية: {permEx.Message}")
+                hasPermission = False ' الافتراضي
+            End Try
 
-        '        If Not hasPermission Then
-        '            MessageBox.Show($"ليس لديك صلاحية {friendlyName}. يرجى الاتصال بمدير النظام.",
-        '                      "صلاحيات محدودة", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        '        End If
+            If Not hasPermission Then
+                MessageBox.Show($"ليس لديك صلاحية {friendlyName}. يرجى الاتصال بمدير النظام.",
+                      "صلاحيات محدودة", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
 
-        '        Return hasPermission
+            Return hasPermission
 
-        '    Catch ex As Exception
-        '        System.Diagnostics.Debug.WriteLine($"خطأ في التحقق من الصلاحية: {ex.Message}")
-        '        Return False
-        '    End Try
-        'End Function
+        Catch ex As Exception
+            System.Diagnostics.Debug.WriteLine($"خطأ عام في التحقق من الصلاحية: {ex.Message}")
+            Return False
+        End Try
+    End Function
 
-    End Class
-
-'End Namespace
+End Class

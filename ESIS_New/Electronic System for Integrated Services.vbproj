@@ -656,6 +656,9 @@
     <EmbeddedResource Include="Forms\NotificationsForm.resx">
       <DependentUpon>NotificationsForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PasswordForm.resx">
+      <DependentUpon>PasswordForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\PermissionsForm.resx">
       <DependentUpon>PermissionsForm.vb</DependentUpon>
     </EmbeddedResource>

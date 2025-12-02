@@ -10,6 +10,9 @@ Public Class LoginForm
 
     Dim userclass As New UsersClass
 
+
+#Region "الأحداث والتحميل"
+
     ''' <summary>
     ''' التحقق مما إذا كان هذا هو التشغيل الأولي للبرنامج
     ''' </summary>
@@ -17,8 +20,6 @@ Public Class LoginForm
         Return String.IsNullOrEmpty(My.Settings.ServerName) AndAlso
                String.IsNullOrEmpty(My.Settings.DataBaseName)
     End Function
-
-#Region "الأحداث والتحميل"
 
     ''' <summary>
     ''' حدث تحميل النموذج
@@ -248,6 +249,27 @@ Public Class LoginForm
     ''' </summary>
     Private Sub txtPassword_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtPassword.KeyPress
         If e.KeyChar = " "c Then e.Handled = True
+    End Sub
+
+
+    Private Sub ckConSettings_CheckedChanged(sender As Object, e As EventArgs) Handles ckConSettings.CheckedChanged
+        Try
+            If ckConSettings.Checked Then
+                Dim zz As New PasswordForm
+                zz.Label1.Text = "ادخل كملة المرور لفتح شاشة إعدادات الاتصال"
+                zz.ShowDialog()
+                If zz.InputText = Nothing Then ckConSettings.Checked = False : Return
+                If zz.InputText = My.Settings.FrmConStrPASS Then
+                    Dim Frm As New ServerConnectionForm
+                    Frm.ShowDialog()
+                Else
+                    MessageBox.Show("معذرة، كلمة المرور الذي ادخلتها غير صحيحة", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+                ckConSettings.Checked = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Try
     End Sub
 
 #End Region
@@ -514,25 +536,6 @@ Public Class LoginForm
         End Try
     End Sub
 
-    Private Sub ckConSettings_CheckedChanged(sender As Object, e As EventArgs) Handles ckConSettings.CheckedChanged
-        Try
-            If ckConSettings.Checked Then
-                Dim zz As New PasswordForm
-                zz.Label1.Text = "ادخل كملة المرور لفتح شاشة إعدادات الاتصال"
-                zz.ShowDialog()
-                If zz.InputText = Nothing Then ckConSettings.Checked = False : Return
-                If zz.InputText = My.Settings.FrmConStrPASS Then
-                    Dim Frm As New ServerConnectionForm
-                    Frm.ShowDialog()
-                Else
-                    MessageBox.Show("معذرة، كلمة المرور الذي ادخلتها غير صحيحة", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End If
-                ckConSettings.Checked = False
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        End Try
-    End Sub
 
 
 #End Region

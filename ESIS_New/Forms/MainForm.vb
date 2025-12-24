@@ -74,7 +74,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             Me.RightToLeft = RightToLeft.Yes
             Me.RightToLeftLayout = True
             SetBackColor()
-
+            OpenMdiForm(Of DashboardForm)(Me)
             ' تعيين وقت التكرار (مثال: كل 24 ساعة)
             cleanupTimer.Interval = 24 * 60 * 60 * 1000 ' 24 ساعة بالمللي ثانية
             AddHandler cleanupTimer.Tick, AddressOf CleanupTimer_Tick
@@ -802,6 +802,42 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 #End Region
 
 #Region "الأحداث الخاصة بالأزرار"
+
+    ''' <summary>
+    ''' معالجة الضغط على زر لوحة التحكم
+    ''' </summary>
+    Private Sub btnDashboard_Click(sender As Object, e As EventArgs) Handles btnDashboard.Click
+
+
+        Try
+            '' التحقق من صلاحية الوصول إلى لوحة التحكم
+            'If Not CheckPermission("ViewDashboard", "عرض لوحة التحكم") Then
+            '    MessageBox.Show("ليس لديك صلاحية الوصول إلى لوحة التحكم. يرجى الاتصال بمدير النظام.",
+            '                  "صلاحيات محدودة",
+            '                  MessageBoxButtons.OK,
+            '                  MessageBoxIcon.Information)
+            '    Return
+            'End If
+
+            ' التحقق مما إذا كان النموذج مفتوحًا بالفعل
+            For Each form As Form In Me.MdiChildren
+                If TypeOf form Is DashboardForm Then
+                    form.BringToFront()
+                    Return
+                End If
+            Next
+
+            ' إنشاء نموذج لوحة التحكم
+            Dim dashboardForm As New DashboardForm()
+            dashboardForm.MdiParent = Me
+            dashboardForm.WindowState = FormWindowState.Maximized
+            dashboardForm.Show()
+
+        Catch ex As Exception
+            MessageBox.Show($"خطأ في فتح لوحة التحكم: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
     ''' <summary>
     ''' فتح نموذج إدارة المستخدمين
     ''' </summary>
@@ -849,8 +885,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج الأرشيف: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-
-
 
     ''' <summary>
     ''' فتح نموذج البحث
@@ -1125,27 +1159,10 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
-    '''' <summary>
-    '''' استعادة لون التسمية عند مغادرة المؤشر
-    '''' </summary>
-    'Private Sub lblUnarchivedCount_MouseLeave(sender As Object, e As EventArgs) Handles lblUnarchivedCount.MouseLeave
-    '    Try
-    '        Dim count As Integer = If(newCount.HasValue, newCount.Value, DataHelper.GetCurrentUnarchivedSaderCount())
-    '        If lblArchiveCount.Text = lblRecordCount.Text Then
-    '            Me.lblUnarchivedCount.ForeColor = Color.Green
-    '        Else
-    '            Me.lblUnarchivedCount.ForeColor = Color.Red
-    '        End If
 
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في حدث MouseLeave: {ex.Message}")
-    '    End Try
-    'End Sub
 #End Region
 
 #Region "الوظائف المساعدة"
-
-
 
     ''' <summary>
     ''' تحديث بيانات النموذج الرئيسي
@@ -1429,8 +1446,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إلغاء معايير التقرير: {ex.Message}")
         End Try
     End Sub
-
-
 
 #End Region
 
@@ -1905,40 +1920,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             End If
         Next
     End Sub
-    ''' <summary>
-    ''' معالجة الضغط على زر لوحة التحكم
-    ''' </summary>
-    Private Sub btnDashboard_Click(sender As Object, e As EventArgs) Handles btnDashboard.Click
 
-
-        Try
-            '' التحقق من صلاحية الوصول إلى لوحة التحكم
-            'If Not CheckPermission("ViewDashboard", "عرض لوحة التحكم") Then
-            '    MessageBox.Show("ليس لديك صلاحية الوصول إلى لوحة التحكم. يرجى الاتصال بمدير النظام.",
-            '                  "صلاحيات محدودة",
-            '                  MessageBoxButtons.OK,
-            '                  MessageBoxIcon.Information)
-            '    Return
-            'End If
-
-            ' التحقق مما إذا كان النموذج مفتوحًا بالفعل
-            For Each form As Form In Me.MdiChildren
-                If TypeOf form Is DashboardForm Then
-                    form.BringToFront()
-                    Return
-                End If
-            Next
-
-            ' إنشاء نموذج لوحة التحكم
-            Dim dashboardForm As New DashboardForm()
-            dashboardForm.MdiParent = Me
-            dashboardForm.WindowState = FormWindowState.Normal
-            dashboardForm.Show()
-
-        Catch ex As Exception
-            MessageBox.Show($"خطأ في فتح لوحة التحكم: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
 
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
         ShowOverlayForm(AboutForm)

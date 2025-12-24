@@ -1,10 +1,10 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Drawing.Printing
 Imports System.IO
-Imports System.Reflection
 Imports System.Threading
 Imports FastReport
 Imports FastReport.Export.PdfSimple
+Imports PdfiumViewer
 
 Public Class SaderForm : Inherits BaseFormWithPermissions
 #Region "Variables and Initialization     المتغيرات والتهيئة"
@@ -59,6 +59,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
     Private Sub SaderForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
+
             ' الاشتراك في الحدث
             AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
             'lblArchiveMsg.Visible = False
@@ -933,251 +934,329 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 #End Region
 
-#Region "Printing Functionality    وظيفة الطباعة"
+#Region "Printing & Printers | الطباعة والطابعات"
+
+    '========================
+    ' زر الطباعة الرئيسي
+    '========================
     Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
+
         ' التحقق من الصلاحية
-        If Not CheckPermission(1, "طباعة ملف صادر") Then
-            Return
-        End If
+        If Not CheckPermission(1, "طباعة ملف صادر") Then Return
+
         HandlePrintAction()
+
     End Sub
 
-    ''' <summary>
-    ''' معالجة إجراء الطباعة مع تسجيل النشاط
-    ''' </summary>
+
+    '==================================================
+    ' معالجة إجراء الطباعة + تسجيل النشاط
+    '==================================================
     Private Sub HandlePrintAction()
+
         Try
-            ' 1. التحقق من وجود سجل محدد
+            ' 1️⃣ التحقق من تحديد سجل
             If Not IsValidRowSelected() Then
-                MessageBox.Show("يرجى تحديد سجل صادر للطباعة من القائمة أولاً.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                MessageBox.Show("يرجى تحديد سجل صادر للطباعة أولاً.", "تنبيه",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 dgvSader.Focus()
-
-                ' تسجيل فشل العملية
-                Try
-                    Dim activityLogClass As New ActivityLogClass()
-                    activityLogClass.LogUserActivity(
-                    GlobalData.LoggedInUserName,
-                    "Failed_Print",
-                    "TbSader",
-                    -1,
-                    "محاولة طباعة دون تحديد سجل"
-                )
-                Catch logEx As Exception
-                    System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط الطباعة: {logEx.Message}")
-                End Try
-
+                LogPrintActivity("Failed_Print", -1, "محاولة طباعة دون تحديد سجل")
                 Return
             End If
 
-            ' 2. الحصول على معرف السجل المحدد
+            ' 2️⃣ جلب معرف السجل
             Dim selectedSaderId As Integer = GetSelectedRowId()
             If selectedSaderId <= 0 Then
-                MessageBox.Show("معرف الصادر غير صالح.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-                ' تسجيل فشل العملية
-                Try
-                    Dim activityLogClass As New ActivityLogClass()
-                    activityLogClass.LogUserActivity(
-                    GlobalData.LoggedInUserName,
-                    "Failed_Print",
-                    "TbSader",
-                    -1,
-                    $"محاولة طباعة سجل بمعرف غير صالح: {selectedSaderId}"
-                )
-                Catch logEx As Exception
-                    System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط الطباعة: {logEx.Message}")
-                End Try
-
+                MessageBox.Show("معرف الصادر غير صالح.", "خطأ",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+                LogPrintActivity("Failed_Print", -1, "معرف غير صالح")
                 Return
             End If
 
-            ' 3. جلب البيانات مع التحقق من وجودها
+            ' 3️⃣ جلب بيانات الصادر
             Dim saderData As DataTable = saderClass.GetSaderById(selectedSaderId)
 
-            ' 4. التحقق من البيانات
-            If saderData Is Nothing Then
-                MessageBox.Show("لم يتم العثور على بيانات الصادر للسجل المحدد.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-                ' تسجيل فشل العملية
-                Try
-
-                    activityLogClass.LogUserActivity(
-                    GlobalData.LoggedInUserName,
-                    "Failed_Print",
-                    "TbSader",
-                    selectedSaderId,
-                    "فشل في جلب بيانات الصادر (البيانات فارغة)"
-                )
-                Catch logEx As Exception
-                    System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط الطباعة: {logEx.Message}")
-                End Try
-
+            If saderData Is Nothing OrElse saderData.Rows.Count = 0 Then
+                MessageBox.Show("لا توجد بيانات للصادر المحدد.", "خطأ",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+                LogPrintActivity("Failed_Print", selectedSaderId, "لا توجد بيانات")
                 Return
             End If
 
-            If saderData.Rows.Count = 0 Then
-                MessageBox.Show("لا توجد بيانات للصادر المحدد.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-                ' تسجيل فشل العملية
-                Try
-                    activityLogClass.LogUserActivity(
-                    GlobalData.LoggedInUserName,
-                    "Failed_Print",
-                    "TbSader",
-                    selectedSaderId,
-                    "فشل في جلب بيانات الصادر (لا توجد صفوف)"
-                )
-                Catch logEx As Exception
-                    System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط الطباعة: {logEx.Message}")
-                End Try
-
-                Return
-            End If
-
-            ' 5. استخراج معلومات مهمة للتسجيل
-            Dim numberBook As String = saderData.Rows(0)("NumberBook").ToString()
-            Dim subjBook As String = saderData.Rows(0)("SubjBook").ToString()
-
-            '6. طباعة التقرير
+            ' 4️⃣ تنفيذ الطباعة
             PrintSaderReport(saderData)
 
-            ' 7. تسجيل نجاح عملية الطباعة
-            Try
-                Dim activityLogClass As New ActivityLogClass()
-                activityLogClass.LogUserActivity(
-                GlobalData.LoggedInUserName,
-                "Print",
-                "TbSader",
-                selectedSaderId,
-                $"تم طباعة كتاب صادر برقم: {numberBook}, الموضوع: {subjBook}"
-            )
-            Catch logEx As Exception
-                System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط الطباعة: {logEx.Message}")
-            End Try
+            ' 5️⃣ تسجيل نجاح الطباعة
+            LogPrintActivity(
+            "Print",
+            selectedSaderId,
+            $"تم طباعة الصادر رقم {saderData.Rows(0)("NumberBook")}"
+        )
 
-            ' 8. إنشاء سجل جديد بعد الطباعة
+            ' 6️⃣ إنشاء سجل جديد
             btnNew.PerformClick()
 
         Catch ex As Exception
-            ' تسجيل خطأ عام في الطباعة
-            Try
-                Dim activityLogClass As New ActivityLogClass()
-                activityLogClass.LogUserActivity(
-                GlobalData.LoggedInUserName,
-                "Error_Print",
-                "TbSader",
-                If(IsValidRowSelected(), GetSelectedRowId(), -1),
-                $"استثناء أثناء طباعة السجل. الخطأ: {ex.Message}"
-            )
-            Catch logEx As Exception
-                System.Diagnostics.Debug.WriteLine($"فشل في تسجيل استثناء الطباعة: {logEx.Message}")
-            End Try
-
-            MessageBox.Show("حدث خطأ أثناء محاولة الطباعة: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-        Finally
-            btnAdd.Enabled = True
-            btnPrint.Enabled = False
+            LogPrintActivity(
+            "Error_Print",
+            If(IsValidRowSelected(), GetSelectedRowId(), -1),
+            ex.Message
+        )
+            MessageBox.Show("خطأ أثناء الطباعة: " & ex.Message, "خطأ",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
     End Sub
 
-    ''' <summary>
-    ''' طباعة تقرير الصادر باستخدام FastReport.OpenSource واختيار الطابعة من CheckedListBox
-    ''' </summary>
-    ''' <param name="saderDataTable"></param>
+
+    '==================================================
+    ' إنشاء تقرير الصادر + تصدير PDF + طباعة
+    '==================================================
     Private Sub PrintSaderReport(ByVal saderDataTable As DataTable)
-            Dim report As Report = Nothing
 
-            Try
-                ' 🟡 التحقق من وجود بيانات
-                If saderDataTable Is Nothing OrElse saderDataTable.Rows.Count = 0 Then
-                    MessageBox.Show("لا توجد بيانات لطباعتها.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    Return
-                End If
+        Dim report As Report = Nothing
 
-                ' 🟡 التحقق من اختيار الطابعة من CheckedListBox
-                If ListPrinter.CheckedItems.Count = 0 Then
-                    MessageBox.Show("يرجى تحديد طابعة أولاً من القائمة.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    Return
-                End If
+        Try
+            ' التحقق من اختيار الطابعة
+            If ListPrinter.CheckedItems.Count = 0 Then
+                MessageBox.Show("يرجى اختيار طابعة أولاً.", "تنبيه",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Exit Sub
+            End If
 
-                ' 🖨️ جلب اسم الطابعة المختارة (أول عنصر محدد)
-                Dim selectedPrinter As String = ListPrinter.CheckedItems(0).ToString()
+            Dim selectedPrinter As String = ListPrinter.CheckedItems(0).ToString()
+            Me.Cursor = Cursors.WaitCursor
 
-                Me.Cursor = Cursors.WaitCursor
+            ' إنشاء التقرير
+            report = New Report()
+            Dim reportPath As String =
+            Path.Combine(Application.StartupPath, "Reports", "SaderReport.frx")
 
-                ' 🟢 إنشاء كائن التقرير
-                report = New Report()
+            If Not File.Exists(reportPath) Then
+                MessageBox.Show("ملف التقرير غير موجود.", "خطأ",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End If
 
-                ' 🟢 تحميل ملف التقرير
-                Dim reportPath As String = Path.Combine(Application.StartupPath, "Reports", "SaderReport.frx")
-                If Not File.Exists(reportPath) Then
-                    MessageBox.Show($"لم يتم العثور على ملف التقرير: {reportPath}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Return
-                End If
-                report.Load(reportPath)
-
-            ' 🟢 ربط مصدر البيانات
+            report.Load(reportPath)
             report.RegisterData(saderDataTable, "TbSader")
             report.GetDataSource("TbSader").Enabled = True
-
-            ' 🟢 تحضير التقرير
             report.Prepare()
 
-            ' 🟢 تصدير التقرير إلى PDF مؤقت
-            Dim tempPdfPath As String = Path.Combine(Path.GetTempPath(), "SaderReport.pdf")
+            ' تصدير PDF مؤقت
+            Dim tempPdfPath As String =
+            Path.Combine(Path.GetTempPath(),
+                         $"SaderReport_{DateTime.Now:yyyyMMdd_HHmmss}.pdf")
+
             Using pdfExport As New PDFSimpleExport()
                 pdfExport.Export(report, tempPdfPath)
-
-                'فتح التقرسر داخل فورم الصادر 
-                AxAcroPDF1.src = tempPdfPath
             End Using
 
-            ' 🖨️ طباعة ملف PDF باستخدام الطابعة المختارة
-            PrintPDF(tempPdfPath, selectedPrinter)
+            ' معاينة قبل الطباعة
+            If RBPreviewBeforePrint.Checked Then
+                ShowPdfPreview(tempPdfPath)
+            End If
 
-            Catch ex As FileNotFoundException
-                MessageBox.Show($"ملف التقرير غير موجود:{vbNewLine}{ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ' الطباعة المباشرة
+            If RBDirectPrint.Checked Then
 
-            Catch ex As DirectoryNotFoundException
-                MessageBox.Show($"مجلد التقارير غير موجود:{vbNewLine}{ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Dim copies As Integer = CInt(nudCopies.Value)
 
-            Catch ex As Exception
-                MessageBox.Show($"خطأ في الطباعة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Dim trayName As String = If(cmbTrays.SelectedIndex <> -1, cmbTrays.SelectedItem.ToString(), String.Empty)
 
-            Finally
-                ' 🧹 التأكد من التخلص من كائن التقرير
-                If report IsNot Nothing Then
-                    report.Dispose()
-                End If
-                Me.Cursor = Cursors.Default
-            End Try
-        End Sub
+                PrintPdfAdvanced(tempPdfPath, selectedPrinter, copies, trayName)
 
-    ''' <summary>
-    ''' فتح ملف PDF وإرساله للطباعة على الطابعة المحددة
-    ''' </summary>
-    Private Sub PrintPDF(ByVal filePath As String, ByVal printerName As String)
-        Dim psi As New ProcessStartInfo()
-        psi.FileName = filePath
-        If RBDirectPrint.Checked Then
-            psi.Verb = "Print"
-        ElseIf RBPreviewBeforePrint.Checked Then
-            psi.Verb = "Open"
-        End If
-        psi.CreateNoWindow = True
-        psi.WindowStyle = ProcessWindowStyle.Hidden
+            End If
 
-        ' 🖨️ تحديد اسم الطابعة المختارة
-        psi.Arguments = Chr(34) & printerName & Chr(34)
+        Finally
+            If report IsNot Nothing Then report.Dispose()
+            Me.Cursor = Cursors.Default
+        End Try
 
-        Using p As New Process()
-            p.StartInfo = psi
-            p.Start()
-            ' 🕒 انتظار قبل إنهاء العملية
-            p.WaitForExit(5000)
-        End Using
     End Sub
+
+
+    '==================================================
+    ' طباعة PDF مع A4 + Tray + Copies
+    '==================================================
+    Private Sub PrintPdfAdvanced(
+    ByVal pdfPath As String,
+    ByVal printerName As String,
+    ByVal copies As Integer,
+    ByVal trayName As String)
+
+        If Not File.Exists(pdfPath) Then Exit Sub
+
+        Using pdfDoc As PdfDocument = PdfDocument.Load(pdfPath)
+            Using printDoc As PrintDocument = pdfDoc.CreatePrintDocument()
+
+                printDoc.PrinterSettings.PrinterName = printerName
+                printDoc.PrinterSettings.Copies = CShort(copies)
+
+                ' تحديد حجم A4
+                For Each p As PaperSize In printDoc.PrinterSettings.PaperSizes
+                    If p.Kind = PaperKind.A4 Then
+                        printDoc.DefaultPageSettings.PaperSize = p
+                        Exit For
+                    End If
+                Next
+
+                ' تحديد درج الطابعة
+                If Not String.IsNullOrWhiteSpace(trayName) Then
+                    For Each src As PaperSource In printDoc.PrinterSettings.PaperSources
+                        If src.SourceName.Equals(trayName,
+                        StringComparison.OrdinalIgnoreCase) Then
+                            printDoc.DefaultPageSettings.PaperSource = src
+                            Exit For
+                        End If
+                    Next
+                End If
+
+                printDoc.DefaultPageSettings.Landscape = False
+                printDoc.PrintController = New StandardPrintController()
+                printDoc.Print()
+
+            End Using
+        End Using
+
+    End Sub
+
+
+    '==================================================
+    ' معاينة PDF
+    '==================================================
+    Private Sub ShowPdfPreview(ByVal pdfPath As String)
+
+        Using pdfDoc As PdfDocument = PdfDocument.Load(pdfPath)
+            Dim viewer As New PdfViewer With {
+            .Dock = DockStyle.Fill,
+            .Document = pdfDoc
+        }
+
+            Dim f As New Form With {
+            .Text = "معاينة التقرير",
+            .WindowState = FormWindowState.Maximized
+        }
+            f.Controls.Add(viewer)
+            f.ShowDialog()
+        End Using
+
+    End Sub
+
+
+    '==================================================
+    ' تحميل الطابعات
+    '==================================================
+    Private Sub PopulatePrintersList()
+        ListPrinter.Items.Clear()
+        For Each p As String In PrinterSettings.InstalledPrinters
+            ListPrinter.Items.Add(p)
+        Next
+    End Sub
+
+
+    '==================================================
+    ' تحميل أدراج الطابعة
+    '==================================================
+    Private Sub LoadPrinterTrays(ByVal printerName As String)
+
+        cmbTrays.Items.Clear()
+        Dim pd As New PrintDocument()
+        pd.PrinterSettings.PrinterName = printerName
+
+        For Each src As PaperSource In pd.PrinterSettings.PaperSources
+            cmbTrays.Items.Add(src.SourceName)
+        Next
+
+        If cmbTrays.Items.Count > 0 Then cmbTrays.SelectedIndex = 0
+
+    End Sub
+
+
+    '==================================================
+    ' السماح بطابعة واحدة فقط + تحميل الأدراج
+    '==================================================
+    Private Sub ListPrinter_ItemCheck(
+    sender As Object,
+    e As ItemCheckEventArgs) Handles ListPrinter.ItemCheck
+
+        For i = 0 To ListPrinter.Items.Count - 1
+            If i <> e.Index Then ListPrinter.SetItemChecked(i, False)
+        Next
+
+        Me.BeginInvoke(Sub()
+                           LoadPrinterTrays(ListPrinter.Items(e.Index).ToString())
+                       End Sub)
+        ' حفظ الطابعة المختارة
+        My.Settings.DefaultPrinterName = ListPrinter.Items(e.Index).ToString()
+        My.Settings.Save()
+
+    End Sub
+
+
+    '==================================================
+    ' تسجيل نشاط الطباعة
+    '==================================================
+    Private Sub LogPrintActivity(
+    actionName As String,
+    recordId As Integer,
+    description As String)
+
+        Try
+            Dim log As New ActivityLogClass()
+            log.LogUserActivity(
+            GlobalData.LoggedInUserName,
+            actionName,
+            "TbSader",
+            recordId,
+            description)
+        Catch
+        End Try
+
+    End Sub
+
+    '==================================================
+    ' حفظ الطابعة المحددة في اعدادات النظام
+    '==================================================
+
+    Private Sub LoadSavedPrinter()
+
+        Try
+            If ListPrinter.Items.Count = 0 Then Exit Sub
+
+            Dim savedPrinter As String = My.Settings.DefaultPrinterName
+
+            ' إلغاء أي تحديد سابق
+            For i As Integer = 0 To ListPrinter.Items.Count - 1
+                ListPrinter.SetItemChecked(i, False)
+            Next
+
+            ' في حال وجود طابعة محفوظة
+            If Not String.IsNullOrWhiteSpace(savedPrinter) Then
+
+                Dim index As Integer = ListPrinter.Items.IndexOf(savedPrinter)
+
+                If index <> -1 Then
+                    ListPrinter.SetItemChecked(index, True)
+
+                    ' تحميل الأدراج للطابعة المحفوظة
+                    LoadPrinterTrays(savedPrinter)
+                    Exit Sub
+                End If
+            End If
+
+            ' في حال عدم وجود طابعة محفوظة → اختر الأولى
+            ListPrinter.SetItemChecked(0, True)
+            LoadPrinterTrays(ListPrinter.Items(0).ToString())
+
+        Catch ex As Exception
+            MessageBox.Show("خطأ في تحميل الطابعة المحفوظة: " & ex.Message,
+                        "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+
 
 #End Region
 
@@ -1242,6 +1321,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 #Region "Utility Methods     طرق الأدوات المساعدة"
 
+
     Private Sub LoadBookCategories()
         Try
             ' تحديد مسار الملف (يمكنك تعديله حسب موقع الملف)
@@ -1281,61 +1361,6 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             MessageBox.Show("حدث خطأ أثناء تحميل تصنيفات الكتاب: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-
-    Private Sub PopulatePrintersList()
-        Try
-            ListPrinter.Items.Clear()
-            For Each printerName As String In PrinterSettings.InstalledPrinters
-                ListPrinter.Items.Add(printerName)
-            Next
-        Catch ex As Exception
-            MessageBox.Show("خطأ في جلب قائمة الطابعات: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-    Private Sub LoadSavedPrinter()
-        Try
-            Dim savedPrinter As String = My.Settings.DefaultPrinterName
-            If Not String.IsNullOrEmpty(savedPrinter) Then
-                Dim index As Integer = ListPrinter.Items.IndexOf(savedPrinter)
-                If index <> -1 Then
-                    ListPrinter.SelectedIndex = index
-                Else
-                    If ListPrinter.Items.Count > 0 Then
-                        ListPrinter.SelectedIndex = 0 ' Select first if saved printer not found
-                    End If
-                End If
-            Else
-                If ListPrinter.Items.Count > 0 Then
-                    ListPrinter.SelectedIndex = 0
-                End If
-            End If
-        Catch ex As Exception
-            MessageBox.Show("خطأ في تحميل الطابعة المحفوظة: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-    Private Sub ListPrinter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListPrinter.SelectedIndexChanged
-        If ListPrinter.SelectedIndex <> -1 Then
-            Dim selectedPrinter As String = ListPrinter.SelectedItem.ToString()
-            ' التحقق من أن القيمة ليست فارغة أو تحتوي على بيانات غير صالحة
-            If Not String.IsNullOrWhiteSpace(selectedPrinter) Then
-                My.Settings.DefaultPrinterName = selectedPrinter
-                ' تحديث حالة التحديد للعناصر الأخرى
-                For i As Integer = 0 To ListPrinter.Items.Count - 1
-                    ListPrinter.SetItemChecked(i, False)
-                Next
-                ' تحديد العنصر المختار حاليًا
-                ListPrinter.SetItemChecked(ListPrinter.SelectedIndex, True)
-                ' حفظ الإعدادات
-                My.Settings.Save()
-            Else
-                MessageBox.Show("العنصر المحدد غير صالح.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            End If
-        End If
-    End Sub
-
-
 
     Private Sub GenerateNextBookNumber()
         Try
@@ -1633,881 +1658,11 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 
 
-#End Region
 
-#Region "أكواد واجراءات معطلة"
-    'Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-    '    Try
-    '        If Not PermissionHelper.CanDelete() Then
-    '            PermissionHelper.ShowNoPermissionMessage("الحذف")
-    '            Return
-    '        End If
 
-    '        If dgvSader.SelectedRows.Count > 0 Then
-    '            If MessageBox.Show("هل تريد حذف هذا الصادر؟", "تأكيد الحذف", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-    '                Dim id As Integer = Convert.ToInt32(dgvSader.SelectedRows(0).Cells("ID").Value)
-    '                Dim archiveID As Object = dgvSader.SelectedRows(0).Cells("ArchiveID").Value
 
-    '                ' حذف الصادر من قاعدة البيانات (سيتم حذف الأرشيف المرتبط تلقائيًا)
-    '                If saderClass.DeleteSader(id) Then
-    '                    MessageBox.Show("تم حذف الصادر والأرشيف المرتبط به بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-    '                    ' تحديث الواجهة
-    '                    ClearFields()
-    '                    'LoadDataToGrid(dgvSader, Function() saderClass.GetAllSader(), columns)
-    '                    GenerateNextBookNumber()
 
-    '                    ' تحديث فورم الأرشيف إذا كان مفتوحًا
-    '                    For Each form As Form In Application.OpenForms
-    '                        If TypeOf form Is ArchiveForm Then
-    '                            Dim archiveForm As ArchiveForm = CType(form, ArchiveForm)
-    '                            archiveForm.LoadArchive() ' تحديث قائمة الأرشيف
-    '                            Exit For
-    '                        End If
-    '                    Next
-    '                Else
-    '                    MessageBox.Show("فشل في حذف الصادر", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '                End If
-    '            End If
-    '        Else
-    '            MessageBox.Show("يرجى اختيار صادر للحذف", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        End If
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    'Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-    '    Try
-    '        ' التحقق من الصلاحية
-    '        If Not PermissionHelper.CanDelete() Then
-    '            MessageBox.Show("ليس لديك صلاحية الحذف. يرجى الاتصال بمدير النظام.", "صلاحيات محدودة", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            Return
-    '        End If
-
-    '        ' التحقق المحسن من الصف المحدد
-    '        If Not IsValidRowSelected() Then
-    '            MessageBox.Show("يرجى اختيار صادر للحذف من القائمة أولاً.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            ' التركيز على DataGridView لتوجيه المستخدم
-    '            dgvSader.Focus()
-    '            Return
-    '        End If
-
-    '        ' الحصول على معلومات الصف المحدد
-    '        Dim id As Integer = GetSelectedRowId()
-    '        Dim numberBook As String = GetSelectedRowStringValue("NumberBook")
-
-    '        ' تأكيد الحذف مع عرض معلومات الصادر
-    '        Dim confirmMessage As String = $"هل تريد حذف الصادر رقم: {numberBook}؟"
-    '        If MessageBox.Show(confirmMessage, "تأكيد الحذف", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-    '            ' حذف الصادر من قاعدة البيانات
-    '            ' ملاحظة: الأرشيف المرتبط سيتم حذفه تلقائيًا بواسطة قاعدة البيانات (ON DELETE CASCADE)
-    '            If saderClass.DeleteSader(id) Then
-    '                MessageBox.Show("تم حذف الصادر والأرشيف المرتبط به بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
-    '                btnNew.PerformClick()
-    '                ' تحديث العدد بعد الحذف الناجح
-    '                DataHelper.UpdateSaderCount()
-    '                ' تحديث فورم الأرشيف إذا كان مفتوحًا
-    '                For Each form As Form In Application.OpenForms
-    '                    If TypeOf form Is ArchiveForm Then
-    '                        Dim archiveForm As ArchiveForm = CType(form, ArchiveForm)
-    '                        archiveForm.LoadArchive() ' تحديث قائمة الأرشيف
-    '                        Exit For
-    '                    End If
-    '                Next
-    '            Else
-    '                MessageBox.Show("فشل في حذف الصادر", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '            End If
-    '        End If
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    'Private Sub dgvSader_SelectionChanged(sender As Object, e As EventArgs) Handles dgvSader.SelectionChanged
-    '    Try
-    '        ' تجاهل الحدث أثناء تحميل البيانات
-    '        If isLoadingData Then Return
-    '        If IsValidRowSelected() Then
-    '            ' تعبئة الحقول بالبيانات مع التحقق من الأمان
-    '            txtNumberBook.Text = GetSelectedRowStringValue("NumberBook")
-    '            dtpDateBook.Value = GetSelectedRowDateValue("DateBook")
-    '            ComboSubjBook.Text = GetSelectedRowStringValue("SubjBook")
-    '            txtWillMaster.Text = GetSelectedRowStringValue("WillMaster")
-    '            txtWillSub.Text = GetSelectedRowStringValue("WillSub")
-    '            txtUserName.Text = GetSelectedRowStringValue("UserName")
-    '            txtNumberBook.ReadOnly = True
-    '            ' تفعيل أدوات التعديل
-    '            EnableEditingTools(True)
-    '            btnAdd.Enabled = False
-    '            ' إضافة تأثير بصري للصف المحدد
-    '            HighlightSelectedRow()
-    '        Else
-    '            ' تعطيل أدوات التعديل إذا لم يكن هناك تحديد صالح
-    '            EnableEditingTools(False)
-    '            btnAdd.Enabled = clsPermissions.HasPermission(GlobalData.LoggedInUserID, "SaderForm", "Add")
-    '        End If
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في dgvSader_SelectionChanged: {ex.Message}")
-    '        EnableEditingTools(False)
-    '        btnAdd.Enabled = clsPermissions.HasPermission(GlobalData.LoggedInUserID, "SaderForm", "Add")
-    '    End Try
-    'End Sub
-
-
-    'Private Sub dgvSader_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSader.CellClick
-    '    Try
-    '        ' تجاهل الحدث أثناء تحميل البيانات
-    '        If isLoadingData Then Return
-
-    '        ' التحقق من أن الفهرس صالح (ليس -1 للهيدر)
-    '        If e.RowIndex < 0 Then
-    '            Return ' الخروج إذا كان النقر على الهيدر
-    '        End If
-
-    '        ' التحقق من أن العمود صالح
-    '        If e.ColumnIndex < 0 Then
-    '            Return
-    '        End If
-
-    '        ' التحقق من وجود صفوف محددة
-    '        If dgvSader.Rows.Count = 0 OrElse e.RowIndex >= dgvSader.Rows.Count Then
-    '            Return
-    '        End If
-
-    '        With dgvSader
-    '            txtNumberBook.Text = .CurrentRow.Cells("NumberBook").Value.ToString()
-    '            dtpDateBook.Value = .CurrentRow.Cells("DateBook").Value.ToString()
-    '            ComboSubjBook.Text = .CurrentRow.Cells("SubjBook").Value.ToString()
-    '            txtWillMaster.Text = .CurrentRow.Cells("WillMaster").Value.ToString()
-    '            txtWillSub.Text = .CurrentRow.Cells("WillSub").Value.ToString()
-    '            txtUserName.Text = .CurrentRow.Cells("UserName").Value.ToString()
-    '            txtArchiveID.Text = .CurrentRow.Cells("ArchiveID").Value.ToString()
-    '        End With
-    '        ' تعطيل أدوات التعديل في البداية
-    '        'EnableEditingTools(True)
-    '        btnDelete.Enabled = True
-    '        btnUpdate.Enabled = True
-    '        btnAdd.Enabled = False
-    '    Catch ex As Exception
-    '        MessageBox.Show(ex.Message)
-    '    End Try
-    'End Sub
-
-    'Private Sub PerformSearchSafely()
-    '    Try
-    '        Dim dataTable As DataTable = Nothing
-    '        If RBDate.Checked Then
-    '            ' قراءة التاريخ مباشرة من TextBox
-    '            Dim searchDate As DateTime
-    '            If DateTime.TryParse(txtSearch.Text, searchDate) Then
-    '                ' استخدام الكلاس المحسن للبحث بالتاريخ
-    '                dataTable = saderClass.SearchSaderByDateRange(searchDate.Date, searchDate.Date)
-    '            Else
-    '                dtpSearchDate.Focus()
-    '                Return
-    '            End If
-    '        Else
-    '            Dim searchTerm As String = txtSearch.Text.Trim()
-    '            If Not String.IsNullOrEmpty(searchTerm) Then
-    '                Dim searchColumn As String = ""
-    '                If rbNumberBook.Checked Then
-    '                    searchColumn = "NumberBook"
-    '                ElseIf rbSubjBook.Checked Then
-    '                    searchColumn = "SubjBook"
-    '                ElseIf rbWillMaster.Checked Then
-    '                    searchColumn = "WillMaster"
-    '                ElseIf rbWillSub.Checked Then
-    '                    searchColumn = "WillSub"
-    '                Else
-    '                    MessageBox.Show("يرجى تحديد خيار للبحث.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '                    Return
-    '                End If
-    '                ' استخدام الكلاس المحسن للبحث
-    '                dataTable = saderClass.SearchSader(searchTerm, searchColumn)
-    '            Else
-    '                ' تحميل جميع البيانات
-    '                dataTable = saderClass.GetAllSader()
-    '            End If
-    '        End If
-    '        ' ربط البيانات بشكل آمن
-    '        DataGridViewErrorHandler.SafeBindData(dgvSader, dataTable)
-    '        UpdateColumnHeaders()
-    '        ' تعطيل أدوات التعديل بعد البحث
-    '        EnableEditingTools(False)
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ أثناء البحث: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        ' في حالة الخطأ، عرض جدول فارغ
-    '        DataGridViewErrorHandler.SafeBindData(dgvSader, Nothing)
-    '    End Try
-    'End Sub
-
-    '''' <summary>
-    '''' تنفيذ عملية البحث بأمان مع تسجيل نشاط المستخدم
-    '''' </summary>
-    'Private Sub PerformSearchSafely()
-    '    Try
-    '        Dim dataTable As DataTable = Nothing
-    '        Dim searchType As String = ""
-    '        Dim searchTerm As String = ""
-
-    '        If RBDate.Checked Then
-    '            ' قراءة التاريخ مباشرة من TextBox
-    '            Dim searchDate As DateTime
-    '            If DateTime.TryParse(txtSearch.Text, searchDate) Then
-    '                ' استخدام الكلاس المحسن للبحث بالتاريخ
-    '                dataTable = saderClass.SearchSaderByDateRange(searchDate.Date, searchDate.Date)
-    '                searchType = "Date"
-    '                searchTerm = searchDate.ToString("yyyy-MM-dd")
-    '            Else
-    '                dtpSearchDate.Focus()
-
-    '                ' تسجيل فشل البحث بالتاريخ
-    '                Try
-
-    '                    activityLogClass.LogUserActivity(
-    '                    GlobalData.LoggedInUserName,
-    '                    "Failed_Search",
-    '                    "TbSader",
-    '                    -1,
-    '                    $"محاولة بحث بالتاريخ غير صالح: {txtSearch.Text}"
-    '                )
-    '                Catch logEx As Exception
-    '                    System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط البحث: {logEx.Message}")
-    '                End Try
-
-    '                Return
-    '            End If
-    '        Else
-    '            searchTerm = txtSearch.Text.Trim()
-
-    '            If Not String.IsNullOrEmpty(searchTerm) Then
-    '                Dim searchColumn As String = ""
-
-    '                If rbNumberBook.Checked Then
-    '                    searchColumn = "NumberBook"
-    '                    searchType = "Number"
-    '                ElseIf rbSubjBook.Checked Then
-    '                    searchColumn = "SubjBook"
-    '                    searchType = "Subject"
-    '                ElseIf rbWillMaster.Checked Then
-    '                    searchColumn = "WillMaster"
-    '                    searchType = "WillMaster"
-    '                ElseIf rbWillSub.Checked Then
-    '                    searchColumn = "WillSub"
-    '                    searchType = "WillSub"
-    '                Else
-    '                    MessageBox.Show("يرجى تحديد خيار للبحث.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-
-    '                    ' تسجيل فشل اختيار عمود البحث
-    '                    Try
-
-    '                        activityLogClass.LogUserActivity(
-    '                        GlobalData.LoggedInUserName,
-    '                        "Failed_Search",
-    '                        "TbSader",
-    '                        -1,
-    '                        "لم يتم تحديد عمود للبحث"
-    '                    )
-    '                    Catch logEx As Exception
-    '                        System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط البحث: {logEx.Message}")
-    '                    End Try
-
-    '                    Return
-    '                End If
-
-    '                ' استخدام الكلاس المحسن للبحث
-    '                dataTable = saderClass.SearchSader(searchTerm, searchColumn)
-    '            Else
-    '                ' تحميل جميع البيانات (عرض الكل)
-    '                dataTable = saderClass.GetAllSader()
-    '                searchType = "All"
-    '                searchTerm = "عرض الكل"
-    '            End If
-    '        End If
-
-    '        ' ربط البيانات بشكل آمن
-    '        DataGridViewErrorHandler.SafeBindData(dgvSader, dataTable)
-    '        UpdateColumnHeaders()
-
-    '        ' تعطيل أدوات التعديل بعد البحث
-    '        EnableEditingTools(False)
-
-    '        ' ✅ تسجيل نجاح عملية البحث
-    '        Try
-
-    '            Dim recordCount As Integer = If(dataTable IsNot Nothing, dataTable.Rows.Count, 0)
-
-    '            activityLogClass.LogUserActivity(
-    '            GlobalData.LoggedInUserName,
-    '            "Search",
-    '            "TbSader",
-    '            -1,
-    '            $"بحث عن {searchType} بالقيمة: '{searchTerm}'. النتائج: {recordCount} سجل"
-    '        )
-    '        Catch logEx As Exception
-    '            System.Diagnostics.Debug.WriteLine($"فشل في تسجيل نشاط البحث: {logEx.Message}")
-    '        End Try
-
-    '    Catch ex As Exception
-    '        ' تسجيل خطأ عام في البحث
-    '        Try
-
-    '            activityLogClass.LogUserActivity(
-    '            GlobalData.LoggedInUserName,
-    '            "Error_Search",
-    '            "TbSader",
-    '            -1,
-    '            $"استثناء أثناء البحث. نوع البحث: {If(RBDate.Checked, "Date", "Text")}, مصطلح: '{txtSearch.Text}', الخطأ: {ex.Message}"
-    '        )
-    '        Catch logEx As Exception
-    '            System.Diagnostics.Debug.WriteLine($"فشل في تسجيل استثناء البحث: {logEx.Message}")
-    '        End Try
-
-    '        MessageBox.Show("حدث خطأ أثناء البحث: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '        ' في حالة الخطأ، عرض جدول فارغ
-    '        DataGridViewErrorHandler.SafeBindData(dgvSader, Nothing)
-    '    End Try
-    'End Sub
-
-    'Private Sub DebugSearchResults()
-    '    Try
-    '        ' التحقق من عدد السجلات في جدول البيانات
-    '        Dim rowCount As Integer = dgvSader.Rows.Count
-    '        System.Diagnostics.Debug.WriteLine($"عدد السجلات في DataGridView: {rowCount}")
-
-    '        ' التحقق من وجود سجلات غير مؤرشفة (ArchiveID IS NULL)
-    '        Dim nonArchivedCount As Integer = 0
-    '        For Each row As DataGridViewRow In dgvSader.Rows
-    '            If row.Cells("ArchiveID").Value Is Nothing OrElse row.Cells("ArchiveID").Value = DBNull.Value Then
-    '                nonArchivedCount += 1
-    '            End If
-    '        Next
-
-    '        System.Diagnostics.Debug.WriteLine($"عدد السجلات غير المؤرشفة: {nonArchivedCount}")
-
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في DebugSearchResults: {ex.Message}")
-    '    End Try
-    'End Sub
-
-    'Private Sub dtpSearchDate_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchDate.ValueChanged
-    '    ' تعيين قيمة DateTimePicker إلى TextBox بتنسيق yyyy-MM-dd
-    '    txtSearch.Text = dtpSearchDate.Value.ToString("yyyy-MM-dd")
-    '    ' تنفيذ البحث تلقائيًا عند تغيير التاريخ
-    '    PerformSearchSafely()
-    'End Sub
-
-    'Private Function GetSelectedRowIntegerValue(columnName As String) As Integer?
-    '    Try
-    '        Dim objValue As Object = GetSelectedRowObjectValue(columnName)
-    '        If objValue Is Nothing Then
-    '            Return Nothing
-    '        End If
-    '        Dim intValue As Integer
-    '        If Integer.TryParse(objValue.ToString(), intValue) Then
-    '            Return intValue
-    '        End If
-    '        Return Nothing
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في GetSelectedRowIntegerValue: {ex.Message}")
-    '        Return Nothing
-    '    End Try
-    'End Function
-
-    '''' <summary>
-    '''' فتح ملف PDF وإرساله للطباعة
-    '''' </summary>
-    'Private Sub PrintPDF(ByVal filePath As String)
-    '    Dim psi As New ProcessStartInfo()
-    '    psi.FileName = filePath
-    '    If RBDirectPrint.Checked Then
-    '        psi.Verb = "Print"
-    '    ElseIf RBPreviewBeforePrint.Checked Then
-    '        psi.Verb = "Open"
-    '    End If
-
-    '    psi.CreateNoWindow = True
-    '    psi.WindowStyle = ProcessWindowStyle.Hidden
-
-    '    Using p As New Process()
-    '        p.StartInfo = psi
-    '        p.Start()
-    '        ' 🕒 انتظر قليلاً قبل إغلاق العملية (5 ثوانٍ)
-    '        p.WaitForExit(5000)
-    '    End Using
-
-
-
-
-    'End Sub
-
-    'Private Sub HandlePrintAction()
-    '    Try
-    '        ' 1. التحقق من وجود سجل محدد
-    '        If Not IsValidRowSelected() Then
-    '            MessageBox.Show("يرجى تحديد سجل صادر للطباعة من القائمة أولاً.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            dgvSader.Focus()
-    '            Return
-    '        End If
-
-    '        ' 2. الحصول على معرف السجل المحدد
-    '        Dim selectedSaderId As Integer = GetSelectedRowId()
-    '        If selectedSaderId <= 0 Then
-    '            MessageBox.Show("معرف الصادر غير صالح.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '            Return
-    '        End If
-
-    '        ' 3. جلب البيانات مع التحقق من وجودها
-    '        Dim saderData As DataTable = saderClass.GetSaderById(selectedSaderId)
-
-    '        ' 4. التحقق من البيانات
-    '        If saderData Is Nothing Then
-    '            MessageBox.Show("لم يتم العثور على بيانات الصادر للسجل المحدد.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '            Return
-    '        End If
-
-    '        If saderData.Rows.Count = 0 Then
-    '            MessageBox.Show("لا توجد بيانات للصادر المحدد.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '            Return
-    '        End If
-
-    '        ' 5. طباعة التقرير
-    '        PrintSaderReport(saderData)
-    '        ActivityLogClass.LogUserActivity(
-    '                    GlobalData.LoggedInUserName,
-    '                    "Delete",  ' ← تم التصحيح من "Add" إلى "Delete"
-    '                    "TbSader",
-    '                    id,
-    '                    $"تم حذف كتاب صادر برقم: {numberBook}, الموضوع: {subjBook}" &
-    '                    If(archiveID > 0, $", مع حذف الأرشيف المرتبط (معرّف: {archiveID})", "")
-    '                )
-    '        ' 6. إنشاء سجل جديد بعد الطباعة
-    '        btnNew.PerformClick()
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ أثناء محاولة الطباعة: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    'Private Sub PrintSaderReport(ByVal saderDataTable As DataTable)
-    '    Try
-    '        If ListPrinter.SelectedIndex = -1 Then
-    '            MessageBox.Show("يرجى تحديد طابعة أولاً.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            Return
-    '        End If
-    '        Dim selectedPrinterName As String = ListPrinter.SelectedItem.ToString()
-    '        Me.Cursor = Cursors.WaitCursor
-    '        Dim cr As New CrystalReport1
-    '        cr.SetDataSource(saderDataTable)
-    '        ' تعيين التقرير في عنصر العرض
-    '        CRV.ReportSource = cr
-    '        CRV.Refresh()
-    '        CRV.Zoom(60)
-    '        ' تعيين الطابعة المحددة وطباعة التقرير
-    '        cr.PrintOptions.PrinterName = selectedPrinterName
-    '        cr.PrintToPrinter(1, False, 0, 0)
-    '        'MessageBox.Show("تم إرسال التقرير إلى الطابعة بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
-    '    Catch ex As Exception
-    '        MessageBox.Show("خطأ في الطباعة: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    Finally
-    '        Me.Cursor = Cursors.Default
-    '    End Try
-    'End Sub
-
-
-    '''' <summary>
-    '''' طباعة تقرير الصادر باستخدام FastReport الإصدار المفتوح
-    '''' </summary>
-    'Private Sub PrintSaderReport(ByVal saderDataTable As DataTable)
-    '    Dim report As FastReport.Report = Nothing
-    '    Try
-    '        'التحقق من وجود بيانات
-    '        If saderDataTable Is Nothing OrElse saderDataTable.Rows.Count = 0 Then
-    '            MessageBox.Show("لا توجد بيانات لطباعتها.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            Return
-    '        End If
-
-    '        'التحقق من اختيار الطابعة
-    '        If ListPrinter.SelectedIndex = -1 Then
-    '            MessageBox.Show("يرجى تحديد طابعة أولاً.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            Return
-    '        End If
-
-    '        Me.Cursor = Cursors.WaitCursor
-
-    '        'إنشاء كائن التقرير
-    '        report = New FastReport.Report()
-
-    '        'تحميل ملف التقرير
-    '        Dim reportPath As String = Path.Combine(Application.StartupPath, "Reports", "SaderReport.frx")
-
-    '        If Not File.Exists(reportPath) Then
-    '            MessageBox.Show($"لم يتم العثور على ملف التقرير: {reportPath}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '            Return
-    '        End If
-
-    '        report.Load(reportPath)
-
-    '        'ربط مصدر البيانات بالتقرير
-    '        report.RegisterData(saderDataTable, "SaderData")
-    '        report.GetDataSource("SaderData").Enabled = True
-
-    '        '✅ التحضير للتقرير (ضروري قبل الطباعة)
-    '        report.Prepare()
-
-    '        '✅ تنفيذ الطباعة مباشرة باستخدام الطابعة المحددة
-    '        report.Print(Nothing, False, ListPrinter.SelectedItem.ToString())
-
-
-
-    '    Catch ex As FileNotFoundException
-    '        MessageBox.Show($"ملف التقرير غير موجود:{vbNewLine}{ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '    Catch ex As DirectoryNotFoundException
-    '        MessageBox.Show($"مجلد التقارير غير موجود:{vbNewLine}{ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '    Catch ex As Exception
-    '        MessageBox.Show($"خطأ في الطباعة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '    Finally
-    '        'التأكد من التخلص من كائن التقرير
-    '        If report IsNot Nothing Then
-    '            report.Dispose()
-    '        End If
-    '        Me.Cursor = Cursors.Default
-    '    End Try
-    'End Sub
-
-    '' <summary>
-    '' طباعة تقرير الصادر باستخدام FastReport الإصدار المفتوح
-    '' </summary>
-
-
-
-    '''' <summary>
-    '''' طباعة تقرير الصادر باستخدام FastReport OpenSource v2025.2.12
-    '''' </summary>
-    '''' <param name="saderDataTable">جدول البيانات المطلوب طباعته</param>
-    'Private Sub PrintSaderReport(ByVal saderDataTable As DataTable)
-    '    ' التحقق من وجود بيانات
-    '    If saderDataTable Is Nothing OrElse saderDataTable.Rows.Count = 0 Then
-    '        MessageBox.Show("لا توجد بيانات لطباعتها.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        Return
-    '    End If
-
-    '    ' التحقق من اختيار الطابعة
-    '    If ListPrinter.SelectedIndex = -1 Then
-    '        MessageBox.Show("يرجى تحديد طابعة أولاً.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        Return
-    '    End If
-
-    '    Dim reportPath As String = Path.Combine(Application.StartupPath, "Reports", "SaderReport.frx")
-    '    If Not File.Exists(reportPath) Then
-    '        MessageBox.Show($"لم يتم العثور على ملف التقرير: {reportPath}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        Return
-    '    End If
-
-    '    Dim printerName As String = ListPrinter.SelectedItem.ToString()
-
-    '    ' التحقق من أن الطابعة مثبتة
-    '    Dim printerExists As Boolean = PrinterSettings.InstalledPrinters.Cast(Of String)().
-    '    Any(Function(p) String.Equals(p, printerName, StringComparison.OrdinalIgnoreCase))
-    '    If Not printerExists Then
-    '        MessageBox.Show($"الطابعة المحددة غير مثبتة على النظام: {printerName}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        Return
-    '    End If
-
-    '    Me.Cursor = Cursors.WaitCursor
-
-    '    Try
-    '        Using report As New Report()
-    '            ' تحميل التقرير
-    '            report.Load(reportPath)
-
-    '            ' ربط مصدر البيانات
-    '            report.RegisterData(saderDataTable, "SaderData")
-    '            Dim ds = report.GetDataSource("SaderData")
-    '            If ds IsNot Nothing Then
-    '                ds.Enabled = True
-    '            End If
-
-    '            ' تحضير التقرير للطباعة
-    '            If Not report.Prepare() Then
-    '                MessageBox.Show("فشل تحضير التقرير للطباعة.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '                Return
-    '            End If
-
-    '            ' إعدادات الطباعة
-    '            report.Sh
-    '            report.PrintSettings.ShowDialog = False
-    '            report.PrintSettings.Copies = 1
-    '            report.PrintSettings.Collate = True
-
-    '            ' ✅ الطباعة الفعلية
-    '            report.PrintPrepare()
-    '        End Using
-
-    '    Catch ex As Exception
-    '        MessageBox.Show($"حدث خطأ أثناء الطباعة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '    Finally
-    '        Me.Cursor = Cursors.Default
-    '    End Try
-    'End Sub
-
-
-
-
-    'Private Sub PrintSaderReport(ByVal saderDataTable As DataTable)
-    '    If saderDataTable Is Nothing OrElse saderDataTable.Rows.Count = 0 Then
-    '        MessageBox.Show("لا توجد بيانات لطباعتها.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        Return
-    '    End If
-
-    '    Dim reportPath As String = Path.Combine(Application.StartupPath, "Reports", "SaderReport.frx")
-    '    If Not File.Exists(reportPath) Then
-    '        MessageBox.Show($"لم يتم العثور على ملف التقرير: {reportPath}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        Return
-    '    End If
-
-    '    Dim tempPdf As String = Path.Combine(Path.GetTempPath(), "SaderReport.pdf")
-
-    '    Try
-    '        Using report As New Report()
-    '            report.Load(reportPath)
-    '            report.RegisterData(saderDataTable, "SaderData")
-    '            Dim ds = report.GetDataSource("SaderData")
-    '            If ds IsNot Nothing Then ds.Enabled = True
-
-    '            report.Prepare()
-
-    '            ' تصدير إلى PDF
-    '            Dim pdfExport As New PDFSimpleExport()
-    '            Using ms As New FileStream(tempPdf, FileMode.Create)
-    '                pdfExport.Export(report, ms)
-    '            End Using
-    '        End Using
-
-    '        ' طباعة PDF عبر عارض النظام الافتراضي (مثل Adobe Reader)
-    '        Dim psi As New ProcessStartInfo()
-    '        psi.FileName = tempPdf
-    '        psi.Verb = "print"
-    '        psi.CreateNoWindow = True
-    '        psi.WindowStyle = ProcessWindowStyle.Hidden
-    '        Process.Start(psi)
-
-    '    Catch ex As Exception
-    '        MessageBox.Show($"حدث خطأ أثناء الطباعة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-
-
-
-
-
-    '''' <summary>
-    '''' طباعة تقرير الصادر باستخدام FastReport.OpenSource
-    '''' </summary>
-    '''' <param name="saderDataTable"></param>
-    'Private Sub PrintSaderReport(ByVal saderDataTable As DataTable)
-    '    Dim report As Report = Nothing
-
-    '    Try
-    '        ' 🟡 التحقق من وجود بيانات
-    '        If saderDataTable Is Nothing OrElse saderDataTable.Rows.Count = 0 Then
-    '            MessageBox.Show("لا توجد بيانات لطباعتها.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            Return
-    '        End If
-
-    '        ' 🟡 التحقق من اختيار الطابعة
-    '        If ListPrinter.SelectedIndex = -1 Then
-    '            MessageBox.Show("يرجى تحديد طابعة أولاً.", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            Return
-    '        End If
-
-    '        Me.Cursor = Cursors.WaitCursor
-
-    '        ' 🟢 إنشاء كائن التقرير
-    '        report = New Report()
-
-    '        ' 🟢 تحميل ملف التقرير
-    '        Dim reportPath As String = Path.Combine(Application.StartupPath, "Reports", "SaderReport.frx")
-    '        If Not File.Exists(reportPath) Then
-    '            MessageBox.Show($"لم يتم العثور على ملف التقرير: {reportPath}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '            Return
-    '        End If
-    '        report.Load(reportPath)
-
-    '        ' 🟢 ربط مصدر البيانات
-    '        report.RegisterData(saderDataTable, "TbSader")
-    '        report.GetDataSource("TbSader").Enabled = True
-
-    '        ' 🟢 تحضير التقرير
-    '        report.Prepare()
-
-    '        ' 🟢 تصدير التقرير إلى PDF مؤقت
-    '        Dim tempPdfPath As String = Path.Combine(Path.GetTempPath(), "SaderReport.pdf")
-    '        Using pdfExport As New PDFSimpleExport()
-    '            pdfExport.Export(report, tempPdfPath)
-
-    '            'فتح التقرسر داخل فورم الصادر 
-    '            AxAcroPDF1.src = tempPdfPath
-    '        End Using
-
-    '        ' 🖨️ طباعة ملف PDF باستخدام الطابعة الافتراضية
-    '        PrintPDF(tempPdfPath)
-
-    '    Catch ex As FileNotFoundException
-    '        MessageBox.Show($"ملف التقرير غير موجود:{vbNewLine}{ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '    Catch ex As DirectoryNotFoundException
-    '        MessageBox.Show($"مجلد التقارير غير موجود:{vbNewLine}{ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '    Catch ex As Exception
-    '        MessageBox.Show($"خطأ في الطباعة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '    Finally
-    '        ' 🧹 التأكد من التخلص من كائن التقرير
-    '        If report IsNot Nothing Then
-    '            report.Dispose()
-    '        End If
-    '        AxAcroPDF1.src = Nothing
-    '        Me.Cursor = Cursors.Default
-    '    End Try
-    'End Sub
-
-    'Private Sub LoadBookCategories()
-    '    Try
-    '        ' إضافة التصنيفات إلى ComboBox
-    '        cmbBookCategory.Items.Clear()
-    '        cmbBookCategory.Items.Add("صادر")
-    '        cmbBookCategory.Items.Add("وارد")
-    '        cmbBookCategory.Items.Add("مذكرات")
-    '        ' تعيين القيمة الافتراضية
-    '        cmbBookCategory.SelectedIndex = 0 ' صادر كافتراضي
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ أثناء تحميل تصنيفات الكتاب: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    'Private Sub LoadBookCategories()
-    '    Try
-    '        ' تحديد مسار الملف (يمكنك تعديله حسب موقع الملف)
-    '        Dim filePath As String = Path.Combine(Application.StartupPath, "BookCategories.txt")
-
-    '        ' التحقق من وجود الملف
-    '        If Not File.Exists(filePath) Then
-    '            ' إذا لم يكن الملف موجودًا، قم بإنشائه مع القيم الافتراضية
-    '            Dim defaultCategories As String() = {"شركات اخرى", "الجمارك العامة", "مذكرات", "تصدير", "إفراج جمركي"}
-    '            File.WriteAllLines(filePath, defaultCategories)
-    '        End If
-
-    '        ' قراءة التصنيفات من الملف
-    '        Dim categories As String() = File.ReadAllLines(filePath)
-
-    '        ' إضافة التصنيفات إلى ComboBox
-    '        cmbBookCategory.Items.Clear()
-    '        For Each category As String In categories
-    '            ' تجاهل الأسطر الفارغة
-    '            If Not String.IsNullOrWhiteSpace(category) Then
-    '                cmbBookCategory.Items.Add(category.Trim())
-    '            End If
-    '        Next
-
-    '        ' تعيين القيمة الافتراضية (إذا كانت هناك تصنيفات)
-    '        If cmbBookCategory.Items.Count > 0 Then
-    '            cmbBookCategory.SelectedIndex = 0
-    '        End If
-
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ أثناء تحميل تصنيفات الكتاب: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    'Private Sub CloseFileInWebBrowser(filepath As String)
-    '    Try
-    '        ' البحث عن جميع عناصر WebBrowser في الفورم
-    '        For Each control As Control In Me.Controls
-    '            If TypeOf control Is WebBrowser Then
-    '                Dim webBrowser As WebBrowser = DirectCast(control, WebBrowser)
-    '                webBrowser.Navigate("about:blank")
-    '                Application.DoEvents()
-    '                Thread.Sleep(200)
-    '            End If
-    '        Next
-
-    '        ' البحث عن جميع عناصر WebBrowser في الفورمات الأخرى
-    '        For Each form As Form In Application.OpenForms
-    '            If form.Name <> Me.Name Then
-    '                For Each control As Control In form.Controls
-    '                    If TypeOf control Is WebBrowser Then
-    '                        Dim webBrowser As WebBrowser = DirectCast(control, WebBrowser)
-    '                        webBrowser.Navigate("about:blank")
-    '                        Application.DoEvents()
-    '                        Thread.Sleep(200)
-    '                    End If
-    '                Next
-    '            End If
-    '        Next
-    '    Catch ex As Exception
-    '        ' تجاهل الأخطاء في إغلاق WebBrowser
-    '    End Try
-    'End Sub
-
-    'Private Sub InitializeDeleteButton()
-    '    Try
-    '        DGV.AddDeleteButtonColumn(
-    '                    dataGridView:=dgvSader,
-    '                    columnName:="DeleteButton",
-    '                    headerText:="حذف",
-    '                    buttonText:="حذف",
-    '                    permissionForm:="SaderForm",
-    '                    permissionAction:="Delete",
-    '                    confirmMessage:="هل تريد حذف هذا الصادر؟",
-    '                    successMessage:="تم حذف الصادر بنجاح",
-    '                    deleteAction:=AddressOf DeleteSaderRecord
-    '            )
-    '    Catch ex As Exception
-    '        MessageBox.Show($"حدث خطأ: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    '''' <summary>
-    '''' دالة حذف سجل الصادر
-    '''' </summary>
-    'Private Sub DeleteSaderRecord(id As Integer)
-    '    Try
-    '        Dim saderClass As New SaderClass()
-    '        If saderClass.DeleteSader(id) Then
-    '            ' تحديث عداد الصادرة
-    '            DataHelper.UpdateSaderCount()
-    '            ' تحديث عداد السجلات غير المرتبطة
-    '            DataHelper.UpdateUnarchivedSaderCount()
-    '        Else
-    '            Throw New Exception("فشل في حذف الصادر")
-    '        End If
-    '    Catch ex As Exception
-    '        Throw New Exception($"خطأ في حذف الصادر: {ex.Message}")
-    '    End Try
-    'End Sub
-
-    'Private Sub TimerRefrech_Tick(sender As Object, e As EventArgs) Handles TimerRefrech.Tick
-    '    Try
-
-    '        GenerateNextBookNumber()
-    '        SelectAll_TbSader(dgvSader)
-    '        HighlightUnarchivedRecords()
-    '        ' الاشتراك في الحدث
-    '        AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
-    '        ' تحديث العداد في الواجهة
-    '        UpdateRecordCount()
-    '    Catch ex As Exception
-    '        MessageBox.Show($"خطأ في الإتصال بالسيرفر: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-
-    'End Sub
 #End Region
 
 End Class

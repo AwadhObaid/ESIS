@@ -25,9 +25,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SaderForm))
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.nudCopies = New System.Windows.Forms.NumericUpDown()
+        Me.cmbTrays = New System.Windows.Forms.ComboBox()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.PicMsg = New System.Windows.Forms.PictureBox()
         Me.lblMessage = New System.Windows.Forms.Label()
@@ -47,8 +48,8 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.cmbBookCategory = New System.Windows.Forms.ComboBox()
         Me.dgvSader = New System.Windows.Forms.DataGridView()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.AxAcroPDF1 = New AxAcroPDFLib.AxAcroPDF()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.ListPrinter = New System.Windows.Forms.CheckedListBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -92,13 +93,12 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        CType(Me.nudCopies, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel3.SuspendLayout()
         CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         CType(Me.dgvSader, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox4.SuspendLayout()
-        CType(Me.AxAcroPDF1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TLPControls.SuspendLayout()
@@ -118,6 +118,8 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.nudCopies)
+        Me.Panel2.Controls.Add(Me.cmbTrays)
         Me.Panel2.Controls.Add(Me.Panel3)
         Me.Panel2.Controls.Add(Me.Label2)
         Me.Panel2.Controls.Add(Me.btnAddCategory)
@@ -125,7 +127,8 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel2.Controls.Add(Me.GroupBox5)
         Me.Panel2.Controls.Add(Me.cmbBookCategory)
         Me.Panel2.Controls.Add(Me.dgvSader)
-        Me.Panel2.Controls.Add(Me.GroupBox4)
+        Me.Panel2.Controls.Add(Me.Label4)
+        Me.Panel2.Controls.Add(Me.Label3)
         Me.Panel2.Controls.Add(Me.GroupBox3)
         Me.Panel2.Controls.Add(Me.GroupBox1)
         Me.Panel2.Controls.Add(Me.lblRecordCount)
@@ -135,6 +138,25 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(1379, 678)
         Me.Panel2.TabIndex = 0
+        '
+        'nudCopies
+        '
+        Me.nudCopies.Location = New System.Drawing.Point(16, 317)
+        Me.nudCopies.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudCopies.Name = "nudCopies"
+        Me.nudCopies.Size = New System.Drawing.Size(100, 32)
+        Me.nudCopies.TabIndex = 55
+        Me.nudCopies.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.nudCopies.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'cmbTrays
+        '
+        Me.cmbTrays.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbTrays.FormattingEnabled = True
+        Me.cmbTrays.Location = New System.Drawing.Point(122, 317)
+        Me.cmbTrays.Name = "cmbTrays"
+        Me.cmbTrays.Size = New System.Drawing.Size(117, 32)
+        Me.cmbTrays.TabIndex = 33
         '
         'Panel3
         '
@@ -215,7 +237,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox5.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Padding = New System.Windows.Forms.Padding(3, 6, 3, 6)
-        Me.GroupBox5.Size = New System.Drawing.Size(257, 290)
+        Me.GroupBox5.Size = New System.Drawing.Size(257, 310)
         Me.GroupBox5.TabIndex = 21
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "خيارات البحث 🔎"
@@ -394,7 +416,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvSader.DefaultCellStyle = DataGridViewCellStyle2
-        Me.dgvSader.Location = New System.Drawing.Point(505, 359)
+        Me.dgvSader.Location = New System.Drawing.Point(2, 359)
         Me.dgvSader.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.dgvSader.MultiSelect = False
         Me.dgvSader.Name = "dgvSader"
@@ -410,30 +432,30 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.dgvSader.RowHeadersWidth = 51
         Me.dgvSader.RowTemplate.Height = 24
         Me.dgvSader.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvSader.Size = New System.Drawing.Size(862, 278)
+        Me.dgvSader.Size = New System.Drawing.Size(1365, 278)
         Me.dgvSader.TabIndex = 24
         '
-        'GroupBox4
+        'Label4
         '
-        Me.GroupBox4.Controls.Add(Me.AxAcroPDF1)
-        Me.GroupBox4.Location = New System.Drawing.Point(8, 327)
-        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(3, 6, 3, 6)
-        Me.GroupBox4.Size = New System.Drawing.Size(486, 351)
-        Me.GroupBox4.TabIndex = 26
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "رقم الصادر 📄"
+        Me.Label4.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.Label4.Location = New System.Drawing.Point(16, 285)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(100, 30)
+        Me.Label4.TabIndex = 4
+        Me.Label4.Text = "عدد النسخ"
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'AxAcroPDF1
+        'Label3
         '
-        Me.AxAcroPDF1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.AxAcroPDF1.Enabled = True
-        Me.AxAcroPDF1.Location = New System.Drawing.Point(3, 31)
-        Me.AxAcroPDF1.Name = "AxAcroPDF1"
-        Me.AxAcroPDF1.OcxState = CType(resources.GetObject("AxAcroPDF1.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.AxAcroPDF1.Size = New System.Drawing.Size(480, 314)
-        Me.AxAcroPDF1.TabIndex = 1
+        Me.Label3.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.Label3.Location = New System.Drawing.Point(122, 283)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(117, 30)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "الدرج"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'GroupBox3
         '
@@ -443,7 +465,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox3.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Padding = New System.Windows.Forms.Padding(3, 6, 3, 6)
-        Me.GroupBox3.Size = New System.Drawing.Size(231, 290)
+        Me.GroupBox3.Size = New System.Drawing.Size(231, 242)
         Me.GroupBox3.TabIndex = 25
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "الطابعات 🖨️"
@@ -458,7 +480,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.ListPrinter.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.ListPrinter.Name = "ListPrinter"
         Me.ListPrinter.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ListPrinter.Size = New System.Drawing.Size(225, 258)
+        Me.ListPrinter.Size = New System.Drawing.Size(225, 210)
         Me.ListPrinter.TabIndex = 19
         '
         'GroupBox1
@@ -713,23 +735,23 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.ComboSubjBook.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.ComboSubjBook.FormattingEnabled = True
         Me.ComboSubjBook.IntegralHeight = False
-        Me.ComboSubjBook.Location = New System.Drawing.Point(428, 146)
+        Me.ComboSubjBook.Location = New System.Drawing.Point(420, 146)
         Me.ComboSubjBook.Name = "ComboSubjBook"
-        Me.ComboSubjBook.Size = New System.Drawing.Size(329, 31)
+        Me.ComboSubjBook.Size = New System.Drawing.Size(337, 31)
         Me.ComboSubjBook.TabIndex = 24
         '
         'btnAddNewSubj
         '
         Me.btnAddNewSubj.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(167, Byte), Integer), CType(CType(69, Byte), Integer))
         Me.btnAddNewSubj.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAddNewSubj.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.btnAddNewSubj.Font = New System.Drawing.Font("Cairo", 7.0!, System.Drawing.FontStyle.Bold)
         Me.btnAddNewSubj.ForeColor = System.Drawing.Color.White
         Me.btnAddNewSubj.Location = New System.Drawing.Point(287, 146)
         Me.btnAddNewSubj.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnAddNewSubj.Name = "btnAddNewSubj"
-        Me.btnAddNewSubj.Size = New System.Drawing.Size(136, 31)
+        Me.btnAddNewSubj.Size = New System.Drawing.Size(128, 31)
         Me.btnAddNewSubj.TabIndex = 8
-        Me.btnAddNewSubj.Text = "إضافة موضوع  📄"
+        Me.btnAddNewSubj.Text = "إضافة موضوع جديد 📄"
         Me.btnAddNewSubj.UseVisualStyleBackColor = False
         '
         'TableLayoutPanel1
@@ -775,7 +797,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         'btnClose
         '
-        Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(108, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(125, Byte), Integer))
+        Me.btnClose.BackColor = System.Drawing.Color.FromArgb(CType(CType(22, Byte), Integer), CType(CType(53, Byte), Integer), CType(CType(69, Byte), Integer))
         Me.btnClose.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnClose.FlatAppearance.BorderSize = 0
         Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -998,14 +1020,13 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel1.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        CType(Me.nudCopies, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel3.ResumeLayout(False)
         CType(Me.PicMsg, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.TableLayoutPanel3.ResumeLayout(False)
         CType(Me.dgvSader, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox4.ResumeLayout(False)
-        CType(Me.AxAcroPDF1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -1027,7 +1048,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents dtpStartDate As DateTimePicker
     Friend WithEvents lblStartDate As Label
     Friend WithEvents dgvSader As DataGridView
-    Friend WithEvents GroupBox4 As GroupBox
     'Friend WithEvents CRV As CrystalDecisions.Windows.Forms.CrystalReportViewer
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents ListPrinter As CheckedListBox
@@ -1069,7 +1089,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents btnShowUnarchivedOnly As Button
     Friend WithEvents lblFilterStatus As Label
     Friend WithEvents TimerMsg As Timer
-    Friend WithEvents AxAcroPDF1 As AxAcroPDFLib.AxAcroPDF
     Friend WithEvents RBDirectPrint As RadioButton
     Friend WithEvents RBPreviewBeforePrint As RadioButton
     Friend WithEvents rbUnarchivedSader As RadioButton
@@ -1082,5 +1101,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents lblArchiveMsg As Label
     Friend WithEvents Timer1 As Timer
     Friend WithEvents CbDateBook As CheckBox
+    Friend WithEvents cmbTrays As ComboBox
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents nudCopies As NumericUpDown
 End Class
 

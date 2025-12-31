@@ -3898,7 +3898,7 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:ESIS_Installer"
+        "ProductName" = "8:ESIS_Setup"
         "ProductCode" = "8:{9B4E98D5-78F8-4546-A595-07B2E32C0B78}"
         "PackageCode" = "8:{F8EF779B-AD78-42FF-8D6D-69988A35276F}"
         "UpgradeCode" = "8:{77F80CBC-DA59-48F7-B9AD-71DBF729B911}"
@@ -3911,7 +3911,7 @@
         "Manufacturer" = "8:Awadh"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:ESIS_Installer"
+        "Title" = "8:ESIS_Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Awadh"
         "Keywords" = "8:"
@@ -4022,7 +4022,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_00510B2CC0D04B1F9C770AEAD2533914"
             {
-            "Name" = "8:نظام إدارة الوثائق"
+            "Name" = "8:ESIS System"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -4036,7 +4036,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_8D98DC3D229741F9815191893407BD3C"
             {
-            "Name" = "8:نظام إدارة الوثائق"
+            "Name" = "8:ESIS System"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"

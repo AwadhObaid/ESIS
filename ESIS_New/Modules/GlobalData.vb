@@ -4,6 +4,7 @@ Imports System.Security
 Imports System.Threading
 Imports ALquhaliLibrary.DBCLS
 Imports Microsoft.Win32
+Imports PdfiumViewer
 
 Module GlobalData
 
@@ -993,6 +994,8 @@ Module GlobalData
 
         ' تحميل الجديد
         viewer.Document = PdfiumViewer.PdfDocument.Load(pdfPath)
+        viewer.ZoomMode = PdfViewerZoomMode.FitBest
+
     End Sub
 
     Public Sub ClearPdf(viewer As PdfiumViewer.PdfViewer)

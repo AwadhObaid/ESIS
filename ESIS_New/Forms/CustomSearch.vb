@@ -74,7 +74,7 @@ Public Class CustomSearch
         ' تعطيل أزرار الملفات حتى يتم اختيار ملف
         btnOpenLoction.Enabled = False
         btnPrint.Enabled = False
-
+        txtSearchPath.Text = My.Settings.DefaultPathSearch
 
         ' ✅ بدلاً من ذلك، ابدأ البحث بعد أن يتم عرض النموذج
         AddHandler Me.Shown, AddressOf CustomSearch_Shown
@@ -759,6 +759,36 @@ Public Class CustomSearch
         ProgressBar1.Visible = False
         progressLabel.Visible = False
     End Sub
+
+    Private Sub btnChooseFolder_Click(sender As Object, e As EventArgs) Handles btnChooseFolder.Click
+        Using fbd As New FolderBrowserDialog()
+            fbd.Description = "اختر مجلد البحث"
+            fbd.ShowNewFolderButton = True
+
+            ' افتح على المسار الحالي إن وجد
+            Dim currentPath As String = My.Settings.DefaultPathSearch
+            If Not String.IsNullOrWhiteSpace(currentPath) AndAlso IO.Directory.Exists(currentPath) Then
+                fbd.SelectedPath = currentPath
+            End If
+
+            If fbd.ShowDialog(Me) = DialogResult.OK Then
+                ' حفظ المسار في الإعدادات
+                My.Settings.DefaultPathSearch = fbd.SelectedPath
+                My.Settings.Save()
+
+                ' (اختياري) عرض المسار في TextBox
+                If Controls.Find("txtSearchPath", True).Length > 0 Then
+                    Dim tb = TryCast(Me.Controls.Find("txtSearchPath", True).FirstOrDefault(), TextBox)
+                    If tb IsNot Nothing Then tb.Text = fbd.SelectedPath
+                End If
+
+                ' (اختياري) إعادة تنفيذ البحث مباشرة إن كان عندك TextBox للبحث
+                ' مثال: StartSearch() أو TriggerSearchWithDelay()
+                ' StartSearch()
+            End If
+        End Using
+    End Sub
+
 #End Region
 
 #Region "************************ أدوات مساعدة وخدمات ***********************"

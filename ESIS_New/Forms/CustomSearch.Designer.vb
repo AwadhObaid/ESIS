@@ -51,6 +51,8 @@ Partial Class CustomSearch
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.pdfViewer = New PdfiumViewer.PdfViewer()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.txtSearchPath = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Panel1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -186,7 +188,7 @@ Partial Class CustomSearch
         '
         Me.StatusStrip1.BackColor = System.Drawing.SystemColors.GradientActiveCaption
         Me.StatusStrip1.Font = New System.Drawing.Font("Consolas", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.TxtMsg, Me.ProgressBar1, Me.progressLabel})
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.TxtMsg, Me.ProgressBar1, Me.progressLabel, Me.ToolStripStatusLabel2, Me.txtSearchPath})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 9)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(1327, 23)
@@ -290,6 +292,17 @@ Partial Class CustomSearch
         Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
         Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
         '
+        'ToolStripStatusLabel2
+        '
+        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(98, 18)
+        Me.ToolStripStatusLabel2.Text = "مسار البحث :  "
+        '
+        'txtSearchPath
+        '
+        Me.txtSearchPath.Name = "txtSearchPath"
+        Me.txtSearchPath.Size = New System.Drawing.Size(0, 18)
+        '
         'CustomSearch
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
@@ -350,4 +363,6 @@ Partial Class CustomSearch
     Friend WithEvents ImageList1 As ImageList
     Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
     Friend WithEvents btnChooseFolder As ToolStripButton
+    Friend WithEvents ToolStripStatusLabel2 As ToolStripStatusLabel
+    Friend WithEvents txtSearchPath As ToolStripStatusLabel
 End Class

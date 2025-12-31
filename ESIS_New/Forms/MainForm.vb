@@ -1234,15 +1234,15 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     End Sub
 
     Private Sub BtnReportSelectionForm_Click(sender As Object, e As EventArgs) Handles BtnReportSelectionForm.Click
-        Try
-            ' فتح نموذج اختيار التقرير
-            Dim reportSelectionForm As New ReportSelectionForm()
-            AddHandler reportSelectionForm.ReportSelected, AddressOf OnReportSelected
-            AddHandler reportSelectionForm.CancelReportSelection, AddressOf OnReportSelectionCancelled
-            reportSelectionForm.ShowDialog(Me)
-        Catch ex As Exception
-            MessageBox.Show($"خطأ في فتح نافذة التقارير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+        'Try
+        '    ' فتح نموذج اختيار التقرير
+        '    Dim reportSelectionForm As New ReportSelectionForm()
+        '    AddHandler reportSelectionForm.ReportSelected, AddressOf OnReportSelected
+        '    AddHandler reportSelectionForm.CancelReportSelection, AddressOf OnReportSelectionCancelled
+        '    reportSelectionForm.ShowDialog(Me)
+        'Catch ex As Exception
+        '    MessageBox.Show($"خطأ في فتح نافذة التقارير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        'End Try
 
     End Sub
 
@@ -1328,126 +1328,126 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
 #End Region
 
-#Region "التقارير"
+    '#Region "التقارير"
 
-    ' في تعريف المتغيرات في النموذج الرئيسي (MainForm.vb)
-    Private _reportGenerator As New ReportGenerator()
-    Private _reportType As ReportGenerator.ReportType = ReportGenerator.ReportType.OutgoingRecords
+    '    ' في تعريف المتغيرات في النموذج الرئيسي (MainForm.vb)
+    '    Private _reportGenerator As New ReportGenerator()
+    '    Private _reportType As ReportGenerator.ReportType = ReportGenerator.ReportType.OutgoingRecords
 
-    '''' <summary>
-    '''' معالجة تأكيد معايير التقرير
-    '''' </summary>
-    'Private Sub OnCriteriaConfirmed(criteria As ReportGenerator.ReportCriteria)
-    '    Try
-    '        ' تعيين معايير التقرير
-    '        _reportGenerator.SetReportType(_reportType) ' تم تعديل هذا السطر ليكون صحيحاً
-    '        _reportGenerator.SetReportCriteria(criteria)
+    '    '''' <summary>
+    '    '''' معالجة تأكيد معايير التقرير
+    '    '''' </summary>
+    '    'Private Sub OnCriteriaConfirmed(criteria As ReportGenerator.ReportCriteria)
+    '    '    Try
+    '    '        ' تعيين معايير التقرير
+    '    '        _reportGenerator.SetReportType(_reportType) ' تم تعديل هذا السطر ليكون صحيحاً
+    '    '        _reportGenerator.SetReportCriteria(criteria)
 
-    '        ' إنشاء التقرير
-    '        Dim reportDocument As ReportDocument = _reportGenerator.GenerateReport()
+    '    '        ' إنشاء التقرير
+    '    '        Dim reportDocument As ReportDocument = _reportGenerator.GenerateReport()
 
-    '        ' فتح عارض التقرير
-    '        Dim reportViewerForm As New ReportViewerForm(reportDocument, _reportType, criteria)
-    '        AddHandler reportViewerForm.ReportClosed, AddressOf OnReportClosed
-    '        reportViewerForm.MdiParent = Me
-    '        reportViewerForm.Show()
-    '    Catch ex As Exception
-    '        MessageBox.Show($"خطأ في إنشاء التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
+    '    '        ' فتح عارض التقرير
+    '    '        Dim reportViewerForm As New ReportViewerForm(reportDocument, _reportType, criteria)
+    '    '        AddHandler reportViewerForm.ReportClosed, AddressOf OnReportClosed
+    '    '        reportViewerForm.MdiParent = Me
+    '    '        reportViewerForm.Show()
+    '    '    Catch ex As Exception
+    '    '        MessageBox.Show($"خطأ في إنشاء التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    '    End Try
+    '    'End Sub
 
-    '''' <summary>
-    '''' معالجة اختيار نوع التقرير
-    '''' </summary>
-    'Private Sub OnReportSelected(reportType As ReportGenerator.ReportType)
-    '    Try
-    '        ' فتح نموذج معايير التقرير
-    '        Dim reportCriteriaForm As New ReportCriteriaForm(reportType)
-    '        AddHandler reportCriteriaForm.CriteriaConfirmed, AddressOf OnCriteriaConfirmed
-    '        AddHandler reportCriteriaForm.CancelCriteria, AddressOf OnCriteriaCancelled
-    '        reportCriteriaForm.ShowDialog(Me)
-    '    Catch ex As Exception
-    '        MessageBox.Show($"خطأ في اختيار معايير التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
+    '    '''' <summary>
+    '    '''' معالجة اختيار نوع التقرير
+    '    '''' </summary>
+    '    'Private Sub OnReportSelected(reportType As ReportGenerator.ReportType)
+    '    '    Try
+    '    '        ' فتح نموذج معايير التقرير
+    '    '        Dim reportCriteriaForm As New ReportCriteriaForm(reportType)
+    '    '        AddHandler reportCriteriaForm.CriteriaConfirmed, AddressOf OnCriteriaConfirmed
+    '    '        AddHandler reportCriteriaForm.CancelCriteria, AddressOf OnCriteriaCancelled
+    '    '        reportCriteriaForm.ShowDialog(Me)
+    '    '    Catch ex As Exception
+    '    '        MessageBox.Show($"خطأ في اختيار معايير التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    '    End Try
+    '    'End Sub
 
-    ''' <summary>
-    ''' معالجة اختيار نوع التقرير
-    ''' </summary>
-    Private Sub OnReportSelected(reportType As ReportGenerator.ReportType)
-        Try
-            ' حفظ نوع التقرير
-            _reportType = reportType
+    '    ''' <summary>
+    '    ''' معالجة اختيار نوع التقرير
+    '    ''' </summary>
+    '    Private Sub OnReportSelected(reportType As ReportGenerator.ReportType)
+    '        Try
+    '            ' حفظ نوع التقرير
+    '            _reportType = reportType
 
-            ' فتح نموذج معايير التقرير
-            Dim reportCriteriaForm As New ReportCriteriaForm(reportType)
-            AddHandler reportCriteriaForm.CriteriaConfirmed, AddressOf OnCriteriaConfirmed
-            AddHandler reportCriteriaForm.CancelCriteria, AddressOf OnCriteriaCancelled
-            reportCriteriaForm.ShowDialog(Me)
-        Catch ex As Exception
-            MessageBox.Show($"خطأ في اختيار معايير التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
+    '            ' فتح نموذج معايير التقرير
+    '            Dim reportCriteriaForm As New ReportCriteriaForm(reportType)
+    '            AddHandler reportCriteriaForm.CriteriaConfirmed, AddressOf OnCriteriaConfirmed
+    '            AddHandler reportCriteriaForm.CancelCriteria, AddressOf OnCriteriaCancelled
+    '            reportCriteriaForm.ShowDialog(Me)
+    '        Catch ex As Exception
+    '            MessageBox.Show($"خطأ في اختيار معايير التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        End Try
+    '    End Sub
 
-    ''' <summary>
-    ''' معالجة تأكيد معايير التقرير
-    ''' </summary>
-    Private Sub OnCriteriaConfirmed(criteria As ReportGenerator.ReportCriteria)
-        Try
-            ' تعيين معايير التقرير
-            _reportGenerator.SetReportType(_reportType)
-            _reportGenerator.SetReportCriteria(criteria)
+    '    ''' <summary>
+    '    ''' معالجة تأكيد معايير التقرير
+    '    ''' </summary>
+    '    Private Sub OnCriteriaConfirmed(criteria As ReportGenerator.ReportCriteria)
+    '        Try
+    '            ' تعيين معايير التقرير
+    '            _reportGenerator.SetReportType(_reportType)
+    '            _reportGenerator.SetReportCriteria(criteria)
 
-            ' إنشاء التقرير
-            Dim reportDocument As ReportDocument = _reportGenerator.GenerateReport()
+    '            ' إنشاء التقرير
+    '            Dim reportDocument As ReportDocument = _reportGenerator.GenerateReport()
 
-            ' فتح عارض التقرير
-            Dim reportViewerForm As New ReportViewerForm(reportDocument, _reportType, criteria)
-            AddHandler reportViewerForm.ReportClosed, AddressOf OnReportClosed
-            reportViewerForm.MdiParent = Me
-            reportViewerForm.Show()
-        Catch ex As Exception
-            MessageBox.Show($"خطأ في إنشاء التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
+    '            ' فتح عارض التقرير
+    '            Dim reportViewerForm As New ReportViewerForm(reportDocument, _reportType, criteria)
+    '            AddHandler reportViewerForm.ReportClosed, AddressOf OnReportClosed
+    '            reportViewerForm.MdiParent = Me
+    '            reportViewerForm.Show()
+    '        Catch ex As Exception
+    '            MessageBox.Show($"خطأ في إنشاء التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        End Try
+    '    End Sub
 
-    ''' <summary>
-    ''' معالجة إغلاق التقرير
-    ''' </summary>
-    Private Sub OnReportClosed()
-        Try
-            ' يمكن إضافة أي معالجة إضافية هنا
-            System.Diagnostics.Debug.WriteLine("تم إغلاق التقرير")
-        Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إغلاق التقرير: {ex.Message}")
-        End Try
-    End Sub
+    '    ''' <summary>
+    '    ''' معالجة إغلاق التقرير
+    '    ''' </summary>
+    '    Private Sub OnReportClosed()
+    '        Try
+    '            ' يمكن إضافة أي معالجة إضافية هنا
+    '            System.Diagnostics.Debug.WriteLine("تم إغلاق التقرير")
+    '        Catch ex As Exception
+    '            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إغلاق التقرير: {ex.Message}")
+    '        End Try
+    '    End Sub
 
-    ''' <summary>
-    ''' معالجة إلغاء اختيار التقرير
-    ''' </summary>
-    Private Sub OnReportSelectionCancelled()
-        Try
-            ' يمكن إضافة أي معالجة إضافية هنا
-            System.Diagnostics.Debug.WriteLine("تم إلغاء اختيار التقرير")
-        Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إلغاء اختيار التقرير: {ex.Message}")
-        End Try
-    End Sub
+    '    ''' <summary>
+    '    ''' معالجة إلغاء اختيار التقرير
+    '    ''' </summary>
+    '    Private Sub OnReportSelectionCancelled()
+    '        Try
+    '            ' يمكن إضافة أي معالجة إضافية هنا
+    '            System.Diagnostics.Debug.WriteLine("تم إلغاء اختيار التقرير")
+    '        Catch ex As Exception
+    '            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إلغاء اختيار التقرير: {ex.Message}")
+    '        End Try
+    '    End Sub
 
-    ''' <summary>
-    ''' معالجة إلغاء معايير التقرير
-    ''' </summary>
-    Private Sub OnCriteriaCancelled()
-        Try
-            ' يمكن إضافة أي معالجة إضافية هنا
-            System.Diagnostics.Debug.WriteLine("تم إلغاء معايير التقرير")
-        Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إلغاء معايير التقرير: {ex.Message}")
-        End Try
-    End Sub
+    '    ''' <summary>
+    '    ''' معالجة إلغاء معايير التقرير
+    '    ''' </summary>
+    '    Private Sub OnCriteriaCancelled()
+    '        Try
+    '            ' يمكن إضافة أي معالجة إضافية هنا
+    '            System.Diagnostics.Debug.WriteLine("تم إلغاء معايير التقرير")
+    '        Catch ex As Exception
+    '            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إلغاء معايير التقرير: {ex.Message}")
+    '        End Try
+    '    End Sub
 
-#End Region
+    '#End Region
 
 #Region "النماذج الالكترونية"
 
@@ -1926,17 +1926,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         ShowOverlayForm(AboutForm)
     End Sub
 
-    Private Sub btnActivityLog_Click(sender As Object, e As EventArgs) Handles btnActivityLog.Click
-        Try
-            '' التحقق من صلاحية عرض نموذج المستخدمين
-            'If Not CheckPermission("ViewActivityLog", "عرض سجلات الحركة") Then
-            '    Return
-            'End If
-            OpenMdiForm(Of UserActivityLogForm)(Me)
-        Catch ex As Exception
-            MessageBox.Show($"خطأ في فتح سجلات الحركة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
+
 
     Private Sub btnServerConnection_Click(sender As Object, e As EventArgs) Handles btnServerConnection.Click
 

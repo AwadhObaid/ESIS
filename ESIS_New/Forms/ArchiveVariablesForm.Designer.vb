@@ -622,7 +622,6 @@ Partial Class ArchiveVariablesForm
         Me.txtSearchDefaultPath.Font = New System.Drawing.Font("Cairo", 10.0!, System.Drawing.FontStyle.Bold)
         Me.txtSearchDefaultPath.Location = New System.Drawing.Point(130, 36)
         Me.txtSearchDefaultPath.Name = "txtSearchDefaultPath"
-        Me.txtSearchDefaultPath.ReadOnly = True
         Me.txtSearchDefaultPath.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtSearchDefaultPath.Size = New System.Drawing.Size(460, 32)
         Me.txtSearchDefaultPath.TabIndex = 692
@@ -707,7 +706,6 @@ Partial Class ArchiveVariablesForm
         Me.PDFStoredPath.Font = New System.Drawing.Font("Cairo", 10.0!, System.Drawing.FontStyle.Bold)
         Me.PDFStoredPath.Location = New System.Drawing.Point(130, 208)
         Me.PDFStoredPath.Name = "PDFStoredPath"
-        Me.PDFStoredPath.ReadOnly = True
         Me.PDFStoredPath.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.PDFStoredPath.Size = New System.Drawing.Size(460, 32)
         Me.PDFStoredPath.TabIndex = 6
@@ -745,7 +743,6 @@ Partial Class ArchiveVariablesForm
         Me.ScandImagePath.Font = New System.Drawing.Font("Cairo", 10.0!, System.Drawing.FontStyle.Bold)
         Me.ScandImagePath.Location = New System.Drawing.Point(130, 150)
         Me.ScandImagePath.Name = "ScandImagePath"
-        Me.ScandImagePath.ReadOnly = True
         Me.ScandImagePath.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ScandImagePath.Size = New System.Drawing.Size(460, 32)
         Me.ScandImagePath.TabIndex = 3
@@ -783,7 +780,6 @@ Partial Class ArchiveVariablesForm
         Me.ExternalSoredPath.Font = New System.Drawing.Font("Cairo", 10.0!, System.Drawing.FontStyle.Bold)
         Me.ExternalSoredPath.Location = New System.Drawing.Point(130, 92)
         Me.ExternalSoredPath.Name = "ExternalSoredPath"
-        Me.ExternalSoredPath.ReadOnly = True
         Me.ExternalSoredPath.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ExternalSoredPath.Size = New System.Drawing.Size(460, 32)
         Me.ExternalSoredPath.TabIndex = 2

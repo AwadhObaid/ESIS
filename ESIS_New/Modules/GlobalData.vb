@@ -977,6 +977,38 @@ Module GlobalData
 
 #Region "====================== ( Archive Veribles ) ==========================="
 
+    Public Sub ShowPdf(viewer As PdfiumViewer.PdfViewer, pdfPath As String)
+        If viewer Is Nothing Then Return
+
+        ' اغلاق المستند السابق لتفادي قفل الملف
+        Try
+            If viewer.Document IsNot Nothing Then
+                viewer.Document.Dispose()
+                viewer.Document = Nothing
+            End If
+        Catch
+        End Try
+
+        If String.IsNullOrWhiteSpace(pdfPath) OrElse Not IO.File.Exists(pdfPath) Then Return
+
+        ' تحميل الجديد
+        viewer.Document = PdfiumViewer.PdfDocument.Load(pdfPath)
+    End Sub
+
+    Public Sub ClearPdf(viewer As PdfiumViewer.PdfViewer)
+        If viewer Is Nothing Then Return
+        Try
+            If viewer.Document IsNot Nothing Then
+                viewer.Document.Dispose()
+                viewer.Document = Nothing
+            End If
+        Catch
+        End Try
+    End Sub
+
+
+
+
     'Clear Archive Veribles Controls
     Public Sub ClearContolOfFrmArchiveVariables(ByVal xx As ArchiveVariablesForm)
         Clear_Control_On_TabControls(xx.TabControl1)

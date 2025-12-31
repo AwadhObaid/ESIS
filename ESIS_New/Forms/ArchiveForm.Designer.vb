@@ -69,7 +69,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.lblSearch = New System.Windows.Forms.Label()
         Me.dgvArchive = New System.Windows.Forms.DataGridView()
         Me.btnClose = New System.Windows.Forms.Button()
-        Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
+        Me.pdfViewer = New PdfiumViewer.PdfViewer()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.PicMsg = New System.Windows.Forms.PictureBox()
@@ -762,22 +762,22 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.btnClose.Text = "إغلاق"
         Me.btnClose.UseVisualStyleBackColor = False
         '
-        'WebBrowser1
+        'pdfViewer
         '
-        Me.WebBrowser1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.WebBrowser1.Location = New System.Drawing.Point(3, 28)
-        Me.WebBrowser1.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
-        Me.WebBrowser1.MinimumSize = New System.Drawing.Size(17, 30)
-        Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(654, 472)
-        Me.WebBrowser1.TabIndex = 5
+        Me.pdfViewer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pdfViewer.Location = New System.Drawing.Point(3, 28)
+        Me.pdfViewer.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
+        Me.pdfViewer.MinimumSize = New System.Drawing.Size(17, 30)
+        Me.pdfViewer.Name = "pdfViewer"
+        Me.pdfViewer.Size = New System.Drawing.Size(654, 472)
+        Me.pdfViewer.TabIndex = 5
         '
         'GroupBox3
         '
         Me.GroupBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox3.Controls.Add(Me.WebBrowser1)
+        Me.GroupBox3.Controls.Add(Me.pdfViewer)
         Me.GroupBox3.Location = New System.Drawing.Point(780, 9)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(660, 503)
@@ -887,7 +887,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
     Friend WithEvents lblSearch As Label
     Friend WithEvents dgvArchive As DataGridView
     Friend WithEvents btnClose As Button
-    Friend WithEvents WebBrowser1 As WebBrowser
+    Friend WithEvents pdfViewer As PdfiumViewer.PdfViewer
     Friend WithEvents btnBrowseFile As Button
     Friend WithEvents btnSelectArchive As Button
     Friend WithEvents btnNew As Button

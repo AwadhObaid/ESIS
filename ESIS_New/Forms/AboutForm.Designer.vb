@@ -61,8 +61,8 @@ Partial Class AboutForm
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(606, 136)
         Me.Label2.TabIndex = 5
-        Me.Label2.Text = "نظام داخلي صمم خصيصا لأرشفة وحفظ الكتب الصادرة والواردة التابعة لمراقبة الشحن وال" &
-    "تأمين  " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "تم التصميم والبرمجة من قبل // awadh2999h@gmail.com"
+        Me.Label2.Text = "نظام داخلي صمم خصيصا لأرشفة وحفظ الكتب الصادرة والواردة التابعة لقسم الشحن والتأم" &
+    "ين  " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "تم التصميم والبرمجة من قبل // awadh2999h@gmail.com"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label3

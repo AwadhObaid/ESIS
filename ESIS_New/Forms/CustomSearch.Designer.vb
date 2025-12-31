@@ -38,6 +38,7 @@ Partial Class CustomSearch
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.LabelFileName = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnChooseFolder = New System.Windows.Forms.ToolStripButton()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.TxtMsg = New System.Windows.Forms.ToolStripStatusLabel()
@@ -48,7 +49,7 @@ Partial Class CustomSearch
         Me.resultsTreeView = New System.Windows.Forms.TreeView()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.pdfViewer = New System.Windows.Forms.WebBrowser()
+        Me.pdfViewer = New PdfiumViewer.PdfViewer()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.Panel1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -75,7 +76,7 @@ Partial Class CustomSearch
         '
         Me.ToolStrip1.BackColor = System.Drawing.SystemColors.GradientActiveCaption
         Me.ToolStrip1.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnCancel, Me.ToolStripSeparator1, Me.btnOpenLoction, Me.ToolStripSeparator2, Me.btnPrint, Me.ToolStripSeparator3, Me.ToolStripLabel1, Me.searchTextBox, Me.ToolStripSeparator4, Me.ToolStripLabel2, Me.ToolStripSeparator6, Me.LabelFileName, Me.ToolStripSeparator5})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnCancel, Me.ToolStripSeparator1, Me.btnOpenLoction, Me.ToolStripSeparator2, Me.btnPrint, Me.ToolStripSeparator3, Me.ToolStripLabel1, Me.searchTextBox, Me.ToolStripSeparator4, Me.ToolStripLabel2, Me.ToolStripSeparator6, Me.LabelFileName, Me.ToolStripSeparator5, Me.btnChooseFolder})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(1327, 42)
@@ -169,6 +170,17 @@ Partial Class CustomSearch
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
         Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 42)
+        '
+        'btnChooseFolder
+        '
+        Me.btnChooseFolder.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.btnChooseFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.btnChooseFolder.Font = New System.Drawing.Font("Cairo", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.btnChooseFolder.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.iconfinder_Open_file_132300
+        Me.btnChooseFolder.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnChooseFolder.Name = "btnChooseFolder"
+        Me.btnChooseFolder.Size = New System.Drawing.Size(87, 39)
+        Me.btnChooseFolder.Text = "اختيار مجلد البحث"
         '
         'StatusStrip1
         '
@@ -334,7 +346,8 @@ Partial Class CustomSearch
     Friend WithEvents resultsTreeView As TreeView
     Friend WithEvents Panel2 As Panel
     Friend WithEvents SplitContainer1 As SplitContainer
-    Friend WithEvents pdfViewer As WebBrowser
+    Friend WithEvents pdfViewer As PdfiumViewer.PdfViewer
     Friend WithEvents ImageList1 As ImageList
     Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
+    Friend WithEvents btnChooseFolder As ToolStripButton
 End Class

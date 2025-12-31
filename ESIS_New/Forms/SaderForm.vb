@@ -26,6 +26,8 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
     ' متغير لتخزين معرف سجل الصادر الحالي
     ' يفترض أن يتم تعيينه بعد حفظ سجل الصادر
     Private currentSaderID As Integer = 0
+    Private _eventsWired As Boolean = False
+
     Public Sub New()
         ' هذا السطر مطلوب لتهيئة النموذج.
         InitializeComponent()
@@ -57,70 +59,189 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         lblRecordCount.Text = $"عدد السجلات الصادرة: {count}"
     End Sub
 
+
     Private Sub SaderForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        isLoadingData = True
+
         Try
+            WireEventsOnce()
 
-            ' الاشتراك في الحدث
-            AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
-            'lblArchiveMsg.Visible = False
-            ' تحديث العداد في الواجهة
-            UpdateRecordCount()
-            ' ربط تلقائي لأحداث التحقق من البوليصات
-            PolicyValidationEvents.AttachPolicyValidationEvents(Me)
+            PrepareUI()
+            PrepareDefaults()
 
-            ' إضافة معالجات الأحداث للحقول لتحديد حالة وجود بيانات غير محفوظة
-            AddHandler txtWillMaster.TextChanged, AddressOf PolicyFields_TextChanged
-            AddHandler txtWillSub.TextChanged, AddressOf PolicyFields_TextChanged
-            'RBDirectPrint.Checked = True
-            isLoadingData = True
-            txtWillMaster.Clear()
-            txtWillSub.Clear()
-            ' إعداد معالج أخطاء DataGridView
-            DataGridViewErrorHandler.SetupErrorHandling(dgvSader)
-            ' تعطيل الأحداث قبل تحميل البيانات
+            PrepareGrid()
 
-            RemoveHandler dgvSader.CellClick, AddressOf dgvSader_CellClick
-            ' إعداد DataGridView للتطبيقات العربية
-            DataGridViewHelper.SetupArabicDataGridView(dgvSader)
-            ClearFields()
-            ' تعبئة ميزة الإكمال التلقائي في مربع النصوص
-            saderClass.AutoCompleteForTextBox("WillMaster", "TbSader", txtWillMaster)
-            saderClass.AutoCompleteForTextBox("WillSub", "TbSader", txtWillSub)
-            saderClass.AutoCompleteForTextBox("NumberBook", "TbSader", txtSearch)
-            ' تعبئة القائمة المنسدلة بالبيانات
-            FillComboBox(ComboSubjBook, "SELECT Subject_Book FROM TbSubjBooks ORDER BY Subject_Book", "Subject_Book")
-            Me.RightToLeft = RightToLeft.Yes
-            Me.RightToLeftLayout = True
-            dtpDateBook.Value = DateTime.Now
-            dtpStartDate.Value = DateTime.Now.AddDays(-30)
-            dtpEndDate.Value = DateTime.Now
-            SelectAll_TbSader(dgvSader)
-            GenerateNextBookNumber()
-            PopulatePrintersList()
-            LoadSavedPrinter()
-            LoadBookCategories() ' تحميل تصنيفات الكتاب
-            HighlightUnarchivedRecords()
-            txtUserName.Text = GlobalData.LoggedInUserName
-            txtUserName.ReadOnly = True
-            ClearFieldsOnLoad()
-            txtSearch.Enabled = False
-            'TimerRefrech.Start()
-            ' إلغاء تحديد أي صفوف في dgvSader بعد تحميل البيانات
-            dgvSader.ClearSelection()
-            ' تعطيل أدوات التعديل في البداية
-            EnableEditingTools(False)
-            isLoadingData = False
-            ' إعادة تسجيل الأحداث بعد تحميل البيانات
+            LoadLookups()
+            LoadDataAndState()
 
-            AddHandler dgvSader.CellClick, AddressOf dgvSader_CellClick
-            ComboSubjBook.SelectedIndex = -1
+            FinishLoad()
+
         Catch ex As Exception
+            MessageBox.Show($"حدث خطأ أثناء تحميل النموذج: {ex.Message}",
+                        "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
             isLoadingData = False
-            MessageBox.Show($"حدث خطأ أثناء تحميل النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
-
     End Sub
+
+    '========================
+    ' 1) ربط الأحداث مرة واحدة
+    '========================
+    Private Sub WireEventsOnce()
+        If _eventsWired Then Return
+        _eventsWired = True
+
+        AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
+
+        AddHandler txtWillMaster.TextChanged, AddressOf PolicyFields_TextChanged
+        AddHandler txtWillSub.TextChanged, AddressOf PolicyFields_TextChanged
+
+        AddHandler dgvSader.CellClick, AddressOf dgvSader_CellClick
+    End Sub
+
+    '========================
+    ' 2) تجهيز الواجهة العامة
+    '========================
+    Private Sub PrepareUI()
+        Me.RightToLeft = RightToLeft.Yes
+        Me.RightToLeftLayout = True
+
+        txtUserName.Text = GlobalData.LoggedInUserName
+        txtUserName.ReadOnly = True
+
+        txtSearch.Enabled = False
+
+        EnableEditingTools(False)
+    End Sub
+
+    '========================
+    ' 3) قيم افتراضية للتواريخ والحقول
+    '========================
+    Private Sub PrepareDefaults()
+        txtWillMaster.Clear()
+        txtWillSub.Clear()
+
+        dtpDateBook.Value = DateTime.Now
+        dtpStartDate.Value = DateTime.Now.AddDays(-30)
+        dtpEndDate.Value = DateTime.Now
+
+        ComboSubjBook.SelectedIndex = -1
+    End Sub
+
+    '========================
+    ' 4) تجهيز الداتا جريد
+    '========================
+    Private Sub PrepareGrid()
+        DataGridViewErrorHandler.SetupErrorHandling(dgvSader)
+        DataGridViewHelper.SetupArabicDataGridView(dgvSader)
+
+        dgvSader.ClearSelection()
+    End Sub
+
+    '========================
+    ' 5) تحميل القوائم/الإكمال التلقائي
+    '========================
+    Private Sub LoadLookups()
+        PolicyValidationEvents.AttachPolicyValidationEvents(Me)
+
+        ClearFields()
+
+        saderClass.AutoCompleteForTextBox("WillMaster", "TbSader", txtWillMaster)
+        saderClass.AutoCompleteForTextBox("WillSub", "TbSader", txtWillSub)
+        saderClass.AutoCompleteForTextBox("NumberBook", "TbSader", txtSearch)
+
+        FillComboBox(ComboSubjBook,
+                 "SELECT Subject_Book FROM TbSubjBooks ORDER BY Subject_Book",
+                 "Subject_Book")
+
+        LoadBookCategories()
+        PopulatePrintersList()
+        LoadSavedPrinter()
+    End Sub
+
+    '========================
+    ' 6) تحميل البيانات وحالة النموذج
+    '========================
+    Private Sub LoadDataAndState()
+        UpdateRecordCount()
+
+        SelectAll_TbSader(dgvSader)
+        GenerateNextBookNumber()
+
+        HighlightUnarchivedRecords()
+        ClearFieldsOnLoad()
+    End Sub
+
+    '========================
+    ' 7) إنهاء التحميل
+    '========================
+    Private Sub FinishLoad()
+        dgvSader.ClearSelection()
+    End Sub
+
+
+    'Private Sub SaderForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    '    Try
+
+    '        ' الاشتراك في الحدث
+    '        AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
+    '        'lblArchiveMsg.Visible = False
+    '        ' تحديث العداد في الواجهة
+    '        UpdateRecordCount()
+    '        ' ربط تلقائي لأحداث التحقق من البوليصات
+    '        PolicyValidationEvents.AttachPolicyValidationEvents(Me)
+
+    '        ' إضافة معالجات الأحداث للحقول لتحديد حالة وجود بيانات غير محفوظة
+    '        AddHandler txtWillMaster.TextChanged, AddressOf PolicyFields_TextChanged
+    '        AddHandler txtWillSub.TextChanged, AddressOf PolicyFields_TextChanged
+    '        'RBDirectPrint.Checked = True
+    '        isLoadingData = True
+    '        txtWillMaster.Clear()
+    '        txtWillSub.Clear()
+    '        ' إعداد معالج أخطاء DataGridView
+    '        DataGridViewErrorHandler.SetupErrorHandling(dgvSader)
+    '        ' تعطيل الأحداث قبل تحميل البيانات
+
+    '        RemoveHandler dgvSader.CellClick, AddressOf dgvSader_CellClick
+    '        ' إعداد DataGridView للتطبيقات العربية
+    '        DataGridViewHelper.SetupArabicDataGridView(dgvSader)
+    '        ClearFields()
+    '        ' تعبئة ميزة الإكمال التلقائي في مربع النصوص
+    '        saderClass.AutoCompleteForTextBox("WillMaster", "TbSader", txtWillMaster)
+    '        saderClass.AutoCompleteForTextBox("WillSub", "TbSader", txtWillSub)
+    '        saderClass.AutoCompleteForTextBox("NumberBook", "TbSader", txtSearch)
+    '        ' تعبئة القائمة المنسدلة بالبيانات
+    '        FillComboBox(ComboSubjBook, "SELECT Subject_Book FROM TbSubjBooks ORDER BY Subject_Book", "Subject_Book")
+    '        Me.RightToLeft = RightToLeft.Yes
+    '        Me.RightToLeftLayout = True
+    '        dtpDateBook.Value = DateTime.Now
+    '        dtpStartDate.Value = DateTime.Now.AddDays(-30)
+    '        dtpEndDate.Value = DateTime.Now
+    '        SelectAll_TbSader(dgvSader)
+    '        GenerateNextBookNumber()
+    '        PopulatePrintersList()
+    '        LoadSavedPrinter()
+    '        LoadBookCategories() ' تحميل تصنيفات الكتاب
+    '        HighlightUnarchivedRecords()
+    '        txtUserName.Text = GlobalData.LoggedInUserName
+    '        txtUserName.ReadOnly = True
+    '        ClearFieldsOnLoad()
+    '        txtSearch.Enabled = False
+    '        ' إلغاء تحديد أي صفوف في dgvSader بعد تحميل البيانات
+    '        dgvSader.ClearSelection()
+    '        ' تعطيل أدوات التعديل في البداية
+    '        EnableEditingTools(False)
+    '        isLoadingData = False
+    '        ' إعادة تسجيل الأحداث بعد تحميل البيانات
+    '        AddHandler dgvSader.CellClick, AddressOf dgvSader_CellClick
+    '        ComboSubjBook.SelectedIndex = -1
+    '    Catch ex As Exception
+    '        isLoadingData = False
+    '        MessageBox.Show($"حدث خطأ أثناء تحميل النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+
+
+    'End Sub
 
     Private Sub SaderForm_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         btnNew.PerformClick()
@@ -554,6 +675,8 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         SelectAll_TbSader(dgvSader)
         StopFlashingLabel()
         Me.Refresh()
+        cmbBookCategory.DroppedDown = True
+        cmbBookCategory.Focus()
         ' 6. تحديث العدد بعد العملية الناجحة
         DataHelper.UpdateSaderCount()
         ' تعطيل أدوات التعديل عند إنشاء جديد
@@ -696,13 +819,18 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                             If TypeOf form Is ArchiveForm Then
                                 Dim archiveForm As ArchiveForm = CType(form, ArchiveForm)
                                 If Not String.IsNullOrEmpty(currentFilePath) Then
-                                    If archiveForm.WebBrowser1 IsNot Nothing Then
-                                        archiveForm.WebBrowser1.Navigate("about:blank")
+                                    If archiveForm.pdfViewer IsNot Nothing Then
+                                        ' تفريغ العارض + تحرير قفل الملف
+                                        ClearPdf(archiveForm.pdfViewer)
+
                                         Application.DoEvents()
                                         Thread.Sleep(200)
+
+                                        ' (اختياري) لو عندك دالة ForceCloseFileHandles خَلّها كما هي
                                         ForceCloseFileHandles(currentFilePath)
-                                        Thread.Sleep(500) ' انتظار قصير للتأكد من إغلاق الملف
+                                        Thread.Sleep(300)
                                     End If
+
                                 End If
                             End If
                         Next
@@ -1287,7 +1415,8 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                     archiveForm.txtArchiveWillSub.Text = willSub
                     archiveForm.ComboArchiveFolder.Text = bookCategory
                     archiveForm.CalculateDestinationPath()
-                    archiveForm.WebBrowser1.Navigate("about:blank")
+                    ClearPdf(archiveForm.pdfViewer)
+
                     archiveForm.btnBrowseFile.PerformClick()
                     archiveForm.BringToFront()
                 Else

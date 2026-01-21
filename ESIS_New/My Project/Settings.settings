@@ -125,9 +125,6 @@
     <Setting Name="FilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FileStoringMethod" Type="System.Int16" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="AttachesStordInternally" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

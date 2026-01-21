@@ -10,7 +10,6 @@ Public Class LoginForm
 
     Dim userclass As New UsersClass
 
-
 #Region "الأحداث والتحميل"
 
     ''' <summary>
@@ -109,69 +108,6 @@ Public Class LoginForm
             MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-
-
-    'Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
-    '    Try
-    '        ' التحقق من المدخلات
-    '        If Not ValidateInput() Then
-    '            Return
-    '        End If
-
-    '        ' محاولة تسجيل الدخول
-    '        Dim loginResult As LoginStatus = AttemptLogin()
-
-    '        Select Case loginResult
-    '            Case LoginStatus.Success
-    '                Dim main As MainForm = TryCast(Application.OpenForms("MainForm"), MainForm)
-    '                If main IsNot Nothing Then
-    '                    Dim frm As New LoginMessegeForm
-    '                    frm.lblUser.Text = GlobalData.LoggedInUserName
-    '                    frm.ShowDialog()
-    '                    ' تحميل صورة المستخدم بعد تسجيل الدخول الناجح
-    '                    LoadCurrentUserImage()
-    '                    DialogResult = DialogResult.OK
-    '                    Me.Close()
-    '                    main.MainForm_Load(Nothing, Nothing)
-    '                Else
-    '                    Dim frm As New LoginMessegeForm
-    '                    frm.lblUser.Text = GlobalData.LoggedInUserName
-    '                    frm.ShowDialog()
-    '                    ' تحميل صورة المستخدم بعد تسجيل الدخول الناجح
-    '                    LoadCurrentUserImage()
-    '                    DialogResult = DialogResult.OK
-    '                    Me.Close()
-    '                End If
-
-
-    '            Case LoginStatus.InvalidCredentials
-    '                MessageBox.Show("اسم المستخدم أو كلمة المرور غير صحيحة", "بيانات خاطئة", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '                txtPassword.Clear()
-    '                txtPassword.Focus()
-
-    '            Case LoginStatus.UserNotActive
-    '                MessageBox.Show("هذا الحساب غير نشط. يرجى الاتصال بمدير النظام.", "حساب غير نشط", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-    '                ComboUsername.SelectedIndex = -1
-    '                txtPassword.Clear()
-    '                ComboUsername.Focus()
-
-    '            Case LoginStatus.UserNotFound
-    '                MessageBox.Show("اسم المستخدم غير موجود في النظام", "مستخدم غير موجود", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '                ComboUsername.SelectedIndex = -1
-    '                txtPassword.Clear()
-    '                ComboUsername.Focus()
-
-    '            Case LoginStatus.DatabaseError
-    '                MessageBox.Show("حدث خطأ في قاعدة البيانات. يرجى المحاولة لاحقًا.", "خطأ في النظام", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-    '            Case Else
-    '                MessageBox.Show("حدث خطأ غير متوقع أثناء تسجيل الدخول.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        End Select
-
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
 
     ''' <summary>
     ''' حدث الضغط على زر إلغاء

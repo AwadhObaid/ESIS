@@ -37,309 +37,533 @@ Module GlobalData
 
 #End Region
 
-#Region "====================( التفعيل )=================="
+#Region "=======================( PdfViewer )============================ "
+    Public Sub ShowPdf(viewer As PdfiumViewer.PdfViewer, pdfPath As String)
+        If viewer Is Nothing Then Return
 
-    ''' <summary>
-    ''' كتابة قيمة مفتاح التفعيل في تسجيل ويندوز
-    ''' </summary>
-    Public Function WriteValue(key As String) As Boolean
-        Dim baseKey As RegistryKey = Nothing
-        Dim subKey As RegistryKey = Nothing
+        ' اغلاق المستند السابق لتفادي قفل الملف
         Try
-            ' فتح المفتاح الأساسي
-            baseKey = Registry.LocalMachine.OpenSubKey("SOFTWARE", True)
-            If baseKey Is Nothing Then
-                Throw New Exception("تعذر فتح مسار SOFTWARE في التسجيل.")
+            If viewer.Document IsNot Nothing Then
+                viewer.Document.Dispose()
+                viewer.Document = Nothing
             End If
-
-            ' إنشاء المفتاح الفرعي إذا لم يكن موجودًا
-            subKey = baseKey.CreateSubKey("ESIS")
-
-            If subKey Is Nothing Then
-                Throw New Exception("تعذر إنشاء مفتاح ESIS في التسجيل.")
-            End If
-
-            ' حفظ القيمة
-            subKey.SetValue("System_key", key)
-
-            Return True
-        Catch ex As SecurityException
-            MessageBox.Show("يحتاج البرنامج لصلاحيات مدير (Administrator) لتفعيله.", "صلاحيات غير كافية", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return False
-        Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في كتابة قيمة التسجيل: {ex.Message}")
-            Return False
-        Finally
-            ' إغلاق المفاتيح بأمان
-            If subKey IsNot Nothing Then
-                Try
-                    subKey.Close()
-                Catch
-                End Try
-            End If
-            If baseKey IsNot Nothing Then
-                Try
-                    baseKey.Close()
-                Catch
-                End Try
-            End If
+        Catch
         End Try
-    End Function
 
-    ''' <summary>
-    ''' قراءة قيمة مفتاح التفعيل من تسجيل ويندوز
-    ''' </summary>
-    Public Function GetRegValue() As String
-        Dim regKey As RegistryKey = Nothing
+        If String.IsNullOrWhiteSpace(pdfPath) OrElse Not IO.File.Exists(pdfPath) Then Return
+
+        ' تحميل الجديد
+        viewer.Document = PdfiumViewer.PdfDocument.Load(pdfPath)
+        viewer.ZoomMode = PdfViewerZoomMode.FitBest
+
+    End Sub
+
+    Public Sub ClearPdf(viewer As PdfiumViewer.PdfViewer)
+        If viewer Is Nothing Then Return
         Try
-            ' فتح مسار البرنامج في التسجيل
-            regKey = Registry.LocalMachine.OpenSubKey("Software\ESIS", True) ' فقط للقراءة
-            If regKey IsNot Nothing Then
-                ' الحصول على قيمة مفتاح النظام
-                Dim value As Object = regKey.GetValue("System_key")
-                ' إغلاق المفتاح فورًا
-                regKey.Close()
-                Return CStr(value)
-            Else
-                Return ""
+            If viewer.Document IsNot Nothing Then
+                viewer.Document.Dispose()
+                viewer.Document = Nothing
             End If
-        Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في قراءة قيمة التسجيل: {ex.Message}")
-            Return ""
-        Finally
-            If regKey IsNot Nothing Then
-                Try
-                    regKey.Close()
-                Catch
-                End Try
-            End If
+        Catch
         End Try
-    End Function
-
-    ''' <summary>
-    ''' التحقق من صحة مفتاح التفعيل
-    ''' </summary>
-    Public Function ValidateActivationKey(inputKey As String) As Boolean
-        Try
-            Dim storedKey As String = GetRegValue()
-            If String.IsNullOrWhiteSpace(inputKey) OrElse String.IsNullOrWhiteSpace(storedKey) Then
-                Return False
-            End If
-            ' المقارنة الحساسة لحالة الأحرف
-            Return inputKey.Trim() = storedKey.Trim()
-        Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في التحقق من مفتاح التفعيل: {ex.Message}")
-            Return False
-        End Try
-    End Function
+    End Sub
 
 #End Region
 
-#Region "====================( إدارة النماذج (MDI) )=================="
-    '''' <summary>
-    '''' فتح نموذج كنافذة فرعية (MDI Child)
-    '''' </summary>
-    'Public Sub OpenMdiForm(Of T As Form)(createInstance As Func(Of T), Optional ByVal mdiParent As Form = Nothing)
-    '    Try
-    '        ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
-    '        If mdiParent Is Nothing Then
-    '            ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
-    '            For Each form As Form In Application.OpenForms
-    '                If form.IsMdiContainer Then
-    '                    mdiParent = form
-    '                    Exit For
-    '                End If
-    '            Next
 
-    '            ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف
-    '            If mdiParent Is Nothing Then
-    '                For Each form As Form In Application.OpenForms
-    '                    If TypeOf form Is MainForm Then
-    '                        mdiParent = form
-    '                        Exit For
-    '                    End If
-    '                Next
-    '            End If
-    '        End If
+#Region "====================== ( Archive Veribles ) ==========================="
 
-    '        ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
-    '        If mdiParent Is Nothing Then
-    '            MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '            Return
-    '        End If
-
-    '        ' البحث عن النموذج المطلوب في النماذج الفرعية
-    '        Dim existingForm As T = Nothing
-    '        For Each child As Form In mdiParent.MdiChildren
-    '            If TypeOf child Is T Then
-    '                existingForm = DirectCast(child, T)
-    '                Exit For
-    '            End If
-    '        Next
-
-    '        If existingForm IsNot Nothing Then
-    '            ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
-    '            existingForm.BringToFront()
-    '            existingForm.Activate()
-    '        Else
-    '            ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد باستخدام الدالة الممررة
-    '            Dim newForm As T = createInstance()
-    '            newForm.MdiParent = mdiParent
-    '            newForm.WindowState = FormWindowState.Maximized
-    '            newForm.Show()
-    '        End If
-    '    Catch ex As Exception
-    '        MessageBox.Show($"خطأ في فتح النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-    Public Sub OpenMdiForm(Of T As {Form, New})(Optional ByVal mdiParent As Form = Nothing)
-        ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
-        If mdiParent Is Nothing Then
-            ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
-            For Each form As Form In Application.OpenForms
-                If form.IsMdiContainer Then
-                    mdiParent = form
-                    Exit For
-                End If
-            Next
-
-            ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف (مثل MainFrm)
-            If mdiParent Is Nothing Then
-                For Each form As Form In Application.OpenForms
-                    If TypeOf form Is MainForm Then ' استبدل MainFrm باسم نموذجك الرئيسي
-                        mdiParent = form
-                        Exit For
-                    End If
-                Next
-            End If
-        End If
-
-        ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
-        If mdiParent Is Nothing Then
-            MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return
-        End If
-
-        ' البحث عن النموذج المطلوب في النماذج الفرعية
-        Dim existingForm As T = mdiParent.MdiChildren.OfType(Of T)().FirstOrDefault()
-
-        If existingForm IsNot Nothing Then
-            ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
-            existingForm.BringToFront()
-            existingForm.Activate()
-        Else
-            ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد
-            Dim newForm As New T()
-            newForm.MdiParent = mdiParent
-            newForm.Show()
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' فتح نموذج واحد فقط (مثيل واحد) من نوع TForm
-    ''' </summary>
-    ''' <typeparam name="TForm">نوع النموذج المراد فتحه</typeparam>
-    ''' <param name="createInstance">دالة لإنشاء مثيل جديد من النموذج</param>
-    ''' <param name="onSuccess">دالة اختيارية لتنفيذها بعد إغلاق النموذج بنجاح</param>
-    Public Sub OpenSingleInstance(Of TForm As {New, Form})(createInstance As Func(Of TForm), Optional onSuccess As Action = Nothing)
+    'Clear Archive Veribles Controls
+    'Clear Archive Veribles Controls  (NEW: Multi-user friendly)
+    Public Sub ClearContolOfFrmArchiveVariables(ByVal xx As ArchiveVariablesForm)
         Try
-            ' البحث عن نموذج مفتوح بالفعل من النوع المطلوب
-            Dim existingForm As TForm = Nothing
-            For Each form As Form In Application.OpenForms
-                If TypeOf form Is TForm Then
-                    existingForm = DirectCast(form, TForm)
-                    Exit For
-                End If
-            Next
+            ' تفعيل واجهة الإدخال كما كان سابقاً
+            xx.TabControl1.Enabled = True
+            xx.GroupBox1.Enabled = True
 
-            If existingForm IsNot Nothing AndAlso Not existingForm.IsDisposed Then
-                ' إذا كان النموذج مفتوحًا، جلبه إلى المقدمة
-                existingForm.BringToFront()
-                existingForm.Activate()
-            Else
-                ' إذا لم يكن النموذج مفتوحًا، أنشئ مثيلًا جديدًا واحتفظ به
-                currentInstance = createInstance()
-                AddHandler currentInstance.FormClosed, AddressOf OnFormClosed
+            ' تفريغ الحقول عبر دالتك
+            Clear_Control_On_TabControls(xx.TabControl1)
 
-                ' عرض النموذج
-                If currentInstance.ShowDialog() = DialogResult.OK Then
-                    ' تنفيذ الدالة الاختيارية بعد الإغلاق بنجاح
-                    onSuccess?.Invoke()
-                End If
+            ' قيم افتراضية
+            If xx.ImageExtension.Items.Count > 0 Then
+                xx.ImageExtension.SelectedIndex = 0
             End If
+            xx.ScandImageName.Text = "ScanImage"
+            xx.ScandImagePath.Text = Path.GetTempPath()
+
+            ' أزرار
+            xx.btnSave.Enabled = True
+            xx.btnUpdate.Enabled = False
+            xx.btnDelete.Enabled = False
+            xx.btnClose.Enabled = True
 
         Catch ex As Exception
-            MessageBox.Show($"حدث خطأ أثناء فتح النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    ''' <summary>
-    ''' فتح نموذج كنافذة فرعية (MDI Child)
-    ''' </summary>
-    ''' <typeparam name="TForm">نوع النموذج المراد فتحه</typeparam>
-    ''' <param name="createInstance">دالة لإنشاء مثيل جديد من النموذج</param>
-    ''' <param name="mdiParent">نموذج رئيسي (MdiContainer)</param>
-    Public Sub OpenMdiForm(Of TForm As {New, Form})(createInstance As Func(Of TForm), Optional ByVal mdiParent As Form = Nothing)
+
+    'Save Archive Variables
+    'Save Archive Variables (INSERT for current user)
+    Public Sub SaveArchiveVariables(ByVal xx As ArchiveVariablesForm)
         Try
-            ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
-            If mdiParent Is Nothing Then
-                ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
-                For Each form As Form In Application.OpenForms
-                    If form.IsMdiContainer Then
-                        mdiParent = form
-                        Exit For
-                    End If
-                Next
-
-                ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف
-                If mdiParent Is Nothing Then
-                    For Each form As Form In Application.OpenForms
-                        If TypeOf form Is MainForm Then ' استبدل MainFrm باسم نموذجك الرئيسي
-                            mdiParent = form
-                            Exit For
-                        End If
-                    Next
-                End If
-            End If
-
-            ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
-            If mdiParent Is Nothing Then
-                MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            If LoggedInUserID <= 0 Then
+                MessageBox.Show("لا يمكن حفظ الإعدادات لأن LoggedInUserID غير صحيح.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Return
             End If
 
-            ' البحث عن النموذج المطلوب في النماذج الفرعية
-            Dim existingForm As TForm = mdiParent.MdiChildren.OfType(Of TForm)().FirstOrDefault()
+            Dim dt As New DataTable
 
-            If existingForm IsNot Nothing Then
-                ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
-                existingForm.BringToFront()
-                existingForm.Activate()
-            Else
-                ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد
-                Dim newForm As New TForm()
-                newForm.MdiParent = mdiParent
-                newForm.Show()
-            End If
+            Using cn As SqlConnection = Con()
+                Using cmd As New SqlCommand("SELECT * FROM ArchiveVariables WHERE ID = @UserID", cn)
+                    cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = LoggedInUserID
+
+                    Using da As New SqlDataAdapter(cmd)
+                        da.Fill(dt)
+
+                        If dt.Rows.Count = 0 Then
+                            dt.Rows.Add()
+                            Dim last As Integer = dt.Rows.Count - 1
+
+                            With dt.Rows(last)
+                                ' IMPORTANT: لكل مستخدم سجل مستقل
+                                .Item("ID") = LoggedInUserID
+
+                                .Item("ExternalSoredPath") = If(String.IsNullOrEmpty(xx.ExternalSoredPath.Text), DBNull.Value, xx.ExternalSoredPath.Text.Trim)
+                                .Item("ScandImagePath") = If(String.IsNullOrEmpty(xx.ScandImagePath.Text), DBNull.Value, xx.ScandImagePath.Text.Trim)
+                                .Item("ScandImageName") = If(String.IsNullOrEmpty(xx.ScandImageName.Text), DBNull.Value, xx.ScandImageName.Text)
+                                .Item("ImageExtension") = If(xx.ImageExtension.SelectedIndex = -1, DBNull.Value, xx.ImageExtension.SelectedIndex)
+                                .Item("PDFStoredPath") = If(String.IsNullOrEmpty(xx.PDFStoredPath.Text), DBNull.Value, xx.PDFStoredPath.Text.Trim)
+
+                                .Item("DefualtSenderEmail") = If(String.IsNullOrEmpty(xx.DefualtSenderEmail.Text), DBNull.Value, xx.DefualtSenderEmail.Text)
+                                .Item("EmailAppPassword") = If(String.IsNullOrEmpty(xx.EmailAppPassword.Text), DBNull.Value, xx.EmailAppPassword.Text)
+                                .Item("SMTPServer") = If(String.IsNullOrEmpty(xx.SMTPServer.Text), DBNull.Value, xx.SMTPServer.Text)
+                                .Item("PortNumber") = If(String.IsNullOrEmpty(xx.PortNumber.Text), DBNull.Value, xx.PortNumber.Text)
+                                .Item("FrmConStrPASS") = If(String.IsNullOrEmpty(xx.txtPassCon.Text), DBNull.Value, Encrypt(xx.txtPassCon.Text.Trim))
+
+                                .Item("PathSearch") = If(String.IsNullOrEmpty(xx.txtSearchDefaultPath.Text), DBNull.Value, xx.txtSearchDefaultPath.Text)
+                                .Item("LastSaderNumber") = If(String.IsNullOrEmpty(xx.txtlastSavedNumber.Text), DBNull.Value, xx.txtlastSavedNumber.Text)
+                                .Item("daysToKeep") = If(String.IsNullOrEmpty(xx.txtdaysToKeep.Text), DBNull.Value, CInt(xx.txtdaysToKeep.Text))
+                                .Item("NotificationsFormInterval") = If(xx.nudNotificationInterval.Value = 5, DBNull.Value, CInt(xx.nudNotificationInterval.Value))
+
+                                .Item("AddDate") = Now
+                                .Item("AddUser") = LoggedInUserID
+                            End With
+
+                            ' حفظ
+                            Dim builder As New SqlCommandBuilder(da)
+                            da.Update(dt)
+                            dt.AcceptChanges()
+
+                            SaveVariablesAtSettings(xx)
+                            GlobalData.SavedSuccessfully(xx.lblConfirmMsg, xx.PicMsg, xx.Timer1)
+
+                            ' بعد الحفظ: اجعلها وضع "تعديل"
+                            xx.btnSave.Enabled = False
+                            xx.btnUpdate.Enabled = True
+                            xx.btnDelete.Enabled = False
+                            xx.btnClose.Enabled = True
+                        Else
+                            MessageBox.Show("يوجد إعدادات محفوظة لهذا المستخدم بالفعل. استخدم زر (تعديل).", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            xx.btnSave.Enabled = False
+                            xx.btnUpdate.Enabled = True
+                            xx.btnDelete.Enabled = False
+                            xx.btnClose.Enabled = True
+                        End If
+                    End Using
+                End Using
+            End Using
+
         Catch ex As Exception
-            MessageBox.Show($"حدث خطأ أثناء فتح النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
-    ''' <summary>
-    ''' حدث يتم استدعاؤه عند إغلاق النموذج
-    ''' </summary>
-    Private Sub OnFormClosed(sender As Object, e As FormClosedEventArgs)
-        ' إعادة تعيين المتغير عندما يتم إغلاق النموذج
-        currentInstance = Nothing
+
+
+
+
+    'Updat Archive Variables
+    'Updat Archive Variables (UPDATE for current user)
+    Public Sub UpdateArchiveVariables(ByVal xx As ArchiveVariablesForm)
+        Try
+            If LoggedInUserID <= 0 Then
+                MessageBox.Show("لا يمكن تحديث الإعدادات لأن LoggedInUserID غير صحيح.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            Dim dt As New DataTable
+
+            Using cn As SqlConnection = Con()
+                Using cmd As New SqlCommand("SELECT * FROM ArchiveVariables WHERE ID = @UserID", cn)
+                    cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = LoggedInUserID
+
+                    Using da As New SqlDataAdapter(cmd)
+                        da.Fill(dt)
+
+                        If dt.Rows.Count > 0 Then
+                            dt.Rows(0).Item("ExternalSoredPath") = xx.ExternalSoredPath.Text.Trim
+                            dt.Rows(0).Item("ScandImagePath") = xx.ScandImagePath.Text.Trim
+                            dt.Rows(0).Item("ScandImageName") = xx.ScandImageName.Text
+                            dt.Rows(0).Item("ImageExtension") = xx.ImageExtension.SelectedIndex
+                            dt.Rows(0).Item("PDFStoredPath") = xx.PDFStoredPath.Text.Trim
+
+                            dt.Rows(0).Item("DefualtSenderEmail") = xx.DefualtSenderEmail.Text
+                            dt.Rows(0).Item("EmailAppPassword") = xx.EmailAppPassword.Text
+                            dt.Rows(0).Item("SMTPServer") = xx.SMTPServer.Text
+                            dt.Rows(0).Item("PortNumber") = xx.PortNumber.Text
+                            dt.Rows(0).Item("FrmConStrPASS") = Encrypt(xx.txtPassCon.Text.Trim)
+
+                            dt.Rows(0).Item("PathSearch") = xx.txtSearchDefaultPath.Text
+                            dt.Rows(0).Item("LastSaderNumber") = xx.txtlastSavedNumber.Text
+                            dt.Rows(0).Item("daysToKeep") = CInt(xx.txtdaysToKeep.Text)
+                            dt.Rows(0).Item("NotificationsFormInterval") = CInt(xx.nudNotificationInterval.Value)
+
+                            dt.Rows(0).Item("EditDate") = Now
+                            dt.Rows(0).Item("EditUser") = LoggedInUserID
+
+                            Dim builder As New SqlCommandBuilder(da)
+                            da.Update(dt)
+                            dt.AcceptChanges()
+
+                            SaveVariablesAtSettings(xx)
+                            UpdetedSuccessfully(xx.lblConfirmMsg, xx.PicMsg, xx.Timer1)
+
+                            xx.btnSave.Enabled = False
+                            xx.btnUpdate.Enabled = True
+                            xx.btnDelete.Enabled = False
+                            xx.btnClose.Enabled = True
+                        Else
+                            MessageBox.Show("لا توجد إعدادات محفوظة لهذا المستخدم. استخدم زر (جديد) ثم (حفظ).", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            xx.btnSave.Enabled = True
+                            xx.btnUpdate.Enabled = False
+                            xx.btnDelete.Enabled = False
+                            xx.btnClose.Enabled = True
+                        End If
+                    End Using
+                End Using
+            End Using
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
-    ''' <summary>
-    ''' واجهة لتمكين تمرير البيانات عند فتح النماذج
-    ''' </summary>
-    Public Interface IFormWithParameters
-        Sub InitializeWithData(data As Object)
-    End Interface
+
+    ''Show Archive Variables
+    ''Show Archive Variables (LOAD for current user)
+    Public Sub ShowArchiveVariables(ByVal xx As ArchiveVariablesForm)
+        Try
+            If LoggedInUserID <= 0 Then
+                ' لا يوجد مستخدم مسجل
+                xx.btnSave.Enabled = False
+                xx.btnUpdate.Enabled = False
+                xx.btnDelete.Enabled = False
+                Return
+            End If
+
+            Dim DT As New DataTable
+
+            Using cn As SqlConnection = Con()
+                Using cmd As New SqlCommand("SELECT TOP 1 * FROM ArchiveVariables WHERE ID = @UserID", cn)
+                    cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = LoggedInUserID
+
+                    Using da As New SqlDataAdapter(cmd)
+                        da.Fill(DT)
+                    End Using
+                End Using
+            End Using
+
+            ' تفعيل واجهة الإدخال
+            xx.TabControl1.Enabled = True
+            xx.GroupBox1.Enabled = True
+
+            If DT.Rows.Count > 0 Then
+                With DT.Rows(0)
+                    ' الحقول النصية
+                    xx.ExternalSoredPath.Text = SafeGetString(DT.Rows(0), "ExternalSoredPath")
+                    xx.ScandImagePath.Text = SafeGetString(DT.Rows(0), "ScandImagePath")
+                    xx.PDFStoredPath.Text = SafeGetString(DT.Rows(0), "PDFStoredPath")
+                    xx.txtSearchDefaultPath.Text = SafeGetString(DT.Rows(0), "PathSearch")
+                    xx.txtlastSavedNumber.Text = SafeGetString(DT.Rows(0), "LastSaderNumber")
+
+                    ' الحقول الرقمية
+                    xx.txtdaysToKeep.Text = If(IsDBNull(.Item("daysToKeep")), "0", .Item("daysToKeep").ToString())
+                    xx.nudNotificationInterval.Value = If(IsDBNull(.Item("NotificationsFormInterval")), 5, CInt(.Item("NotificationsFormInterval")))
+
+                    ' الحقول المتعلقة بالإعدادات البريدية
+                    xx.DefualtSenderEmail.Text = SafeGetString(DT.Rows(0), "DefualtSenderEmail")
+                    xx.EmailAppPassword.Text = SafeGetString(DT.Rows(0), "EmailAppPassword")
+                    xx.SMTPServer.Text = SafeGetString(DT.Rows(0), "SMTPServer")
+                    xx.PortNumber.Text = SafeGetString(DT.Rows(0), "PortNumber")
+
+                    ' فك تشفير كلمة المرور
+                    Dim encryptedPass = .Item("FrmConStrPASS")
+                    xx.txtPassCon.Text = If(IsDBNull(encryptedPass), "", Decrypt(encryptedPass.ToString()))
+
+                    ' امتداد الصورة
+                    Dim imageExtValue = .Item("ImageExtension")
+                    If IsDBNull(imageExtValue) Then
+                        xx.ImageExtension.SelectedIndex = 0
+                    Else
+                        xx.ImageExtension.SelectedIndex = CInt(imageExtValue)
+                    End If
+                End With
+
+                ' يوجد سجل -> تعديل
+                xx.btnSave.Enabled = False
+                xx.btnUpdate.Enabled = True
+                xx.btnDelete.Enabled = False
+                xx.btnClose.Enabled = True
+            Else
+                ' لا يوجد سجل -> حفظ جديد
+                xx.btnSave.Enabled = True
+                xx.btnUpdate.Enabled = False
+                xx.btnDelete.Enabled = False
+                xx.btnClose.Enabled = True
+            End If
+
+            DT.Dispose()
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "Error Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub SaveVariablesAtSettings(ByVal xx As ArchiveVariablesForm)
+
+        My.Settings.ARCHIVE_DEFAULT_PATH = xx.ExternalSoredPath.Text.Trim
+        My.Settings.ImgFolderPath = xx.ScandImagePath.Text.Trim
+        My.Settings.ImageFormat = xx.ImageExtension.SelectedIndex
+        My.Settings.DefualtImgName = xx.ScandImageName.Text
+        My.Settings.PDFFolderPath = xx.PDFStoredPath.Text.Trim
+        My.Settings.FrmConStrPASS = Encrypt(xx.txtPassCon.Text.Trim)
+
+        My.Settings.DefaultPathSearch = xx.txtSearchDefaultPath.Text.Trim()
+        My.Settings.LastSaderNumber = xx.txtlastSavedNumber.Text.Trim()
+        My.Settings.daysToKeep = CInt(xx.txtdaysToKeep.Text.Trim())
+        My.Settings.NotificationsFormInterval = CInt(xx.nudNotificationInterval.Value)
+
+        My.Settings.Save()
+    End Sub
+
+
+    Public Sub RowInsert(ByVal DT As DataTable, ByVal da As SqlDataAdapter)
+
+        Dim Save As New SqlCommandBuilder(da)
+        da.Update(DT)
+        DT.AcceptChanges()
+        DT.Dispose()
+        da.Dispose()
+
+    End Sub
+
+    Private Function SafeGetString(row As DataRow, columnName As String) As String
+        If row.IsNull(columnName) Then
+            Return ""
+        Else
+            Return row.Item(columnName).ToString()
+        End If
+    End Function
+
+
+    'Public Sub ShowArchiveVariables(ByVal xx As ArchiveVariablesForm)
+    '    Try
+    '        Dim DT As New DataTable
+    '        Dim sqlst As String
+    '        sqlst = "Select * FROM ArchiveVariables where ID = 1 "
+    '        FillDataTable(DT, sqlst)
+
+    '        If DT.Rows.Count > 0 Then
+
+
+    '            xx.ExternalSoredPath.Text = DT.Rows(0).Item("ExternalSoredPath").ToString()
+
+    '            xx.ScandImagePath.Text = DT.Rows(0).Item("ScandImagePath").ToString()
+    '            xx.ScandImageName.Text = DT.Rows(0).Item("ScandImageName").ToString()
+    '            xx.ImageExtension.SelectedIndex = DT.Rows(0).Item("ImageExtension")
+    '            xx.PDFStoredPath.Text = DT.Rows(0).Item("PDFStoredPath").ToString()
+
+
+    '            xx.txtSearchDefaultPath.Text = DT.Rows(0).Item("PathSearch").ToString
+    '            xx.txtlastSavedNumber.Text = DT.Rows(0).Item("LastSaderNumber").ToString
+    '            xx.txtdaysToKeep.Text = CInt(DT.Rows(0).Item("daysToKeep"))
+    '            xx.nudNotificationInterval.Value = CInt(DT.Rows(0).Item("NotificationsFormInterval"))
+
+
+    '            xx.DefualtSenderEmail.Text = DT.Rows(0).Item("DefualtSenderEmail")
+    '            xx.EmailAppPassword.Text = DT.Rows(0).Item("EmailAppPassword")
+    '            xx.SMTPServer.Text = DT.Rows(0).Item("SMTPServer")
+    '            xx.PortNumber.Text = DT.Rows(0).Item("PortNumber")
+    '            xx.txtPassCon.Text = Decrypt(DT.Rows(0).Item("FrmConStrPASS").ToString())
+    '            xx.btnSave.Enabled = False
+    '            xx.btnUpdate.Enabled = True
+    '            xx.btnDelete.Enabled = True
+    '        End If
+    '        DT.Dispose()
+    '    Catch ex As Exception
+    '        MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+    'Clear Control On TabControls
+
+    Public Sub Clear_Control_On_TabControls(ByVal TabControl As TabControl)
+
+        TabControl.Enabled = True
+        TabControl.SelectedTab = TabControl.TabPages(0)
+
+        For i As Int16 = 0 To TabControl.TabPages.Count - 1
+
+            For x As Int16 = 0 To TabControl.TabPages(i).Controls.Count - 1
+
+                If TypeOf TabControl.TabPages(i).Controls(x) Is TextBox Then  ' clear TextBox Controls
+                    Dim TXT As TextBox = TabControl.TabPages(i).Controls(x)
+                    TXT.Clear()
+                    TXT.Tag = Nothing
+                End If
+                If TypeOf TabControl.TabPages(i).Controls(x) Is ComboBox Then    ' Clear Combobox Control
+                    Dim Combo As ComboBox = TabControl.TabPages(i).Controls(x)
+                    Combo.SelectedValue = 0
+                    Combo.SelectedIndex = -1
+                    Combo.Text = Nothing
+                    Combo.Tag = Nothing
+                End If
+                If TypeOf TabControl.TabPages(i).Controls(x) Is CheckBox Then   'Clear CheckBox Control
+                    Dim Ck As CheckBox = TabControl.TabPages(i).Controls(x)
+                    Ck.Checked = False
+                End If
+
+                If TypeOf TabControl.TabPages(i).Controls(x) Is DataGridView Then   'Clear DataGridView Control
+                    Dim dgv As DataGridView = TabControl.TabPages(i).Controls(x)
+                    dgv.Rows.Clear()
+                End If
+
+                For Each GP As GroupBox In TabControl.TabPages(i).Controls.OfType(Of GroupBox)() 'Clear Controls inside GroupBox
+                    GP.Enabled = True
+                    For Each txt As TextBox In GP.Controls.OfType(Of TextBox)()
+                        txt.Tag = ""
+                        txt.Clear()
+                    Next
+
+                    For Each combo As ComboBox In GP.Controls.OfType(Of ComboBox)()
+                        combo.SelectedIndex = -1
+                        combo.Text = Nothing
+                    Next
+
+                    For Each CK As CheckBox In GP.Controls.OfType(Of CheckBox)()
+                        CK.Checked = False
+                    Next
+                Next
+
+                For Each PL As Panel In TabControl.TabPages(i).Controls.OfType(Of Panel)() ' Clear Controls inside Panel
+                    PL.Enabled = True
+                    For Each txt As TextBox In PL.Controls.OfType(Of TextBox)()
+                        txt.Tag = ""
+                        txt.Clear()
+                    Next
+
+                    For Each combo As ComboBox In PL.Controls.OfType(Of ComboBox)()
+                        combo.SelectedIndex = -1
+                        combo.Text = Nothing
+                    Next
+
+                    For Each CK As CheckBox In PL.Controls.OfType(Of CheckBox)()
+                        CK.Checked = False
+                    Next
+
+                    For Each dgv As DataGridView In PL.Controls.OfType(Of DataGridView)()
+                        dgv.DataSource = Nothing
+                        dgv.Rows.Clear()
+                    Next
+
+                    For Each PIC As PictureBox In PL.Controls.OfType(Of PictureBox)()   ' Clear PictureBox Control
+                        PIC.Image = Nothing
+                    Next
+                    For Each DTP As DateTimePicker In PL.Controls.OfType(Of DateTimePicker)()   ' Clear DateTimePicker Control
+                        DTP.Value = Now.Date.ToString("dd-MM-yyyy")
+                    Next
+                Next
+            Next
+        Next
+    End Sub
+
+    'Clear Controls Inside Panel
+    Public Sub Clear_Controls_Inside_Panel(ByVal Panel As Panel)
+
+        Panel.Enabled = True
+
+        For Each txt As TextBox In Panel.Controls.OfType(Of TextBox)()  ' clear TextBox Controls
+            txt.Clear()
+            txt.Tag = String.Empty
+        Next
+
+        For Each combo As ComboBox In Panel.Controls.OfType(Of ComboBox)()    ' Clear Combobox Control
+            combo.SelectedIndex = -1
+            combo.Text = Nothing
+        Next
+
+        For Each Ck As CheckBox In Panel.Controls.OfType(Of CheckBox)()   'Clear CheckBox Control
+            Ck.Checked = False
+        Next
+
+        For Each Rtxt As RichTextBox In Panel.Controls.OfType(Of RichTextBox)() ' Clear RichTextBox Control
+            Rtxt.Clear()
+            Rtxt.Tag = String.Empty
+        Next
+
+    End Sub
+
+#End Region
+
+
+#Region "================ Confirmation Messages ================"
+
+    Public Sub SavedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+        lbl.Text = "تم الحفظ بنجاح"
+        pic.Image = My.Resources.OK
+        t.Start()
+    End Sub
+
+    Public Sub UpdetedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+        lbl.Text = "تم التعديل بنجاح"
+        pic.Image = My.Resources.OK
+        t.Start()
+    End Sub
+
+    Public Sub DeletedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+        lbl.Text = "تم الحذف بنجاح"
+        pic.Image = My.Resources.OK
+        t.Start()
+    End Sub
+    Public Sub DeletedSaderSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+        lbl.Text = "تم حذف الصادر والأرشيف المرتبط به بنجاح"
+        pic.Image = My.Resources.OK
+        t.Start()
+    End Sub
+
+    Public Sub DeletedArchiveSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+        lbl.Text = "تم ارسال الارشيف الى سلة المحذوفات بنجاح"
+        pic.Image = My.Resources.OK
+        t.Start()
+    End Sub
+
+    Public Sub ConfirmMessage(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer, ByVal msg As String)
+
+        lbl.Text = msg
+        pic.Image = My.Resources.OK
+        t.Start()
+
+    End Sub
+
+    Public Sub ClearConfirmMsgTools(ByVal lblMsg As Label, ByVal picMsg As PictureBox, ByVal T As Windows.Forms.Timer)
+        lblMsg.Text = Nothing
+        lblMsg.BackColor = SystemColors.ControlLight
+        picMsg.Image = Nothing
+        picMsg.BackColor = SystemColors.ControlLight
+        T.Stop()
+    End Sub
 
 
 #End Region
@@ -923,431 +1147,6 @@ Module GlobalData
 
 #End Region
 
-#Region "================ Confirmation Messages ================"
-
-    Public Sub SavedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
-        lbl.Text = "تم الحفظ بنجاح"
-        pic.Image = My.Resources.OK
-        t.Start()
-    End Sub
-
-    Public Sub UpdetedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
-        lbl.Text = "تم التعديل بنجاح"
-        pic.Image = My.Resources.OK
-        t.Start()
-    End Sub
-
-    Public Sub DeletedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
-        lbl.Text = "تم الحذف بنجاح"
-        pic.Image = My.Resources.OK
-        t.Start()
-    End Sub
-    Public Sub DeletedSaderSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
-        lbl.Text = "تم حذف الصادر والأرشيف المرتبط به بنجاح"
-        pic.Image = My.Resources.OK
-        t.Start()
-    End Sub
-
-    Public Sub DeletedArchiveSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
-        lbl.Text = "تم ارسال الارشيف الى سلة المحذوفات بنجاح"
-        pic.Image = My.Resources.OK
-        t.Start()
-    End Sub
-
-    Public Sub ConfirmMessage(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer, ByVal msg As String)
-
-        lbl.Text = msg
-        pic.Image = My.Resources.OK
-        t.Start()
-
-    End Sub
-
-
-
-
-    Public Sub ClearConfirmMsgTools(ByVal lblMsg As Label, ByVal picMsg As PictureBox, ByVal T As Windows.Forms.Timer)
-        lblMsg.Text = Nothing
-        lblMsg.BackColor = SystemColors.ControlLight
-        picMsg.Image = Nothing
-        picMsg.BackColor = SystemColors.ControlLight
-        T.Stop()
-    End Sub
-
-
-#End Region
-
-#Region "====================== ( Archive Veribles ) ==========================="
-
-    Public Sub ShowPdf(viewer As PdfiumViewer.PdfViewer, pdfPath As String)
-        If viewer Is Nothing Then Return
-
-        ' اغلاق المستند السابق لتفادي قفل الملف
-        Try
-            If viewer.Document IsNot Nothing Then
-                viewer.Document.Dispose()
-                viewer.Document = Nothing
-            End If
-        Catch
-        End Try
-
-        If String.IsNullOrWhiteSpace(pdfPath) OrElse Not IO.File.Exists(pdfPath) Then Return
-
-        ' تحميل الجديد
-        viewer.Document = PdfiumViewer.PdfDocument.Load(pdfPath)
-        viewer.ZoomMode = PdfViewerZoomMode.FitBest
-
-    End Sub
-
-    Public Sub ClearPdf(viewer As PdfiumViewer.PdfViewer)
-        If viewer Is Nothing Then Return
-        Try
-            If viewer.Document IsNot Nothing Then
-                viewer.Document.Dispose()
-                viewer.Document = Nothing
-            End If
-        Catch
-        End Try
-    End Sub
-
-
-
-
-    'Clear Archive Veribles Controls
-    Public Sub ClearContolOfFrmArchiveVariables(ByVal xx As ArchiveVariablesForm)
-        Clear_Control_On_TabControls(xx.TabControl1)
-        xx.ImageExtension.SelectedIndex = 0
-        xx.ScandImageName.Text = "ScanImage"
-        xx.ScandImagePath.Text = Path.GetTempPath()
-        xx.btnSave.Enabled = True
-        xx.btnUpdate.Enabled = False
-        xx.btnClose.Enabled = False
-        ShowArchiveVariables(xx)
-    End Sub
-
-    'Save Archive Variables
-    Public Sub SaveArchiveVariables(ByVal xx As ArchiveVariablesForm)
-        Try
-            Dim dt As New DataTable
-            Dim da As New SqlDataAdapter("SELECT * FROM ArchiveVariables WHERE ID = 1", Con)
-            da.Fill(dt)
-
-            If dt.Rows.Count = 0 Then
-                dt.Rows.Add()
-                Dim last As Short = dt.Rows.Count - 1
-                With dt.Rows(last)
-                    .Item("ID") = 1
-                    .Item("ExternalSoredPath") = If(String.IsNullOrEmpty(xx.ExternalSoredPath.Text), DBNull.Value, xx.ExternalSoredPath.Text.Trim)
-                    .Item("ScandImagePath") = If(String.IsNullOrEmpty(xx.ScandImagePath.Text), DBNull.Value, xx.ScandImagePath.Text.Trim)
-                    .Item("ScandImageName") = If(String.IsNullOrEmpty(xx.ScandImageName.Text), DBNull.Value, xx.ScandImageName.Text)
-                    .Item("ImageExtension") = If(xx.ImageExtension.SelectedIndex = -1, DBNull.Value, xx.ImageExtension.SelectedIndex)
-                    .Item("PDFStoredPath") = If(String.IsNullOrEmpty(xx.PDFStoredPath.Text), DBNull.Value, xx.PDFStoredPath.Text.Trim)
-
-                    .Item("DefualtSenderEmail") = If(String.IsNullOrEmpty(xx.DefualtSenderEmail.Text), DBNull.Value, xx.DefualtSenderEmail.Text)
-                    .Item("EmailAppPassword") = If(String.IsNullOrEmpty(xx.EmailAppPassword.Text), DBNull.Value, xx.EmailAppPassword.Text)
-                    .Item("SMTPServer") = If(String.IsNullOrEmpty(xx.SMTPServer.Text), DBNull.Value, xx.SMTPServer.Text)
-                    .Item("PortNumber") = If(String.IsNullOrEmpty(xx.PortNumber.Text), DBNull.Value, xx.PortNumber.Text)
-                    .Item("FrmConStrPASS") = If(String.IsNullOrEmpty(xx.txtPassCon.Text), DBNull.Value, Encrypt(xx.txtPassCon.Text.Trim))
-
-                    .Item("PathSearch") = If(String.IsNullOrEmpty(xx.txtSearchDefaultPath.Text), DBNull.Value, xx.txtSearchDefaultPath.Text)
-                    .Item("LastSaderNumber") = If(String.IsNullOrEmpty(xx.txtlastSavedNumber.Text), DBNull.Value, xx.txtlastSavedNumber.Text)
-                    .Item("daysToKeep") = If(String.IsNullOrEmpty(xx.txtdaysToKeep.Text), DBNull.Value, CInt(xx.txtdaysToKeep.Text))
-                    .Item("NotificationsFormInterval") = If(xx.nudNotificationInterval.Value = 5, DBNull.Value, CInt(xx.nudNotificationInterval.Value))
-
-                    .Item("AddDate") = Now
-                    .Item("AddUser") = LoggedInUserID
-                End With
-            End If
-
-            RowInsert(dt, da)
-            SaveVariablesAtSettings(xx)
-            SavedSuccessfully(xx.lblConfirmMsg, xx.PicMsg, xx.Timer1)
-            ClearContolOfFrmArchiveVariables(xx)
-            xx.btnClose.Enabled = True
-
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-
-    Private Sub SaveVariablesAtSettings(ByVal xx As ArchiveVariablesForm)
-
-        My.Settings.ARCHIVE_DEFAULT_PATH = xx.ExternalSoredPath.Text.Trim
-        My.Settings.ImgFolderPath = xx.ScandImagePath.Text.Trim
-        My.Settings.ImageFormat = xx.ImageExtension.SelectedIndex
-        My.Settings.DefualtImgName = xx.ScandImageName.Text
-        My.Settings.PDFFolderPath = xx.PDFStoredPath.Text.Trim
-        My.Settings.FrmConStrPASS = Encrypt(xx.txtPassCon.Text.Trim)
-
-        My.Settings.DefaultPathSearch = xx.txtSearchDefaultPath.Text.Trim()
-        My.Settings.LastSaderNumber = xx.txtlastSavedNumber.Text.Trim()
-        My.Settings.daysToKeep = CInt(xx.txtdaysToKeep.Text.Trim())
-        My.Settings.NotificationsFormInterval = CInt(xx.nudNotificationInterval.Value)
-
-        My.Settings.Save()
-    End Sub
-
-
-    'Updat Archive Variables
-    Public Sub UpdateArchiveVariables(ByVal xx As ArchiveVariablesForm)
-        Try
-
-            Dim dt As New DataTable
-            Dim da As New SqlDataAdapter
-            da = New SqlDataAdapter("Select * FROM ArchiveVariables where ID = 1 ", Con())
-            da.Fill(dt)
-
-            If dt.Rows.Count > 0 Then
-                dt.Rows(0).Item("ExternalSoredPath") = xx.ExternalSoredPath.Text.Trim
-                dt.Rows(0).Item("ScandImagePath") = xx.ScandImagePath.Text.Trim
-                dt.Rows(0).Item("ScandImageName") = xx.ScandImageName.Text
-                dt.Rows(0).Item("ImageExtension") = xx.ImageExtension.SelectedIndex
-                dt.Rows(0).Item("PDFStoredPath") = xx.PDFStoredPath.Text.Trim
-
-
-                dt.Rows(0).Item("DefualtSenderEmail") = xx.DefualtSenderEmail.Text
-                dt.Rows(0).Item("EmailAppPassword") = xx.EmailAppPassword.Text
-                dt.Rows(0).Item("SMTPServer") = xx.SMTPServer.Text
-                dt.Rows(0).Item("PortNumber") = xx.PortNumber.Text
-                dt.Rows(0).Item("FrmConStrPASS") = Encrypt(xx.txtPassCon.Text.Trim)
-
-                dt.Rows(0).Item("PathSearch") = xx.txtSearchDefaultPath.Text
-                dt.Rows(0).Item("LastSaderNumber") = xx.txtlastSavedNumber.Text
-                dt.Rows(0).Item("daysToKeep") = CInt(xx.txtdaysToKeep.Text)
-                dt.Rows(0).Item("NotificationsFormInterval") = CInt(xx.nudNotificationInterval.Value)
-
-
-                dt.Rows(0).Item("EditDate") = Now
-                dt.Rows(0).Item("EditUser") = LoggedInUserID
-
-                RowInsert(dt, da)
-                SaveVariablesAtSettings(xx)
-                UpdetedSuccessfully(xx.lblConfirmMsg, xx.PicMsg, xx.Timer1)
-                ClearContolOfFrmArchiveVariables(xx)
-                xx.btnClose.Enabled = True
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-    Public Sub RowInsert(ByVal DT As DataTable, ByVal da As SqlDataAdapter)
-
-        Dim Save As New SqlCommandBuilder(da)
-        da.Update(DT)
-        DT.AcceptChanges()
-        DT.Dispose()
-        da.Dispose()
-
-    End Sub
-
-    Private Function SafeGetString(row As DataRow, columnName As String) As String
-        If row.IsNull(columnName) Then
-            Return ""
-        Else
-            Return row.Item(columnName).ToString()
-        End If
-    End Function
-
-    ''Show Archive Variables
-    Public Sub ShowArchiveVariables(ByVal xx As ArchiveVariablesForm)
-        Try
-            Dim DT As New DataTable
-            Dim sqlst As String = "SELECT * FROM ArchiveVariables WHERE ID = 1"
-            FillDataTable(DT, sqlst)
-
-            If DT.Rows.Count > 0 Then
-                With DT.Rows(0)
-                    ' الحقول النصية
-                    xx.ExternalSoredPath.Text = SafeGetString(DT.Rows(0), "ExternalSoredPath")
-                    xx.ScandImagePath.Text = SafeGetString(DT.Rows(0), "ScandImagePath")
-                    xx.PDFStoredPath.Text = SafeGetString(DT.Rows(0), "PDFStoredPath")
-                    xx.txtSearchDefaultPath.Text = SafeGetString(DT.Rows(0), "PathSearch")
-                    xx.txtlastSavedNumber.Text = SafeGetString(DT.Rows(0), "LastSaderNumber")
-
-                    ' الحقول الرقمية
-                    xx.txtdaysToKeep.Text = If(IsDBNull(.Item("daysToKeep")), "0", .Item("daysToKeep").ToString())
-                    xx.nudNotificationInterval.Value = If(IsDBNull(.Item("NotificationsFormInterval")), 5, CInt(.Item("NotificationsFormInterval")))
-
-                    ' الحقول المتعلقة بالإعدادات البريدية
-                    xx.DefualtSenderEmail.Text = SafeGetString(DT.Rows(0), "DefualtSenderEmail")
-                    xx.EmailAppPassword.Text = SafeGetString(DT.Rows(0), "EmailAppPassword")
-                    xx.SMTPServer.Text = SafeGetString(DT.Rows(0), "SMTPServer")
-                    xx.PortNumber.Text = SafeGetString(DT.Rows(0), "PortNumber")
-
-                    ' فك تشفير كلمة المرور
-                    Dim encryptedPass = .Item("FrmConStrPASS")
-                    xx.txtPassCon.Text = If(IsDBNull(encryptedPass), "", Decrypt(encryptedPass.ToString()))
-
-
-                    ' الحقول الأخرى
-                    Dim imageExtValue = .Item("ImageExtension")
-                    xx.ImageExtension.SelectedIndex = If(IsDBNull(imageExtValue), -1, CInt(imageExtValue))
-                End With
-
-                ' تمكين وإعاقة الأزرار
-                xx.btnSave.Enabled = False
-                xx.btnUpdate.Enabled = True
-                xx.btnDelete.Enabled = True
-            End If
-
-            DT.Dispose()
-
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "Error Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-
-    'Public Sub ShowArchiveVariables(ByVal xx As ArchiveVariablesForm)
-    '    Try
-    '        Dim DT As New DataTable
-    '        Dim sqlst As String
-    '        sqlst = "Select * FROM ArchiveVariables where ID = 1 "
-    '        FillDataTable(DT, sqlst)
-
-    '        If DT.Rows.Count > 0 Then
-
-
-    '            xx.ExternalSoredPath.Text = DT.Rows(0).Item("ExternalSoredPath").ToString()
-
-    '            xx.ScandImagePath.Text = DT.Rows(0).Item("ScandImagePath").ToString()
-    '            xx.ScandImageName.Text = DT.Rows(0).Item("ScandImageName").ToString()
-    '            xx.ImageExtension.SelectedIndex = DT.Rows(0).Item("ImageExtension")
-    '            xx.PDFStoredPath.Text = DT.Rows(0).Item("PDFStoredPath").ToString()
-
-
-    '            xx.txtSearchDefaultPath.Text = DT.Rows(0).Item("PathSearch").ToString
-    '            xx.txtlastSavedNumber.Text = DT.Rows(0).Item("LastSaderNumber").ToString
-    '            xx.txtdaysToKeep.Text = CInt(DT.Rows(0).Item("daysToKeep"))
-    '            xx.nudNotificationInterval.Value = CInt(DT.Rows(0).Item("NotificationsFormInterval"))
-
-
-    '            xx.DefualtSenderEmail.Text = DT.Rows(0).Item("DefualtSenderEmail")
-    '            xx.EmailAppPassword.Text = DT.Rows(0).Item("EmailAppPassword")
-    '            xx.SMTPServer.Text = DT.Rows(0).Item("SMTPServer")
-    '            xx.PortNumber.Text = DT.Rows(0).Item("PortNumber")
-    '            xx.txtPassCon.Text = Decrypt(DT.Rows(0).Item("FrmConStrPASS").ToString())
-    '            xx.btnSave.Enabled = False
-    '            xx.btnUpdate.Enabled = True
-    '            xx.btnDelete.Enabled = True
-    '        End If
-    '        DT.Dispose()
-    '    Catch ex As Exception
-    '        MessageBox.Show(ex.Message, "Erorr Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    'Clear Control On TabControls
-
-    Public Sub Clear_Control_On_TabControls(ByVal TabControl As TabControl)
-
-        TabControl.Enabled = True
-        TabControl.SelectedTab = TabControl.TabPages(0)
-
-        For i As Int16 = 0 To TabControl.TabPages.Count - 1
-
-            For x As Int16 = 0 To TabControl.TabPages(i).Controls.Count - 1
-
-                If TypeOf TabControl.TabPages(i).Controls(x) Is TextBox Then  ' clear TextBox Controls
-                    Dim TXT As TextBox = TabControl.TabPages(i).Controls(x)
-                    TXT.Clear()
-                    TXT.Tag = Nothing
-                End If
-                If TypeOf TabControl.TabPages(i).Controls(x) Is ComboBox Then    ' Clear Combobox Control
-                    Dim Combo As ComboBox = TabControl.TabPages(i).Controls(x)
-                    Combo.SelectedValue = 0
-                    Combo.SelectedIndex = -1
-                    Combo.Text = Nothing
-                    Combo.Tag = Nothing
-                End If
-                If TypeOf TabControl.TabPages(i).Controls(x) Is CheckBox Then   'Clear CheckBox Control
-                    Dim Ck As CheckBox = TabControl.TabPages(i).Controls(x)
-                    Ck.Checked = False
-                End If
-
-                If TypeOf TabControl.TabPages(i).Controls(x) Is DataGridView Then   'Clear DataGridView Control
-                    Dim dgv As DataGridView = TabControl.TabPages(i).Controls(x)
-                    dgv.Rows.Clear()
-                End If
-
-                For Each GP As GroupBox In TabControl.TabPages(i).Controls.OfType(Of GroupBox)() 'Clear Controls inside GroupBox
-                    GP.Enabled = True
-                    For Each txt As TextBox In GP.Controls.OfType(Of TextBox)()
-                        txt.Tag = ""
-                        txt.Clear()
-                    Next
-
-                    For Each combo As ComboBox In GP.Controls.OfType(Of ComboBox)()
-                        combo.SelectedIndex = -1
-                        combo.Text = Nothing
-                    Next
-
-                    For Each CK As CheckBox In GP.Controls.OfType(Of CheckBox)()
-                        CK.Checked = False
-                    Next
-                Next
-
-                For Each PL As Panel In TabControl.TabPages(i).Controls.OfType(Of Panel)() ' Clear Controls inside Panel
-                    PL.Enabled = True
-                    For Each txt As TextBox In PL.Controls.OfType(Of TextBox)()
-                        txt.Tag = ""
-                        txt.Clear()
-                    Next
-
-                    For Each combo As ComboBox In PL.Controls.OfType(Of ComboBox)()
-                        combo.SelectedIndex = -1
-                        combo.Text = Nothing
-                    Next
-
-                    For Each CK As CheckBox In PL.Controls.OfType(Of CheckBox)()
-                        CK.Checked = False
-                    Next
-
-                    For Each dgv As DataGridView In PL.Controls.OfType(Of DataGridView)()
-                        dgv.DataSource = Nothing
-                        dgv.Rows.Clear()
-                    Next
-
-                    For Each PIC As PictureBox In PL.Controls.OfType(Of PictureBox)()   ' Clear PictureBox Control
-                        PIC.Image = Nothing
-                    Next
-                    For Each DTP As DateTimePicker In PL.Controls.OfType(Of DateTimePicker)()   ' Clear DateTimePicker Control
-                        DTP.Value = Now.Date.ToString("dd-MM-yyyy")
-                    Next
-                Next
-            Next
-        Next
-    End Sub
-
-    'Clear Controls Inside Panel
-    Public Sub Clear_Controls_Inside_Panel(ByVal Panel As Panel)
-
-        Panel.Enabled = True
-
-        For Each txt As TextBox In Panel.Controls.OfType(Of TextBox)()  ' clear TextBox Controls
-            txt.Clear()
-            txt.Tag = String.Empty
-        Next
-
-        For Each combo As ComboBox In Panel.Controls.OfType(Of ComboBox)()    ' Clear Combobox Control
-            combo.SelectedIndex = -1
-            combo.Text = Nothing
-        Next
-
-        For Each Ck As CheckBox In Panel.Controls.OfType(Of CheckBox)()   'Clear CheckBox Control
-            Ck.Checked = False
-        Next
-
-        For Each Rtxt As RichTextBox In Panel.Controls.OfType(Of RichTextBox)() ' Clear RichTextBox Control
-            Rtxt.Clear()
-            Rtxt.Tag = String.Empty
-        Next
-
-    End Sub
-
-#End Region
-
 #Region "====================== ( Password Management ) ==========================="
     ''' <summary>
     ''' تغيير كلمة مرور الوصول إلى الشاشة.
@@ -1545,6 +1344,311 @@ Module GlobalData
 
 #End Region
 
+#Region "====================( إدارة النماذج (MDI) )=================="
+    '''' <summary>
+    '''' فتح نموذج كنافذة فرعية (MDI Child)
+    '''' </summary>
+    'Public Sub OpenMdiForm(Of T As Form)(createInstance As Func(Of T), Optional ByVal mdiParent As Form = Nothing)
+    '    Try
+    '        ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
+    '        If mdiParent Is Nothing Then
+    '            ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
+    '            For Each form As Form In Application.OpenForms
+    '                If form.IsMdiContainer Then
+    '                    mdiParent = form
+    '                    Exit For
+    '                End If
+    '            Next
 
+    '            ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف
+    '            If mdiParent Is Nothing Then
+    '                For Each form As Form In Application.OpenForms
+    '                    If TypeOf form Is MainForm Then
+    '                        mdiParent = form
+    '                        Exit For
+    '                    End If
+    '                Next
+    '            End If
+    '        End If
+
+    '        ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
+    '        If mdiParent Is Nothing Then
+    '            MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            Return
+    '        End If
+
+    '        ' البحث عن النموذج المطلوب في النماذج الفرعية
+    '        Dim existingForm As T = Nothing
+    '        For Each child As Form In mdiParent.MdiChildren
+    '            If TypeOf child Is T Then
+    '                existingForm = DirectCast(child, T)
+    '                Exit For
+    '            End If
+    '        Next
+
+    '        If existingForm IsNot Nothing Then
+    '            ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
+    '            existingForm.BringToFront()
+    '            existingForm.Activate()
+    '        Else
+    '            ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد باستخدام الدالة الممررة
+    '            Dim newForm As T = createInstance()
+    '            newForm.MdiParent = mdiParent
+    '            newForm.WindowState = FormWindowState.Maximized
+    '            newForm.Show()
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show($"خطأ في فتح النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+    Public Sub OpenMdiForm(Of T As {Form, New})(Optional ByVal mdiParent As Form = Nothing)
+        ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
+        If mdiParent Is Nothing Then
+            ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
+            For Each form As Form In Application.OpenForms
+                If form.IsMdiContainer Then
+                    mdiParent = form
+                    Exit For
+                End If
+            Next
+
+            ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف (مثل MainFrm)
+            If mdiParent Is Nothing Then
+                For Each form As Form In Application.OpenForms
+                    If TypeOf form Is MainForm Then ' استبدل MainFrm باسم نموذجك الرئيسي
+                        mdiParent = form
+                        Exit For
+                    End If
+                Next
+            End If
+        End If
+
+        ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
+        If mdiParent Is Nothing Then
+            MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
+        ' البحث عن النموذج المطلوب في النماذج الفرعية
+        Dim existingForm As T = mdiParent.MdiChildren.OfType(Of T)().FirstOrDefault()
+
+        If existingForm IsNot Nothing Then
+            ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
+            existingForm.BringToFront()
+            existingForm.Activate()
+        Else
+            ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد
+            Dim newForm As New T()
+            newForm.MdiParent = mdiParent
+            newForm.Show()
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' فتح نموذج واحد فقط (مثيل واحد) من نوع TForm
+    ''' </summary>
+    ''' <typeparam name="TForm">نوع النموذج المراد فتحه</typeparam>
+    ''' <param name="createInstance">دالة لإنشاء مثيل جديد من النموذج</param>
+    ''' <param name="onSuccess">دالة اختيارية لتنفيذها بعد إغلاق النموذج بنجاح</param>
+    Public Sub OpenSingleInstance(Of TForm As {New, Form})(createInstance As Func(Of TForm), Optional onSuccess As Action = Nothing)
+        Try
+            ' البحث عن نموذج مفتوح بالفعل من النوع المطلوب
+            Dim existingForm As TForm = Nothing
+            For Each form As Form In Application.OpenForms
+                If TypeOf form Is TForm Then
+                    existingForm = DirectCast(form, TForm)
+                    Exit For
+                End If
+            Next
+
+            If existingForm IsNot Nothing AndAlso Not existingForm.IsDisposed Then
+                ' إذا كان النموذج مفتوحًا، جلبه إلى المقدمة
+                existingForm.BringToFront()
+                existingForm.Activate()
+            Else
+                ' إذا لم يكن النموذج مفتوحًا، أنشئ مثيلًا جديدًا واحتفظ به
+                currentInstance = createInstance()
+                AddHandler currentInstance.FormClosed, AddressOf OnFormClosed
+
+                ' عرض النموذج
+                If currentInstance.ShowDialog() = DialogResult.OK Then
+                    ' تنفيذ الدالة الاختيارية بعد الإغلاق بنجاح
+                    onSuccess?.Invoke()
+                End If
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show($"حدث خطأ أثناء فتح النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' فتح نموذج كنافذة فرعية (MDI Child)
+    ''' </summary>
+    ''' <typeparam name="TForm">نوع النموذج المراد فتحه</typeparam>
+    ''' <param name="createInstance">دالة لإنشاء مثيل جديد من النموذج</param>
+    ''' <param name="mdiParent">نموذج رئيسي (MdiContainer)</param>
+    Public Sub OpenMdiForm(Of TForm As {New, Form})(createInstance As Func(Of TForm), Optional ByVal mdiParent As Form = Nothing)
+        Try
+            ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
+            If mdiParent Is Nothing Then
+                ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
+                For Each form As Form In Application.OpenForms
+                    If form.IsMdiContainer Then
+                        mdiParent = form
+                        Exit For
+                    End If
+                Next
+
+                ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف
+                If mdiParent Is Nothing Then
+                    For Each form As Form In Application.OpenForms
+                        If TypeOf form Is MainForm Then ' استبدل MainFrm باسم نموذجك الرئيسي
+                            mdiParent = form
+                            Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
+            If mdiParent Is Nothing Then
+                MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            ' البحث عن النموذج المطلوب في النماذج الفرعية
+            Dim existingForm As TForm = mdiParent.MdiChildren.OfType(Of TForm)().FirstOrDefault()
+
+            If existingForm IsNot Nothing Then
+                ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
+                existingForm.BringToFront()
+                existingForm.Activate()
+            Else
+                ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد
+                Dim newForm As New TForm()
+                newForm.MdiParent = mdiParent
+                newForm.Show()
+            End If
+        Catch ex As Exception
+            MessageBox.Show($"حدث خطأ أثناء فتح النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' حدث يتم استدعاؤه عند إغلاق النموذج
+    ''' </summary>
+    Private Sub OnFormClosed(sender As Object, e As FormClosedEventArgs)
+        ' إعادة تعيين المتغير عندما يتم إغلاق النموذج
+        currentInstance = Nothing
+    End Sub
+
+    ''' <summary>
+    ''' واجهة لتمكين تمرير البيانات عند فتح النماذج
+    ''' </summary>
+    Public Interface IFormWithParameters
+        Sub InitializeWithData(data As Object)
+    End Interface
+
+
+#End Region
+
+#Region "====================( التفعيل )=================="
+
+    ''' <summary>
+    ''' كتابة قيمة مفتاح التفعيل في تسجيل ويندوز
+    ''' </summary>
+    Public Function WriteValue(key As String) As Boolean
+        Dim baseKey As RegistryKey = Nothing
+        Dim subKey As RegistryKey = Nothing
+        Try
+            ' فتح المفتاح الأساسي
+            baseKey = Registry.LocalMachine.OpenSubKey("SOFTWARE", True)
+            If baseKey Is Nothing Then
+                Throw New Exception("تعذر فتح مسار SOFTWARE في التسجيل.")
+            End If
+
+            ' إنشاء المفتاح الفرعي إذا لم يكن موجودًا
+            subKey = baseKey.CreateSubKey("ESIS")
+
+            If subKey Is Nothing Then
+                Throw New Exception("تعذر إنشاء مفتاح ESIS في التسجيل.")
+            End If
+
+            ' حفظ القيمة
+            subKey.SetValue("System_key", key)
+
+            Return True
+        Catch ex As SecurityException
+            MessageBox.Show("يحتاج البرنامج لصلاحيات مدير (Administrator) لتفعيله.", "صلاحيات غير كافية", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        Catch ex As Exception
+            System.Diagnostics.Debug.WriteLine($"خطأ في كتابة قيمة التسجيل: {ex.Message}")
+            Return False
+        Finally
+            ' إغلاق المفاتيح بأمان
+            If subKey IsNot Nothing Then
+                Try
+                    subKey.Close()
+                Catch
+                End Try
+            End If
+            If baseKey IsNot Nothing Then
+                Try
+                    baseKey.Close()
+                Catch
+                End Try
+            End If
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' قراءة قيمة مفتاح التفعيل من تسجيل ويندوز
+    ''' </summary>
+    Public Function GetRegValue() As String
+        Dim regKey As RegistryKey = Nothing
+        Try
+            ' فتح مسار البرنامج في التسجيل
+            regKey = Registry.LocalMachine.OpenSubKey("Software\ESIS", True) ' فقط للقراءة
+            If regKey IsNot Nothing Then
+                ' الحصول على قيمة مفتاح النظام
+                Dim value As Object = regKey.GetValue("System_key")
+                ' إغلاق المفتاح فورًا
+                regKey.Close()
+                Return CStr(value)
+            Else
+                Return ""
+            End If
+        Catch ex As Exception
+            System.Diagnostics.Debug.WriteLine($"خطأ في قراءة قيمة التسجيل: {ex.Message}")
+            Return ""
+        Finally
+            If regKey IsNot Nothing Then
+                Try
+                    regKey.Close()
+                Catch
+                End Try
+            End If
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' التحقق من صحة مفتاح التفعيل
+    ''' </summary>
+    Public Function ValidateActivationKey(inputKey As String) As Boolean
+        Try
+            Dim storedKey As String = GetRegValue()
+            If String.IsNullOrWhiteSpace(inputKey) OrElse String.IsNullOrWhiteSpace(storedKey) Then
+                Return False
+            End If
+            ' المقارنة الحساسة لحالة الأحرف
+            Return inputKey.Trim() = storedKey.Trim()
+        Catch ex As Exception
+            System.Diagnostics.Debug.WriteLine($"خطأ في التحقق من مفتاح التفعيل: {ex.Message}")
+            Return False
+        End Try
+    End Function
+
+#End Region
 
 End Module

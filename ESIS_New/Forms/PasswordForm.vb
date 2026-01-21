@@ -1,4 +1,4 @@
-﻿
+﻿Imports ALquhaliLibrary.DBCLS
 Public Class PasswordForm
     Public InputText As String = Nothing
 
@@ -15,8 +15,12 @@ Public Class PasswordForm
     End Sub
 
     Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click
-        InputText = txtPassword.Text.Trim
-        Me.Close()
+
+        If ValidatePassword("كلمة المرور الذي ادخلتها غير صحيحة") = False Then Return
+            InputText = Decrypt(txtPassword.Text)
+            Me.Close()
+
+
     End Sub
 
     Private Sub FrmPassword_Load(sender As Object, e As EventArgs) Handles Me.Load

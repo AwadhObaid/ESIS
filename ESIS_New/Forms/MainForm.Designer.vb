@@ -45,6 +45,7 @@ Partial Class MainForm
         Me.btnWared = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnSader = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnArchive = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnEmail = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnDeletedForm1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnDeletedForm = New System.Windows.Forms.ToolStripMenuItem()
         Me.MnuCleanupArchives = New System.Windows.Forms.ToolStripMenuItem()
@@ -105,7 +106,6 @@ Partial Class MainForm
         Me.lblUser2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBoxUser = New System.Windows.Forms.PictureBox()
-        Me.btnEmail = New System.Windows.Forms.ToolStripMenuItem()
         Me.men.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -274,6 +274,12 @@ Partial Class MainForm
         Me.btnArchive.ShortcutKeys = System.Windows.Forms.Keys.F2
         Me.btnArchive.Size = New System.Drawing.Size(197, 38)
         Me.btnArchive.Text = "إدارة الأرشيف"
+        '
+        'btnEmail
+        '
+        Me.btnEmail.Name = "btnEmail"
+        Me.btnEmail.Size = New System.Drawing.Size(197, 38)
+        Me.btnEmail.Text = "البريد الاكتروني"
         '
         'btnDeletedForm1
         '
@@ -814,16 +820,10 @@ Partial Class MainForm
         Me.PictureBoxUser.TabIndex = 5
         Me.PictureBoxUser.TabStop = False
         '
-        'btnEmail
-        '
-        Me.btnEmail.Name = "btnEmail"
-        Me.btnEmail.Size = New System.Drawing.Size(197, 38)
-        Me.btnEmail.Text = "البريد الاكتروني"
-        '
         'MainForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1552, 571)
         Me.Controls.Add(Me.Panel2)

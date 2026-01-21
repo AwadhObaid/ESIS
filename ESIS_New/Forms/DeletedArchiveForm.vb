@@ -77,7 +77,7 @@ Public Class DeletedArchiveForm
             If dgvDeletedArchive.Columns.Contains("FilePath") Then dgvDeletedArchive.Columns("FilePath").HeaderText = "مسار الملف"
             If dgvDeletedArchive.Columns.Contains("ArchiveWillMaster") Then dgvDeletedArchive.Columns("ArchiveWillMaster").HeaderText = "البوليصة الرئيسية"
             If dgvDeletedArchive.Columns.Contains("ArchiveWillSub") Then dgvDeletedArchive.Columns("ArchiveWillSub").HeaderText = "البوليصة الفرعية"
-
+            If dgvDeletedArchive.Columns.Contains("OriginalFilePath") Then dgvDeletedArchive.Columns("OriginalFilePath").HeaderText = "المسار الاصلي"
 
 
             If dgvDeletedArchive.Columns.Contains("DeletedDate") Then dgvDeletedArchive.Columns("DeletedDate").HeaderText = "تاريخ الحذف"
@@ -92,6 +92,7 @@ Public Class DeletedArchiveForm
             If dgvDeletedArchive.Columns.Contains("ArchiveNotes") Then dgvDeletedArchive.Columns("ArchiveNotes").Visible = False
             If dgvDeletedArchive.Columns.Contains("FileType") Then dgvDeletedArchive.Columns("FileType").Visible = False
             If dgvDeletedArchive.Columns.Contains("OriginalFilePath") Then dgvDeletedArchive.Columns("OriginalFilePath").Visible = False
+            If dgvDeletedArchive.Columns.Contains("OriginalFileName") Then dgvDeletedArchive.Columns("OriginalFileName").Visible = False
             If dgvDeletedArchive.Columns.Contains("OriginalSaderID") Then dgvDeletedArchive.Columns("OriginalSaderID").Visible = False
             If dgvDeletedArchive.Columns.Contains("NumericID") Then dgvDeletedArchive.Columns("NumericID").Visible = False
             If dgvDeletedArchive.Columns.Contains("IsDeleted") Then dgvDeletedArchive.Columns("IsDeleted").Visible = False

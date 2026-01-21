@@ -37,13 +37,13 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblFilterStatus = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkUseToday = New System.Windows.Forms.RadioButton()
         Me.rbUnarchivedSader = New System.Windows.Forms.RadioButton()
         Me.rbNumberBook = New System.Windows.Forms.RadioButton()
         Me.rbWillMaster = New System.Windows.Forms.RadioButton()
         Me.RBDate = New System.Windows.Forms.RadioButton()
         Me.rbSubjBook = New System.Windows.Forms.RadioButton()
         Me.rbWillSub = New System.Windows.Forms.RadioButton()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.dtpSearchDate = New System.Windows.Forms.DateTimePicker()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.cmbBookCategory = New System.Windows.Forms.ComboBox()
@@ -113,7 +113,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1379, 678)
+        Me.Panel1.Size = New System.Drawing.Size(1341, 652)
         Me.Panel1.TabIndex = 20
         '
         'Panel2
@@ -136,7 +136,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel2.Location = New System.Drawing.Point(0, 0)
         Me.Panel2.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(1379, 678)
+        Me.Panel2.Size = New System.Drawing.Size(1341, 652)
         Me.Panel2.TabIndex = 0
         '
         'nudCopies
@@ -166,7 +166,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.Panel3.Controls.Add(Me.lblMessage)
         Me.Panel3.Location = New System.Drawing.Point(505, 641)
         Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(864, 37)
+        Me.Panel3.Size = New System.Drawing.Size(864, 11)
         Me.Panel3.TabIndex = 32
         '
         'PicMsg
@@ -174,7 +174,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.PicMsg.Dock = System.Windows.Forms.DockStyle.Right
         Me.PicMsg.Location = New System.Drawing.Point(827, 0)
         Me.PicMsg.Name = "PicMsg"
-        Me.PicMsg.Size = New System.Drawing.Size(37, 37)
+        Me.PicMsg.Size = New System.Drawing.Size(37, 11)
         Me.PicMsg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicMsg.TabIndex = 31
         Me.PicMsg.TabStop = False
@@ -187,17 +187,17 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblMessage.Location = New System.Drawing.Point(0, 0)
         Me.lblMessage.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblMessage.Name = "lblMessage"
-        Me.lblMessage.Size = New System.Drawing.Size(864, 37)
+        Me.lblMessage.Size = New System.Drawing.Size(864, 11)
         Me.lblMessage.TabIndex = 30
         Me.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label2
         '
         Me.Label2.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.Label2.Location = New System.Drawing.Point(1259, 11)
+        Me.Label2.Location = New System.Drawing.Point(1231, 11)
         Me.Label2.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(107, 30)
+        Me.Label2.Size = New System.Drawing.Size(100, 30)
         Me.Label2.TabIndex = 29
         Me.Label2.Text = "تصنيف الكتاب:"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -211,7 +211,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnAddCategory.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddCategory.Location = New System.Drawing.Point(788, 12)
         Me.btnAddCategory.Name = "btnAddCategory"
-        Me.btnAddCategory.Size = New System.Drawing.Size(191, 32)
+        Me.btnAddCategory.Size = New System.Drawing.Size(156, 32)
         Me.btnAddCategory.TabIndex = 28
         Me.btnAddCategory.Text = "إدارة التصنيفات  | 🧮"
         Me.btnAddCategory.UseVisualStyleBackColor = False
@@ -229,7 +229,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         Me.GroupBox5.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
         Me.GroupBox5.Controls.Add(Me.TableLayoutPanel3)
-        Me.GroupBox5.Controls.Add(Me.Label1)
         Me.GroupBox5.Controls.Add(Me.dtpSearchDate)
         Me.GroupBox5.Controls.Add(Me.txtSearch)
         Me.GroupBox5.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -247,6 +246,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel3.ColumnCount = 2
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.17742!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.82258!))
+        Me.TableLayoutPanel3.Controls.Add(Me.chkUseToday, 0, 3)
         Me.TableLayoutPanel3.Controls.Add(Me.rbUnarchivedSader, 0, 2)
         Me.TableLayoutPanel3.Controls.Add(Me.rbNumberBook, 0, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.rbWillMaster, 1, 0)
@@ -255,22 +255,37 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel3.Controls.Add(Me.rbWillSub, 1, 1)
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(3, 30)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
-        Me.TableLayoutPanel3.RowCount = 3
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.12195!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.87805!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(248, 118)
+        Me.TableLayoutPanel3.RowCount = 4
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(248, 152)
         Me.TableLayoutPanel3.TabIndex = 26
+        '
+        'chkUseToday
+        '
+        Me.chkUseToday.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.chkUseToday.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.chkUseToday.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.chkUseToday.Location = New System.Drawing.Point(133, 116)
+        Me.chkUseToday.Margin = New System.Windows.Forms.Padding(2)
+        Me.chkUseToday.Name = "chkUseToday"
+        Me.chkUseToday.Size = New System.Drawing.Size(113, 34)
+        Me.chkUseToday.TabIndex = 55
+        Me.chkUseToday.TabStop = True
+        Me.chkUseToday.Text = "بتاريخ اليوم"
+        Me.chkUseToday.UseVisualStyleBackColor = True
         '
         'rbUnarchivedSader
         '
         Me.rbUnarchivedSader.Dock = System.Windows.Forms.DockStyle.Fill
         Me.rbUnarchivedSader.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.rbUnarchivedSader.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.rbUnarchivedSader.Location = New System.Drawing.Point(133, 84)
+        Me.rbUnarchivedSader.Location = New System.Drawing.Point(133, 78)
         Me.rbUnarchivedSader.Margin = New System.Windows.Forms.Padding(2)
         Me.rbUnarchivedSader.Name = "rbUnarchivedSader"
-        Me.rbUnarchivedSader.Size = New System.Drawing.Size(113, 32)
+        Me.rbUnarchivedSader.Size = New System.Drawing.Size(113, 34)
         Me.rbUnarchivedSader.TabIndex = 54
         Me.rbUnarchivedSader.TabStop = True
         Me.rbUnarchivedSader.Text = "الغير مـــؤرشف"
@@ -283,7 +298,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.rbNumberBook.Location = New System.Drawing.Point(134, 6)
         Me.rbNumberBook.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.rbNumberBook.Name = "rbNumberBook"
-        Me.rbNumberBook.Size = New System.Drawing.Size(111, 25)
+        Me.rbNumberBook.Size = New System.Drawing.Size(111, 26)
         Me.rbNumberBook.TabIndex = 0
         Me.rbNumberBook.TabStop = True
         Me.rbNumberBook.Text = "رقـــم الكتــاب"
@@ -297,7 +312,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.rbWillMaster.Location = New System.Drawing.Point(3, 6)
         Me.rbWillMaster.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.rbWillMaster.Name = "rbWillMaster"
-        Me.rbWillMaster.Size = New System.Drawing.Size(125, 25)
+        Me.rbWillMaster.Size = New System.Drawing.Size(125, 26)
         Me.rbWillMaster.TabIndex = 1
         Me.rbWillMaster.TabStop = True
         Me.rbWillMaster.Text = "البوليصة الرئيسية"
@@ -309,10 +324,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.RBDate.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RBDate.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.RBDate.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.RBDate.Location = New System.Drawing.Point(2, 84)
+        Me.RBDate.Location = New System.Drawing.Point(2, 78)
         Me.RBDate.Margin = New System.Windows.Forms.Padding(2)
         Me.RBDate.Name = "RBDate"
-        Me.RBDate.Size = New System.Drawing.Size(127, 32)
+        Me.RBDate.Size = New System.Drawing.Size(127, 34)
         Me.RBDate.TabIndex = 49
         Me.RBDate.TabStop = True
         Me.RBDate.Text = "البحـــث بالتـــاريخ"
@@ -322,10 +337,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         Me.rbSubjBook.Dock = System.Windows.Forms.DockStyle.Fill
         Me.rbSubjBook.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.rbSubjBook.Location = New System.Drawing.Point(134, 43)
+        Me.rbSubjBook.Location = New System.Drawing.Point(134, 44)
         Me.rbSubjBook.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.rbSubjBook.Name = "rbSubjBook"
-        Me.rbSubjBook.Size = New System.Drawing.Size(111, 33)
+        Me.rbSubjBook.Size = New System.Drawing.Size(111, 26)
         Me.rbSubjBook.TabIndex = 3
         Me.rbSubjBook.TabStop = True
         Me.rbSubjBook.Text = "موضوع الكتاب"
@@ -336,28 +351,15 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         Me.rbWillSub.Dock = System.Windows.Forms.DockStyle.Fill
         Me.rbWillSub.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.rbWillSub.Location = New System.Drawing.Point(3, 43)
+        Me.rbWillSub.Location = New System.Drawing.Point(3, 44)
         Me.rbWillSub.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.rbWillSub.Name = "rbWillSub"
-        Me.rbWillSub.Size = New System.Drawing.Size(125, 33)
+        Me.rbWillSub.Size = New System.Drawing.Size(125, 26)
         Me.rbWillSub.TabIndex = 2
         Me.rbWillSub.TabStop = True
         Me.rbWillSub.Text = "البوليصة الفرعية"
         Me.rbWillSub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.rbWillSub.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(53, Byte), Integer), CType(CType(69, Byte), Integer))
-        Me.Label1.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(6, 157)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(245, 46)
-        Me.Label1.TabIndex = 51
-        Me.Label1.Text = "عند إختيار البحث بالتاريخ يرجى" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & " اختيار التاريخ من اداة التاريخ بالأسفل"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'dtpSearchDate
         '
@@ -388,9 +390,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.cmbBookCategory.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.cmbBookCategory.FormattingEnabled = True
         Me.cmbBookCategory.IntegralHeight = False
-        Me.cmbBookCategory.Location = New System.Drawing.Point(985, 12)
+        Me.cmbBookCategory.Location = New System.Drawing.Point(950, 12)
         Me.cmbBookCategory.Name = "cmbBookCategory"
-        Me.cmbBookCategory.Size = New System.Drawing.Size(269, 31)
+        Me.cmbBookCategory.Size = New System.Drawing.Size(281, 31)
         Me.cmbBookCategory.TabIndex = 25
         '
         'dgvSader
@@ -501,7 +503,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(2, 4, 2, 4)
-        Me.GroupBox1.Size = New System.Drawing.Size(876, 302)
+        Me.GroupBox1.Size = New System.Drawing.Size(838, 298)
         Me.GroupBox1.TabIndex = 22
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "بيانات الصادر"
@@ -526,7 +528,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.RBDirectPrint.Checked = True
         Me.RBDirectPrint.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.RBDirectPrint.ForeColor = System.Drawing.Color.DarkRed
-        Me.RBDirectPrint.Location = New System.Drawing.Point(739, 219)
+        Me.RBDirectPrint.Location = New System.Drawing.Point(701, 206)
         Me.RBDirectPrint.Margin = New System.Windows.Forms.Padding(2)
         Me.RBDirectPrint.Name = "RBDirectPrint"
         Me.RBDirectPrint.Size = New System.Drawing.Size(126, 27)
@@ -541,7 +543,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.RBPreviewBeforePrint.AutoSize = True
         Me.RBPreviewBeforePrint.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.RBPreviewBeforePrint.ForeColor = System.Drawing.Color.DarkRed
-        Me.RBPreviewBeforePrint.Location = New System.Drawing.Point(580, 219)
+        Me.RBPreviewBeforePrint.Location = New System.Drawing.Point(542, 206)
         Me.RBPreviewBeforePrint.Margin = New System.Windows.Forms.Padding(2)
         Me.RBPreviewBeforePrint.Name = "RBPreviewBeforePrint"
         Me.RBPreviewBeforePrint.Size = New System.Drawing.Size(155, 27)
@@ -555,7 +557,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblWarning.AutoSize = True
         Me.lblWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblWarning.ForeColor = System.Drawing.Color.Red
-        Me.lblWarning.Location = New System.Drawing.Point(287, 191)
+        Me.lblWarning.Location = New System.Drawing.Point(5, 191)
         Me.lblWarning.Name = "lblWarning"
         Me.lblWarning.Size = New System.Drawing.Size(2, 31)
         Me.lblWarning.TabIndex = 53
@@ -587,16 +589,16 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TLPControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.07407!))
         Me.TLPControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.79426!))
         Me.TLPControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.92344!))
-        Me.TLPControls.Size = New System.Drawing.Size(589, 113)
+        Me.TLPControls.Size = New System.Drawing.Size(551, 114)
         Me.TLPControls.TabIndex = 25
         '
         'CbDateBook
         '
         Me.CbDateBook.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CbDateBook.Font = New System.Drawing.Font("Cairo", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CbDateBook.Location = New System.Drawing.Point(474, 79)
+        Me.CbDateBook.Location = New System.Drawing.Point(444, 79)
         Me.CbDateBook.Name = "CbDateBook"
-        Me.CbDateBook.Size = New System.Drawing.Size(112, 31)
+        Me.CbDateBook.Size = New System.Drawing.Size(104, 32)
         Me.CbDateBook.TabIndex = 35
         Me.CbDateBook.Text = "تــاريـخ الكتـــاب | 📆"
         Me.CbDateBook.UseVisualStyleBackColor = True
@@ -604,10 +606,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'CbArchiveNum
         '
         Me.CbArchiveNum.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.CbArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.CbArchiveNum.Location = New System.Drawing.Point(199, 3)
+        Me.CbArchiveNum.Font = New System.Drawing.Font("Cairo", 8.249999!)
+        Me.CbArchiveNum.Location = New System.Drawing.Point(186, 3)
         Me.CbArchiveNum.Name = "CbArchiveNum"
-        Me.CbArchiveNum.Size = New System.Drawing.Size(95, 30)
+        Me.CbArchiveNum.Size = New System.Drawing.Size(89, 30)
         Me.CbArchiveNum.TabIndex = 34
         Me.CbArchiveNum.Text = "رقم الأرشيف:"
         Me.CbArchiveNum.UseVisualStyleBackColor = True
@@ -615,11 +617,11 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'lblWillMaster
         '
         Me.lblWillMaster.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblWillMaster.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.lblWillMaster.Location = New System.Drawing.Point(473, 0)
+        Me.lblWillMaster.Font = New System.Drawing.Font("Cairo", 8.249999!)
+        Me.lblWillMaster.Location = New System.Drawing.Point(443, 0)
         Me.lblWillMaster.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblWillMaster.Name = "lblWillMaster"
-        Me.lblWillMaster.Size = New System.Drawing.Size(114, 36)
+        Me.lblWillMaster.Size = New System.Drawing.Size(106, 36)
         Me.lblWillMaster.TabIndex = 6
         Me.lblWillMaster.Text = " البوليصة الرئيسية:"
         Me.lblWillMaster.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -628,10 +630,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         Me.txtWillMaster.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtWillMaster.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.txtWillMaster.Location = New System.Drawing.Point(299, 4)
+        Me.txtWillMaster.Location = New System.Drawing.Point(280, 4)
         Me.txtWillMaster.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtWillMaster.Name = "txtWillMaster"
-        Me.txtWillMaster.Size = New System.Drawing.Size(170, 30)
+        Me.txtWillMaster.Size = New System.Drawing.Size(159, 30)
         Me.txtWillMaster.TabIndex = 7
         Me.txtWillMaster.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -643,17 +645,17 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.txtArchiveID.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtArchiveID.Name = "txtArchiveID"
         Me.txtArchiveID.ReadOnly = True
-        Me.txtArchiveID.Size = New System.Drawing.Size(192, 30)
+        Me.txtArchiveID.Size = New System.Drawing.Size(179, 30)
         Me.txtArchiveID.TabIndex = 13
         '
         'lblWillSub
         '
         Me.lblWillSub.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblWillSub.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.lblWillSub.Location = New System.Drawing.Point(473, 36)
+        Me.lblWillSub.Font = New System.Drawing.Font("Cairo", 8.249999!)
+        Me.lblWillSub.Location = New System.Drawing.Point(443, 36)
         Me.lblWillSub.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblWillSub.Name = "lblWillSub"
-        Me.lblWillSub.Size = New System.Drawing.Size(114, 40)
+        Me.lblWillSub.Size = New System.Drawing.Size(106, 40)
         Me.lblWillSub.TabIndex = 8
         Me.lblWillSub.Text = " البوليصة الفرعية:"
         Me.lblWillSub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -666,16 +668,16 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.txtUserName.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtUserName.Name = "txtUserName"
         Me.txtUserName.ReadOnly = True
-        Me.txtUserName.Size = New System.Drawing.Size(192, 30)
+        Me.txtUserName.Size = New System.Drawing.Size(179, 30)
         Me.txtUserName.TabIndex = 11
         '
         'lblNumberBook
         '
-        Me.lblNumberBook.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.lblNumberBook.Location = New System.Drawing.Point(198, 76)
+        Me.lblNumberBook.Font = New System.Drawing.Font("Cairo", 8.249999!)
+        Me.lblNumberBook.Location = New System.Drawing.Point(185, 76)
         Me.lblNumberBook.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblNumberBook.Name = "lblNumberBook"
-        Me.lblNumberBook.Size = New System.Drawing.Size(97, 30)
+        Me.lblNumberBook.Size = New System.Drawing.Size(91, 34)
         Me.lblNumberBook.TabIndex = 0
         Me.lblNumberBook.Text = "رقــم الكتـــــاب:"
         Me.lblNumberBook.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -688,17 +690,17 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.txtNumberBook.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtNumberBook.Name = "txtNumberBook"
         Me.txtNumberBook.ReadOnly = True
-        Me.txtNumberBook.Size = New System.Drawing.Size(192, 30)
+        Me.txtNumberBook.Size = New System.Drawing.Size(179, 30)
         Me.txtNumberBook.TabIndex = 1
         '
         'txtWillSub
         '
         Me.txtWillSub.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtWillSub.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.txtWillSub.Location = New System.Drawing.Point(299, 40)
+        Me.txtWillSub.Location = New System.Drawing.Point(280, 40)
         Me.txtWillSub.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtWillSub.Name = "txtWillSub"
-        Me.txtWillSub.Size = New System.Drawing.Size(170, 30)
+        Me.txtWillSub.Size = New System.Drawing.Size(159, 30)
         Me.txtWillSub.TabIndex = 9
         Me.txtWillSub.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -708,19 +710,19 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.dtpDateBook.Enabled = False
         Me.dtpDateBook.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.dtpDateBook.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpDateBook.Location = New System.Drawing.Point(299, 80)
+        Me.dtpDateBook.Location = New System.Drawing.Point(280, 80)
         Me.dtpDateBook.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.dtpDateBook.Name = "dtpDateBook"
-        Me.dtpDateBook.Size = New System.Drawing.Size(170, 30)
+        Me.dtpDateBook.Size = New System.Drawing.Size(159, 30)
         Me.dtpDateBook.TabIndex = 3
         '
         'lblUserName
         '
-        Me.lblUserName.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.lblUserName.Location = New System.Drawing.Point(198, 36)
+        Me.lblUserName.Font = New System.Drawing.Font("Cairo", 8.249999!)
+        Me.lblUserName.Location = New System.Drawing.Point(185, 36)
         Me.lblUserName.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblUserName.Name = "lblUserName"
-        Me.lblUserName.Size = New System.Drawing.Size(97, 30)
+        Me.lblUserName.Size = New System.Drawing.Size(91, 30)
         Me.lblUserName.TabIndex = 10
         Me.lblUserName.Text = "اسم المستخدم:"
         Me.lblUserName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -737,7 +739,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.ComboSubjBook.IntegralHeight = False
         Me.ComboSubjBook.Location = New System.Drawing.Point(420, 146)
         Me.ComboSubjBook.Name = "ComboSubjBook"
-        Me.ComboSubjBook.Size = New System.Drawing.Size(337, 31)
+        Me.ComboSubjBook.Size = New System.Drawing.Size(304, 31)
         Me.ComboSubjBook.TabIndex = 24
         '
         'btnAddNewSubj
@@ -772,12 +774,12 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel1.Controls.Add(Me.btnUpdate, 2, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.btnDelete, 3, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(2, 248)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(2, 244)
         Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(872, 50)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(834, 50)
         Me.TableLayoutPanel1.TabIndex = 22
         '
         'btnShowUnarchivedOnly
@@ -790,7 +792,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnShowUnarchivedOnly.Location = New System.Drawing.Point(2, 4)
         Me.btnShowUnarchivedOnly.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnShowUnarchivedOnly.Name = "btnShowUnarchivedOnly"
-        Me.btnShowUnarchivedOnly.Size = New System.Drawing.Size(124, 42)
+        Me.btnShowUnarchivedOnly.Size = New System.Drawing.Size(116, 42)
         Me.btnShowUnarchivedOnly.TabIndex = 54
         Me.btnShowUnarchivedOnly.Text = "عرض الغير مؤرشف 📄"
         Me.btnShowUnarchivedOnly.UseVisualStyleBackColor = False
@@ -803,10 +805,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnClose.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClose.ForeColor = System.Drawing.Color.White
-        Me.btnClose.Location = New System.Drawing.Point(130, 4)
+        Me.btnClose.Location = New System.Drawing.Point(122, 4)
         Me.btnClose.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(120, 42)
+        Me.btnClose.Size = New System.Drawing.Size(115, 42)
         Me.btnClose.TabIndex = 4
         Me.btnClose.Text = "إغـلاق ❌"
         Me.btnClose.UseVisualStyleBackColor = False
@@ -818,10 +820,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNew.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnNew.ForeColor = System.Drawing.Color.White
-        Me.btnNew.Location = New System.Drawing.Point(750, 4)
+        Me.btnNew.Location = New System.Drawing.Point(717, 4)
         Me.btnNew.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnNew.Name = "btnNew"
-        Me.btnNew.Size = New System.Drawing.Size(120, 42)
+        Me.btnNew.Size = New System.Drawing.Size(115, 42)
         Me.btnNew.TabIndex = 17
         Me.btnNew.Text = "جديد 🆕"
         Me.btnNew.UseVisualStyleBackColor = False
@@ -833,10 +835,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAdd.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAdd.ForeColor = System.Drawing.Color.White
-        Me.btnAdd.Location = New System.Drawing.Point(626, 4)
+        Me.btnAdd.Location = New System.Drawing.Point(598, 4)
         Me.btnAdd.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(120, 42)
+        Me.btnAdd.Size = New System.Drawing.Size(115, 42)
         Me.btnAdd.TabIndex = 14
         Me.btnAdd.Text = "إضافة 💾"
         Me.btnAdd.UseVisualStyleBackColor = False
@@ -848,10 +850,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnPrint.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnPrint.ForeColor = System.Drawing.Color.White
-        Me.btnPrint.Location = New System.Drawing.Point(254, 4)
+        Me.btnPrint.Location = New System.Drawing.Point(241, 4)
         Me.btnPrint.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnPrint.Name = "btnPrint"
-        Me.btnPrint.Size = New System.Drawing.Size(120, 42)
+        Me.btnPrint.Size = New System.Drawing.Size(115, 42)
         Me.btnPrint.TabIndex = 18
         Me.btnPrint.Text = "طباعة 🖨️"
         Me.btnPrint.UseVisualStyleBackColor = False
@@ -863,10 +865,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnUpdate.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnUpdate.ForeColor = System.Drawing.Color.White
-        Me.btnUpdate.Location = New System.Drawing.Point(502, 4)
+        Me.btnUpdate.Location = New System.Drawing.Point(479, 4)
         Me.btnUpdate.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnUpdate.Name = "btnUpdate"
-        Me.btnUpdate.Size = New System.Drawing.Size(120, 42)
+        Me.btnUpdate.Size = New System.Drawing.Size(115, 42)
         Me.btnUpdate.TabIndex = 15
         Me.btnUpdate.Text = "تعديل 📝"
         Me.btnUpdate.UseVisualStyleBackColor = False
@@ -878,10 +880,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnDelete.Font = New System.Drawing.Font("Cairo SemiBold", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnDelete.ForeColor = System.Drawing.Color.White
-        Me.btnDelete.Location = New System.Drawing.Point(378, 4)
+        Me.btnDelete.Location = New System.Drawing.Point(360, 4)
         Me.btnDelete.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(120, 42)
+        Me.btnDelete.Size = New System.Drawing.Size(115, 42)
         Me.btnDelete.TabIndex = 16
         Me.btnDelete.Text = "حذف 🗑"
         Me.btnDelete.UseVisualStyleBackColor = False
@@ -964,7 +966,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'lblSubjBook
         '
         Me.lblSubjBook.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.lblSubjBook.Location = New System.Drawing.Point(764, 146)
+        Me.lblSubjBook.Location = New System.Drawing.Point(730, 146)
         Me.lblSubjBook.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblSubjBook.Name = "lblSubjBook"
         Me.lblSubjBook.Size = New System.Drawing.Size(107, 30)
@@ -1006,7 +1008,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1379, 678)
+        Me.ClientSize = New System.Drawing.Size(1341, 652)
         Me.Controls.Add(Me.Panel1)
         Me.Font = New System.Drawing.Font("Cairo SemiBold", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
@@ -1077,7 +1079,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents lblNumberBook As Label
     Friend WithEvents dtpSearchDate As DateTimePicker
     Friend WithEvents RBDate As RadioButton
-    Friend WithEvents Label1 As Label
     Friend WithEvents cmbBookCategory As ComboBox
     Friend WithEvents btnAddNewSubj As Button
     Friend WithEvents TLPControls As TableLayoutPanel
@@ -1105,5 +1106,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents nudCopies As NumericUpDown
+    Friend WithEvents chkUseToday As RadioButton
 End Class
 

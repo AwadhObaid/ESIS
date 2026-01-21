@@ -951,22 +951,56 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         End If
     End Sub
 
+    'Private Sub btnSearchByDate_Click(sender As Object, e As EventArgs) Handles btnSearchByDate.Click
+    '    Try
+
+    '        Dim startDate As Date = dtpStartDate.Value.Date
+    '        Dim endDate As Date = dtpEndDate.Value.Date
+    '        If startDate > endDate Then
+    '            MessageBox.Show("تاريخ البداية لا يمكن أن يكون أكبر من تاريخ النهاية", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    '            Return
+    '        End If
+
+    '        ' استخدام الكلاس المحسن للبحث
+    '        Dim dataTable As DataTable = saderClass.SearchSaderByDateRange(startDate, endDate)
+    '        ' ربط البيانات بشكل آمن
+    '        DataGridViewErrorHandler.SafeBindData(dgvSader, dataTable)
+    '        UpdateColumnHeaders()
+    '        ' تعطيل أدوات التعديل بعد البحث
+    '        EnableEditingTools(False)
+    '    Catch ex As Exception
+    '        MessageBox.Show("حدث خطأ أثناء البحث بالتاريخ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
     Private Sub btnSearchByDate_Click(sender As Object, e As EventArgs) Handles btnSearchByDate.Click
         Try
-
             Dim startDate As Date = dtpStartDate.Value.Date
-            Dim endDate As Date = dtpEndDate.Value.Date
-            ' استخدام الكلاس المحسن للبحث
+
+            ' إذا لم يحدد المستخدم تاريخ نهاية → اليوم الحالي
+            Dim endDate As Date
+            If chkUseToday.Checked Then
+                endDate = Date.Today
+            Else
+                endDate = dtpEndDate.Value.Date
+            End If
+
+            ' تحقق منطقي
+            If startDate > endDate Then
+                MessageBox.Show("تاريخ البداية لا يمكن أن يكون أكبر من تاريخ النهاية", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
             Dim dataTable As DataTable = saderClass.SearchSaderByDateRange(startDate, endDate)
-            ' ربط البيانات بشكل آمن
             DataGridViewErrorHandler.SafeBindData(dgvSader, dataTable)
             UpdateColumnHeaders()
-            ' تعطيل أدوات التعديل بعد البحث
             EnableEditingTools(False)
+
         Catch ex As Exception
             MessageBox.Show("حدث خطأ أثناء البحث بالتاريخ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
 
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
         ' التحقق من صلاحية الإضافة

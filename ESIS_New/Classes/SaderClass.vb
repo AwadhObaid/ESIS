@@ -250,22 +250,44 @@ Public Class SaderClass
     ''' <summary>
     ''' البحث في الصادرة حسب النطاق الزمني
     ''' </summary>
+
     Public Function SearchSaderByDateRange(startDate As Date, endDate As Date) As DataTable
         Try
-            ' استخدام الإجراء المخزن "SearchSaderByDateRange"
             Dim parameters() As SqlParameter = {
-            DatabaseHelper.CreateParameter("@StartDate", startDate),
-            DatabaseHelper.CreateParameter("@EndDate", endDate)
+            New SqlParameter("@StartDate", SqlDbType.Date) With {
+                .Value = startDate.Date
+            },
+            New SqlParameter("@EndDate", SqlDbType.Date) With {
+                .Value = endDate.Date
+            }
         }
 
-            ' تنفيذ الإجراء المخزن وإرجاع النتائج
             Return DatabaseHelper.ExecuteStoredProcedure("SearchSaderByDateRange", parameters)
 
         Catch ex As Exception
-            System.Diagnostics.Debug.WriteLine($"خطأ في SearchSaderByDateRange: {ex.Message}")
+            Debug.WriteLine($"خطأ في SearchSaderByDateRange: {ex.Message}")
             Return New DataTable()
         End Try
     End Function
+
+
+
+    'Public Function SearchSaderByDateRange(startDate As Date, endDate As Date) As DataTable
+    '    Try
+    '        ' استخدام الإجراء المخزن "SearchSaderByDateRange"
+    '        Dim parameters() As SqlParameter = {
+    '        DatabaseHelper.CreateParameter("@StartDate", startDate),
+    '        DatabaseHelper.CreateParameter("@EndDate", endDate)
+    '    }
+
+    '        ' تنفيذ الإجراء المخزن وإرجاع النتائج
+    '        Return DatabaseHelper.ExecuteStoredProcedure("SearchSaderByDateRange", parameters)
+
+    '    Catch ex As Exception
+    '        System.Diagnostics.Debug.WriteLine($"خطأ في SearchSaderByDateRange: {ex.Message}")
+    '        Return New DataTable()
+    '    End Try
+    'End Function
 
     ''' <summary>
     ''' البحث عن الصادرة غير المرتبطة بالأرشيف

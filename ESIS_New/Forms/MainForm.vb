@@ -62,7 +62,14 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             System.Diagnostics.Debug.WriteLine($"خطأ في العد التنازلي: {ex.Message}")
         End Try
     End Sub
+    Private Sub App_ThreadException(sender As Object, e As Threading.ThreadExceptionEventArgs)
+        Debug.WriteLine("THREAD EX: " & e.Exception.ToString())
+    End Sub
 
+    Private Sub App_UnhandledException(sender As Object, e As UnhandledExceptionEventArgs)
+        Dim ex = TryCast(e.ExceptionObject, Exception)
+        If ex IsNot Nothing Then Debug.WriteLine("UNHANDLED EX: " & ex.ToString())
+    End Sub
 
     ''' <summary>
     ''' تحميل النموذج الرئيسي وتهيئة الإعدادات الأولية
@@ -74,14 +81,15 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             Me.RightToLeft = RightToLeft.Yes
             Me.RightToLeftLayout = True
             SetBackColor()
-            OpenMdiForm(Of DashboardForm)(Me)
+
             ' تعيين وقت التكرار (مثال: كل 24 ساعة)
             cleanupTimer.Interval = 24 * 60 * 60 * 1000 ' 24 ساعة بالمللي ثانية
             AddHandler cleanupTimer.Tick, AddressOf CleanupTimer_Tick
             cleanupTimer.Start()
             ' بدء العد التنازلي
             StartCountdownTimer()
-
+            AddHandler Application.ThreadException, AddressOf App_ThreadException
+            AddHandler AppDomain.CurrentDomain.UnhandledException, AddressOf App_UnhandledException
             ' عرض اسم المستخدم في شريط الحالة
             lblUser.Text = GlobalData.LoggedInUserName
             lblUser2.Text = GlobalData.LoggedInUserName
@@ -923,6 +931,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     Private Sub btnSetting_Click(sender As Object, e As EventArgs) Handles btnSetting.Click
         Try
             OpenMdiForm(Of ArchiveVariablesForm)(Me)
+
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج الإعدادات: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -1040,8 +1049,12 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             RemoveHandler DataHelper.ArchiveCountChanged, AddressOf OnArchiveCountChanged
             ' تنظيف الموارد
             If PictureBoxUser.Image IsNot Nothing AndAlso PictureBoxUser.Image IsNot My.Resources.UserDefault Then
-                PictureBoxUser.Image.Dispose()
+                Dim oldImg = PictureBoxUser.Image
+                PictureBoxUser.Image = My.Resources.UserDefault
+                oldImg.Dispose()
+
             End If
+
 
             ' التحقق من سبب الإغلاق
             If e.CloseReason = CloseReason.UserClosing Then
@@ -1930,16 +1943,16 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
     Private Sub btnServerConnection_Click(sender As Object, e As EventArgs) Handles btnServerConnection.Click
 
-        Dim zz As New PasswordForm
-        zz.Label1.Text = "ادخل كملة المرور لفتح شاشة إعدادات الاتصال"
-        zz.ShowDialog()
-        If zz.InputText = Nothing Then Return
-        If zz.InputText = My.Settings.FrmConStrPASS Then
-            Dim Frm As New ServerConnectionForm
+        'Dim zz As New PasswordForm
+        'zz.Label1.Text = "ادخل كملة المرور لفتح شاشة إعدادات الاتصال"
+        'zz.ShowDialog()
+        'If zz.InputText = Nothing Then Return
+        'If zz.InputText = My.Settings.FrmConStrPASS Then
+        Dim Frm As New ServerConnectionForm
             Frm.ShowDialog()
-        Else
-            MessageBox.Show("معذرة، كلمة المرور الذي ادخلتها غير صحيحة", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        End If
+        'Else
+        '    MessageBox.Show("معذرة، كلمة المرور الذي ادخلتها غير صحيحة", "رسالة تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        'End If
     End Sub
 
     Private Sub btnDeletedForm_Click_1(sender As Object, e As EventArgs) Handles btnDeletedForm.Click

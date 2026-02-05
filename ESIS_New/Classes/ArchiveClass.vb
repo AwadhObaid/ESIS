@@ -1824,7 +1824,7 @@ Public Class ArchiveClass
     Private Sub LogActivity(userName As String, actionType As String, tableName As String, recordID As Integer, details As String)
         Try
             ' استخدام نفس اتصال قاعدة البيانات أو اتصال منفصل حسب الحاجة
-            Using connection As SqlConnection = DatabaseHelper.Con()
+            Using connection As SqlConnection = GetConnection()
                 connection.Open()
                 Using command As New SqlCommand("INSERT INTO UserActivityLog (UserName, ActionType, TableName, RecordID, ActionDetails, IPAddress, ActionDate) " &
                                               "VALUES (@UserName, @ActionType, @TableName, @RecordID, @ActionDetails, @IPAddress, GETDATE())", connection)

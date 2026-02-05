@@ -1741,7 +1741,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
     Private Function IsCurrentUserAdmin() As Boolean
         Try
             Dim query As String = "SELECT IsAdmin FROM TbUsers WHERE ID = @UserID AND IsActive = 1"
-            Using connection As SqlConnection = DatabaseHelper.Con()
+            Using connection As SqlConnection = GetConnection()
                 connection.Open()
                 Using command As New SqlCommand(query, connection)
                     command.Parameters.AddWithValue("@UserID", GlobalData.LoggedInUserID)

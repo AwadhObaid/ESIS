@@ -117,6 +117,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_189617A8777646B5917BDE7C967CC18B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1F32A1AF00A0AEB2BF8076DA3D5BEED0"
         "OwnerKey" = "8:_3F09F74513302EE1B896320467B01408"
         "MsmSig" = "8:_UNDEFINED"
@@ -203,12 +209,6 @@
         {
         "MsmKey" = "8:_21E31E79D151CA86512A8755A36521D9"
         "OwnerKey" = "8:_FD4AB66FC372EBD1CEF359ECDE9E3DEC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_22483F62CF715F4F0B6B3A8A7646CF7D"
-        "OwnerKey" = "8:_9A38857C3C8742C28B90063D9FD1A41E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -419,12 +419,6 @@
         {
         "MsmKey" = "8:_3F09F74513302EE1B896320467B01408"
         "OwnerKey" = "8:_9050675E5EA6B8CFA578B7839DB1EF52"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4462E763F3B4CEEADE90D0C3C88E6ACC"
-        "OwnerKey" = "8:_9A38857C3C8742C28B90063D9FD1A41E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -933,12 +927,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C3AA6A9E31F872E58D7C8792A693D9E0"
-        "OwnerKey" = "8:_9A38857C3C8742C28B90063D9FD1A41E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C94755C4DCB84650A990114E0E53F028"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1067,12 +1055,6 @@
         {
         "MsmKey" = "8:_FD4AB66FC372EBD1CEF359ECDE9E3DEC"
         "OwnerKey" = "8:_9A38857C3C8742C28B90063D9FD1A41E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_22483F62CF715F4F0B6B3A8A7646CF7D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1300,12 +1282,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4462E763F3B4CEEADE90D0C3C88E6ACC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_466FDF9E04762052FE916230FA73A461"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1343,12 +1319,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_645539B4CAFA9873252A827D367F59ED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C3AA6A9E31F872E58D7C8792A693D9E0"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1672,6 +1642,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_189617A8777646B5917BDE7C967CC18B"
+            {
+            "SourcePath" = "8:..\\ESIS_New\\bin\\Debug\\pdfium.dll"
+            "TargetName" = "8:pdfium.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_6F24089990564D2AB03AAFF426DC4C38"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1F32A1AF00A0AEB2BF8076DA3D5BEED0"
             {
             "AssemblyRegister" = "3:1"
@@ -1717,37 +1707,6 @@
                     }
                 }
             "SourcePath" = "8:System.Memory.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6F24089990564D2AB03AAFF426DC4C38"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_22483F62CF715F4F0B6B3A8A7646CF7D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_22483F62CF715F4F0B6B3A8A7646CF7D"
-                    {
-                    "Name" = "8:log4net.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:log4net.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6F24089990564D2AB03AAFF426DC4C38"
@@ -2143,37 +2102,6 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4462E763F3B4CEEADE90D0C3C88E6ACC"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CrystalDecisions.ReportAppServer.Prompting, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=AMD64"
-                "ScatterAssemblies"
-                {
-                    "_4462E763F3B4CEEADE90D0C3C88E6ACC"
-                    {
-                    "Name" = "8:CrystalDecisions.ReportAppServer.Prompting.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:CrystalDecisions.ReportAppServer.Prompting.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6F24089990564D2AB03AAFF426DC4C38"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -3292,37 +3220,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C3AA6A9E31F872E58D7C8792A693D9E0"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
-                "ScatterAssemblies"
-                {
-                    "_C3AA6A9E31F872E58D7C8792A693D9E0"
-                    {
-                    "Name" = "8:stdole.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:stdole.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6F24089990564D2AB03AAFF426DC4C38"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C94755C4DCB84650A990114E0E53F028"

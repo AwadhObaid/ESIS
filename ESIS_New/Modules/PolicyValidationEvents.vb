@@ -3,6 +3,9 @@
 ''' </summary>
 Public Module PolicyValidationEvents
 
+    Private _willMasterKeyDownHandler As KeyEventHandler
+    Private _willSubKeyDownHandler As KeyEventHandler
+
     ''' <summary>
     ''' حدث KeyDown للتحقق من البوليصة الرئيسية عند الضغط على Enter
     ''' </summary>
@@ -328,8 +331,6 @@ Public Module PolicyValidationEvents
     ' ========================
 
     ' متغيرات خاصة لتخزين معالجات الأحداث
-    Private _willMasterKeyDownHandler As KeyEventHandler
-    Private _willSubKeyDownHandler As KeyEventHandler
 
     ''' <summary>
     ''' ربط أحداث التحقق من البوليصات

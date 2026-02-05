@@ -39,7 +39,7 @@ Public Class PolicyValidationHelper
                 Return False
             End If
 
-            Using connection As New SqlConnection(GetConnectionString())
+            Using connection As SqlConnection = GetConnection()
                 connection.Open()
 
                 Dim query As String = "SELECT COUNT(*) FROM TbSader WHERE WillMaster = @masterPolicy"
@@ -68,7 +68,7 @@ Public Class PolicyValidationHelper
                 Return False
             End If
 
-            Using connection As New SqlConnection(GetConnectionString())
+            Using connection As SqlConnection = GetConnection()
                 connection.Open()
 
                 Dim query As String = "SELECT COUNT(*) FROM TbSader WHERE WillSub = @subPolicy"
@@ -97,7 +97,7 @@ Public Class PolicyValidationHelper
                 Return Nothing
             End If
 
-            Using connection As New SqlConnection(GetConnectionString())
+            Using connection As SqlConnection = GetConnection()
                 connection.Open()
 
                 Dim query As String = "SELECT TOP 1 ID, NumberBook, SubjBook, DateBook FROM TbSader WHERE WillMaster = @masterPolicy ORDER BY ID DESC"
@@ -136,7 +136,7 @@ Public Class PolicyValidationHelper
                 Return Nothing
             End If
 
-            Using connection As New SqlConnection(GetConnectionString())
+            Using connection As SqlConnection = GetConnection()
                 connection.Open()
 
                 Dim query As String = "SELECT TOP 1 ID, NumberBook, SubjBook, DateBook FROM TbSader WHERE WillSub = @subPolicy ORDER BY ID DESC"

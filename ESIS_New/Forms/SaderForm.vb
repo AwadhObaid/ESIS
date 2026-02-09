@@ -980,6 +980,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             ' إذا لم يحدد المستخدم تاريخ نهاية → اليوم الحالي
             Dim endDate As Date
             If chkUseToday.Checked Then
+
                 endDate = Date.Today
             Else
                 endDate = dtpEndDate.Value.Date
@@ -1040,6 +1041,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                 Case rbWillSub.Checked
                     dt = saderClass.SearchSader(txtSearch.Text.Trim(), "WillSub")
 
+
                 Case RBDate.Checked
                     ' لا يمكن استخدام البحث بالنص لـ DateBook، لذا نستخدم التاريخ فقط
                     MessageBox.Show("يرجى إدخال تاريخ صحيح للبحث بحسب التاريخ.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -1069,6 +1071,10 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
     Private Sub rbSubjBook_CheckedChanged(sender As Object, e As EventArgs) Handles rbSubjBook.CheckedChanged
         UpdateSearchFieldState(rbSubjBook.Checked)
+    End Sub
+
+    Private Sub chkUseToday_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseToday.CheckedChanged
+        UpdateSearchFieldState(chkUseToday.Checked)
     End Sub
 
     Private Sub rbWillMaster_CheckedChanged(sender As Object, e As EventArgs) Handles rbWillMaster.CheckedChanged

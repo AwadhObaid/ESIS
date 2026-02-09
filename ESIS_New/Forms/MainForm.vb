@@ -18,6 +18,11 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     Private isLoggingOut As Boolean = False
     Private Shared currentInstance As BackupForm = Nothing
 
+
+
+
+
+
 #Region "التهيئة والتحميل"
     ''' <summary>
     ''' دالة البناء: تهيئة النموذج وإعداد مقياس التحكم
@@ -986,13 +991,24 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     ''' </summary>
     Private Sub btnBackupManager_Click(sender As Object, e As EventArgs) Handles btnBackupManager.Click
         Try
-            '' التحقق من صلاحية عرض نموذج المستخدمين
-            'If Not CheckPermission("View", "عرض نموذج إدارة النسخ الإحتياطية") Then
-            '    Return
-            'End If
-            Dim frm As New BackupManagerForm
-            frm.Show(Me)
-            'OpenMdiForm(Of BackupManagerForm)(Me)
+
+
+            Dim frm As BackupForm = CType(Application.OpenForms("BackupForm"), BackupForm)
+            If frm Is Nothing Then
+                frm = New BackupForm()
+                'TabControlForms.TabPages.Add(frm)
+            Else
+                'TabControlForms.TabPages(frm).Select()
+            End If
+
+
+            '''' التحقق من صلاحية عرض نموذج المستخدمين
+            ''If Not CheckPermission("View", "عرض نموذج إدارة النسخ الإحتياطية") Then
+            ''    Return
+            ''End If
+            'Dim frm As New BackupManagerForm
+            'frm.Show(Me)
+            ''OpenMdiForm(Of BackupManagerForm)(Me)
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج إدارة النسخ الاحتياطية: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try

@@ -6,6 +6,7 @@ Imports ALquhaliLibrary.DBCLS
 Imports Microsoft.Win32
 Imports PdfiumViewer
 
+
 Module GlobalData
 
 
@@ -520,36 +521,36 @@ Module GlobalData
 
 #Region "================ Confirmation Messages ================"
 
-    Public Sub SavedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+    Public Sub SavedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As System.Windows.Forms.Timer)
         lbl.Text = "تم الحفظ بنجاح"
         pic.Image = My.Resources.OK
         t.Start()
     End Sub
 
-    Public Sub UpdetedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+    Public Sub UpdetedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As System.Windows.Forms.Timer)
         lbl.Text = "تم التعديل بنجاح"
         pic.Image = My.Resources.OK
         t.Start()
     End Sub
 
-    Public Sub DeletedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+    Public Sub DeletedSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As System.Windows.Forms.Timer)
         lbl.Text = "تم الحذف بنجاح"
         pic.Image = My.Resources.OK
         t.Start()
     End Sub
-    Public Sub DeletedSaderSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+    Public Sub DeletedSaderSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As System.Windows.Forms.Timer)
         lbl.Text = "تم حذف الصادر والأرشيف المرتبط به بنجاح"
         pic.Image = My.Resources.OK
         t.Start()
     End Sub
 
-    Public Sub DeletedArchiveSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer)
+    Public Sub DeletedArchiveSuccessfully(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As System.Windows.Forms.Timer)
         lbl.Text = "تم ارسال الارشيف الى سلة المحذوفات بنجاح"
         pic.Image = My.Resources.OK
         t.Start()
     End Sub
 
-    Public Sub ConfirmMessage(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As Windows.Forms.Timer, ByVal msg As String)
+    Public Sub ConfirmMessage(ByVal lbl As Label, ByVal pic As PictureBox, ByVal t As System.Windows.Forms.Timer, ByVal msg As String)
 
         lbl.Text = msg
         pic.Image = My.Resources.OK
@@ -557,7 +558,7 @@ Module GlobalData
 
     End Sub
 
-    Public Sub ClearConfirmMsgTools(ByVal lblMsg As Label, ByVal picMsg As PictureBox, ByVal T As Windows.Forms.Timer)
+    Public Sub ClearConfirmMsgTools(ByVal lblMsg As Label, ByVal picMsg As PictureBox, ByVal T As System.Windows.Forms.Timer)
         lblMsg.Text = Nothing
         lblMsg.BackColor = SystemColors.ControlLight
         picMsg.Image = Nothing

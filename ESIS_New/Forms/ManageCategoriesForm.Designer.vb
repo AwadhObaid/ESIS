@@ -32,6 +32,10 @@ Partial Class ManageCategoriesForm
         Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.btnEditCategory = New System.Windows.Forms.Button()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtSearchCategory = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -45,25 +49,25 @@ Partial Class ManageCategoriesForm
         Me.lstCategories.Location = New System.Drawing.Point(3, 28)
         Me.lstCategories.Name = "lstCategories"
         Me.lstCategories.ScrollAlwaysVisible = True
-        Me.lstCategories.Size = New System.Drawing.Size(194, 123)
+        Me.lstCategories.Size = New System.Drawing.Size(312, 351)
         Me.lstCategories.TabIndex = 0
         '
         'txtNewCategory
         '
-        Me.txtNewCategory.Location = New System.Drawing.Point(16, 67)
+        Me.txtNewCategory.Location = New System.Drawing.Point(20, 134)
         Me.txtNewCategory.Name = "txtNewCategory"
-        Me.txtNewCategory.Size = New System.Drawing.Size(369, 32)
+        Me.txtNewCategory.Size = New System.Drawing.Size(493, 32)
         Me.txtNewCategory.TabIndex = 1
         Me.txtNewCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 40)
+        Me.Label1.Location = New System.Drawing.Point(16, 107)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(101, 24)
+        Me.Label1.Size = New System.Drawing.Size(172, 24)
         Me.Label1.TabIndex = 2
-        Me.Label1.Text = "إسم التصنيف :"
+        Me.Label1.Text = "إضافة او تعديل التصنيف :"
         '
         'btnAddCategory
         '
@@ -71,7 +75,7 @@ Partial Class ManageCategoriesForm
         Me.btnAddCategory.FlatAppearance.BorderSize = 0
         Me.btnAddCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAddCategory.ForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
-        Me.btnAddCategory.Location = New System.Drawing.Point(270, 19)
+        Me.btnAddCategory.Location = New System.Drawing.Point(393, 19)
         Me.btnAddCategory.Name = "btnAddCategory"
         Me.btnAddCategory.Size = New System.Drawing.Size(115, 31)
         Me.btnAddCategory.TabIndex = 3
@@ -84,7 +88,7 @@ Partial Class ManageCategoriesForm
         Me.btnSaveCategories.FlatAppearance.BorderSize = 0
         Me.btnSaveCategories.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSaveCategories.ForeColor = System.Drawing.Color.FromArgb(CType(CType(207, Byte), Integer), CType(CType(67, Byte), Integer), CType(CType(47, Byte), Integer))
-        Me.btnSaveCategories.Location = New System.Drawing.Point(140, 19)
+        Me.btnSaveCategories.Location = New System.Drawing.Point(266, 19)
         Me.btnSaveCategories.Name = "btnSaveCategories"
         Me.btnSaveCategories.Size = New System.Drawing.Size(115, 31)
         Me.btnSaveCategories.TabIndex = 4
@@ -97,7 +101,7 @@ Partial Class ManageCategoriesForm
         Me.btnDeleteCategory.FlatAppearance.BorderSize = 0
         Me.btnDeleteCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnDeleteCategory.ForeColor = System.Drawing.Color.FromArgb(CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
-        Me.btnDeleteCategory.Location = New System.Drawing.Point(10, 19)
+        Me.btnDeleteCategory.Location = New System.Drawing.Point(12, 19)
         Me.btnDeleteCategory.Name = "btnDeleteCategory"
         Me.btnDeleteCategory.Size = New System.Drawing.Size(115, 31)
         Me.btnDeleteCategory.TabIndex = 5
@@ -111,13 +115,13 @@ Partial Class ManageCategoriesForm
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(595, 37)
+        Me.Panel1.Size = New System.Drawing.Size(839, 37)
         Me.Panel1.TabIndex = 6
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(264, 9)
+        Me.Label2.Location = New System.Drawing.Point(366, 6)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(107, 24)
         Me.Label2.TabIndex = 0
@@ -127,30 +131,76 @@ Partial Class ManageCategoriesForm
         '
         Me.GroupBox1.Controls.Add(Me.lstCategories)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Right
-        Me.GroupBox1.Location = New System.Drawing.Point(395, 37)
+        Me.GroupBox1.Location = New System.Drawing.Point(521, 37)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(200, 154)
+        Me.GroupBox1.Size = New System.Drawing.Size(318, 382)
         Me.GroupBox1.TabIndex = 7
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "قائمة التصنيفات والمجلدات"
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.btnEditCategory)
         Me.Panel2.Controls.Add(Me.btnSaveCategories)
         Me.Panel2.Controls.Add(Me.btnAddCategory)
         Me.Panel2.Controls.Add(Me.btnDeleteCategory)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.Panel2.Location = New System.Drawing.Point(0, 123)
+        Me.Panel2.Location = New System.Drawing.Point(0, 351)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(395, 68)
+        Me.Panel2.Size = New System.Drawing.Size(521, 68)
         Me.Panel2.TabIndex = 8
+        '
+        'btnEditCategory
+        '
+        Me.btnEditCategory.BackColor = System.Drawing.Color.FromArgb(CType(CType(20, Byte), Integer), CType(CType(101, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnEditCategory.FlatAppearance.BorderSize = 0
+        Me.btnEditCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnEditCategory.ForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(244, Byte), Integer))
+        Me.btnEditCategory.Location = New System.Drawing.Point(139, 19)
+        Me.btnEditCategory.Name = "btnEditCategory"
+        Me.btnEditCategory.Size = New System.Drawing.Size(115, 31)
+        Me.btnEditCategory.TabIndex = 6
+        Me.btnEditCategory.Text = "تعديل تصنيف"
+        Me.btnEditCategory.UseVisualStyleBackColor = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(16, 40)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(150, 24)
+        Me.Label3.TabIndex = 10
+        Me.Label3.Text = "🔎 بحث عن التصنيف :"
+        '
+        'txtSearchCategory
+        '
+        Me.txtSearchCategory.Location = New System.Drawing.Point(20, 67)
+        Me.txtSearchCategory.Name = "txtSearchCategory"
+        Me.txtSearchCategory.Size = New System.Drawing.Size(235, 32)
+        Me.txtSearchCategory.TabIndex = 9
+        Me.txtSearchCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
+        Me.Label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.Label4.Location = New System.Drawing.Point(66, 224)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(395, 74)
+        Me.Label4.TabIndex = 11
+        Me.Label4.Text = "عند إضافة تصنيف جديد " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "أولا قم بكتابة التصنيف الجديد ثم إضغط علة زر إضافة تصنيف " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "ثانيا قم بالضغط على زر حفظ التغييرات"
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'ManageCategoriesForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(595, 191)
+        Me.ClientSize = New System.Drawing.Size(839, 419)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.txtSearchCategory)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Panel1)
@@ -179,8 +229,12 @@ Partial Class ManageCategoriesForm
     Friend WithEvents btnAddCategory As Button
     Friend WithEvents btnSaveCategories As Button
     Friend WithEvents btnDeleteCategory As Button
+    Friend WithEvents btnEditCategory As Button
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Label2 As Label
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Panel2 As Panel
+    Friend WithEvents Label3 As Label
+    Friend WithEvents txtSearchCategory As TextBox
+    Friend WithEvents Label4 As Label
 End Class

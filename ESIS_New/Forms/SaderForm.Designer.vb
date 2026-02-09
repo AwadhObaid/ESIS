@@ -787,14 +787,14 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.btnShowUnarchivedOnly.BackColor = System.Drawing.Color.FromArgb(CType(CType(200, Byte), Integer), CType(CType(200, Byte), Integer), CType(CType(100, Byte), Integer))
         Me.btnShowUnarchivedOnly.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnShowUnarchivedOnly.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnShowUnarchivedOnly.Font = New System.Drawing.Font("Cairo", 7.0!, System.Drawing.FontStyle.Bold)
-        Me.btnShowUnarchivedOnly.ForeColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(155, Byte), Integer))
+        Me.btnShowUnarchivedOnly.Font = New System.Drawing.Font("Cairo SemiBold", 8.0!, System.Drawing.FontStyle.Bold)
+        Me.btnShowUnarchivedOnly.ForeColor = System.Drawing.Color.Black
         Me.btnShowUnarchivedOnly.Location = New System.Drawing.Point(2, 4)
         Me.btnShowUnarchivedOnly.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.btnShowUnarchivedOnly.Name = "btnShowUnarchivedOnly"
         Me.btnShowUnarchivedOnly.Size = New System.Drawing.Size(116, 42)
         Me.btnShowUnarchivedOnly.TabIndex = 54
-        Me.btnShowUnarchivedOnly.Text = "عرض الغير مؤرشف 📄"
+        Me.btnShowUnarchivedOnly.Text = " الغير مؤرشف 📄"
         Me.btnShowUnarchivedOnly.UseVisualStyleBackColor = False
         '
         'btnClose

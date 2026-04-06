@@ -22,7 +22,6 @@ Partial Class WebBrowserForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.webBrowser = New System.Windows.Forms.WebBrowser()
         Me.ToolStrip = New System.Windows.Forms.ToolStrip()
         Me.btnBack = New System.Windows.Forms.ToolStripButton()
         Me.btnForward = New System.Windows.Forms.ToolStripButton()
@@ -33,32 +32,31 @@ Partial Class WebBrowserForm
         Me.btnGo = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnPrint = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnOpenInBrowser = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnClose = New System.Windows.Forms.ToolStripButton()
+        Me.btnShowHistory = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnAddToFavorites = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnShowFavorites = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
         Me.statusBar = New System.Windows.Forms.StatusStrip()
         Me.statusLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.pageLoader = New System.Windows.Forms.ProgressBar()
         Me.ToolStrip.SuspendLayout()
         Me.statusBar.SuspendLayout()
         Me.SuspendLayout()
         '
-        'webBrowser
-        '
-        Me.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.webBrowser.Location = New System.Drawing.Point(0, 37)
-        Me.webBrowser.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.webBrowser.MinimumSize = New System.Drawing.Size(20, 28)
-        Me.webBrowser.Name = "webBrowser"
-        Me.webBrowser.ScriptErrorsSuppressed = True
-        Me.webBrowser.Size = New System.Drawing.Size(1181, 645)
-        Me.webBrowser.TabIndex = 0
-        '
         'ToolStrip
         '
         Me.ToolStrip.Font = New System.Drawing.Font("Cairo SemiBold", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnBack, Me.btnForward, Me.btnRefresh, Me.btnHome, Me.ToolStripSeparator1, Me.txtUrl, Me.btnGo, Me.ToolStripSeparator2, Me.btnPrint, Me.btnOpenInBrowser, Me.btnClose})
+        Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnBack, Me.btnForward, Me.btnRefresh, Me.btnHome, Me.ToolStripSeparator1, Me.txtUrl, Me.btnGo, Me.ToolStripSeparator2, Me.btnPrint, Me.ToolStripSeparator4, Me.btnOpenInBrowser, Me.ToolStripSeparator5, Me.btnClose, Me.btnShowHistory, Me.ToolStripSeparator6, Me.btnAddToFavorites, Me.ToolStripSeparator7, Me.btnShowFavorites, Me.ToolStripSeparator8})
         Me.ToolStrip.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip.Name = "ToolStrip"
-        Me.ToolStrip.Size = New System.Drawing.Size(1181, 37)
+        Me.ToolStrip.Size = New System.Drawing.Size(1298, 37)
         Me.ToolStrip.TabIndex = 1
         Me.ToolStrip.Text = "ToolStrip"
         '
@@ -110,9 +108,9 @@ Partial Class WebBrowserForm
         'txtUrl
         '
         Me.txtUrl.AutoSize = False
-        Me.txtUrl.Font = New System.Drawing.Font("Consolas", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtUrl.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtUrl.Name = "txtUrl"
-        Me.txtUrl.Size = New System.Drawing.Size(800, 23)
+        Me.txtUrl.Size = New System.Drawing.Size(700, 37)
         Me.txtUrl.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'btnGo
@@ -136,7 +134,13 @@ Partial Class WebBrowserForm
         Me.btnPrint.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btnPrint.Name = "btnPrint"
         Me.btnPrint.Size = New System.Drawing.Size(34, 34)
-        Me.btnPrint.Text = "طباعة"
+        Me.btnPrint.Text = "طباعة "
+        Me.btnPrint.ToolTipText = "طباعة | F8"
+        '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 37)
         '
         'btnOpenInBrowser
         '
@@ -147,6 +151,11 @@ Partial Class WebBrowserForm
         Me.btnOpenInBrowser.Name = "btnOpenInBrowser"
         Me.btnOpenInBrowser.Size = New System.Drawing.Size(34, 34)
         Me.btnOpenInBrowser.Text = "فتح في المتصفح الافتراضي"
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 37)
         '
         'btnClose
         '
@@ -159,12 +168,60 @@ Partial Class WebBrowserForm
         Me.btnClose.Size = New System.Drawing.Size(34, 34)
         Me.btnClose.Text = "إغلاق"
         '
+        'btnShowHistory
+        '
+        Me.btnShowHistory.AutoSize = False
+        Me.btnShowHistory.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnShowHistory.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.history
+        Me.btnShowHistory.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnShowHistory.Name = "btnShowHistory"
+        Me.btnShowHistory.Size = New System.Drawing.Size(34, 34)
+        Me.btnShowHistory.Text = "عرض سجل التصفح"
+        Me.btnShowHistory.ToolTipText = "عرض سجل التصفح | Ctrl + H"
+        '
+        'ToolStripSeparator6
+        '
+        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(6, 37)
+        '
+        'btnAddToFavorites
+        '
+        Me.btnAddToFavorites.AutoSize = False
+        Me.btnAddToFavorites.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnAddToFavorites.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.star
+        Me.btnAddToFavorites.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnAddToFavorites.Name = "btnAddToFavorites"
+        Me.btnAddToFavorites.Size = New System.Drawing.Size(34, 34)
+        Me.btnAddToFavorites.Text = "إضافة للمفضلة"
+        Me.btnAddToFavorites.ToolTipText = "إضافة للمفضلة | Ctrl + D"
+        '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(6, 37)
+        '
+        'btnShowFavorites
+        '
+        Me.btnShowFavorites.AutoSize = False
+        Me.btnShowFavorites.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnShowFavorites.Image = Global.ElectronicSystemforIntegratedServices.My.Resources.Resources.favorite
+        Me.btnShowFavorites.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnShowFavorites.Name = "btnShowFavorites"
+        Me.btnShowFavorites.Size = New System.Drawing.Size(34, 34)
+        Me.btnShowFavorites.Text = "عرض المفضلة"
+        Me.btnShowFavorites.ToolTipText = "عرض المفضلة | Ctrl + B"
+        '
+        'ToolStripSeparator8
+        '
+        Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(6, 37)
+        '
         'statusBar
         '
         Me.statusBar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.statusLabel})
         Me.statusBar.Location = New System.Drawing.Point(0, 682)
         Me.statusBar.Name = "statusBar"
-        Me.statusBar.Size = New System.Drawing.Size(1181, 22)
+        Me.statusBar.Size = New System.Drawing.Size(1298, 22)
         Me.statusBar.TabIndex = 2
         Me.statusBar.Text = "StatusStrip1"
         '
@@ -173,13 +230,34 @@ Partial Class WebBrowserForm
         Me.statusLabel.Name = "statusLabel"
         Me.statusLabel.Size = New System.Drawing.Size(0, 17)
         '
+        'TabControl1
+        '
+        Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TabControl1.Location = New System.Drawing.Point(0, 37)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(1298, 645)
+        Me.TabControl1.TabIndex = 3
+        '
+        'pageLoader
+        '
+        Me.pageLoader.BackColor = System.Drawing.Color.DodgerBlue
+        Me.pageLoader.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pageLoader.Location = New System.Drawing.Point(0, 37)
+        Me.pageLoader.Name = "pageLoader"
+        Me.pageLoader.Size = New System.Drawing.Size(1298, 3)
+        Me.pageLoader.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.pageLoader.TabIndex = 4
+        Me.pageLoader.Visible = False
+        '
         'WebBrowserForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(1181, 704)
-        Me.Controls.Add(Me.webBrowser)
+        Me.ClientSize = New System.Drawing.Size(1298, 704)
+        Me.Controls.Add(Me.pageLoader)
+        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.ToolStrip)
         Me.Controls.Add(Me.statusBar)
         Me.Font = New System.Drawing.Font("Cairo SemiBold", 9.749999!, System.Drawing.FontStyle.Bold)
@@ -197,8 +275,6 @@ Partial Class WebBrowserForm
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents webBrowser As WebBrowser
     Friend WithEvents ToolStrip As ToolStrip
     Friend WithEvents btnBack As ToolStripButton
     Friend WithEvents btnForward As ToolStripButton
@@ -213,4 +289,14 @@ Partial Class WebBrowserForm
     Friend WithEvents btnClose As ToolStripButton
     Friend WithEvents statusBar As StatusStrip
     Friend WithEvents statusLabel As ToolStripStatusLabel
+    Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
+    Friend WithEvents TabControl1 As TabControl
+    Friend WithEvents pageLoader As ProgressBar
+    Friend WithEvents btnShowHistory As ToolStripButton
+    Friend WithEvents btnAddToFavorites As ToolStripButton
+    Friend WithEvents btnShowFavorites As ToolStripButton
+    Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator6 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator8 As ToolStripSeparator
 End Class

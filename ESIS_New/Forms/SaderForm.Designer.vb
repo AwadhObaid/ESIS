@@ -160,34 +160,32 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         'Panel3
         '
-        Me.Panel3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel3.Controls.Add(Me.PicMsg)
         Me.Panel3.Controls.Add(Me.lblMessage)
-        Me.Panel3.Location = New System.Drawing.Point(505, 641)
+        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Panel3.Location = New System.Drawing.Point(0, 618)
         Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(864, 11)
+        Me.Panel3.Size = New System.Drawing.Size(1341, 34)
         Me.Panel3.TabIndex = 32
         '
         'PicMsg
         '
         Me.PicMsg.Dock = System.Windows.Forms.DockStyle.Right
-        Me.PicMsg.Location = New System.Drawing.Point(827, 0)
+        Me.PicMsg.Location = New System.Drawing.Point(1304, 0)
         Me.PicMsg.Name = "PicMsg"
-        Me.PicMsg.Size = New System.Drawing.Size(37, 11)
+        Me.PicMsg.Size = New System.Drawing.Size(37, 34)
         Me.PicMsg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicMsg.TabIndex = 31
         Me.PicMsg.TabStop = False
         '
         'lblMessage
         '
-        Me.lblMessage.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblMessage.Font = New System.Drawing.Font("Cairo", 18.0!, System.Drawing.FontStyle.Bold)
+        Me.lblMessage.Font = New System.Drawing.Font("Cairo", 14.0!, System.Drawing.FontStyle.Bold)
         Me.lblMessage.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblMessage.Location = New System.Drawing.Point(0, 0)
+        Me.lblMessage.Location = New System.Drawing.Point(435, 0)
         Me.lblMessage.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblMessage.Name = "lblMessage"
-        Me.lblMessage.Size = New System.Drawing.Size(864, 11)
+        Me.lblMessage.Size = New System.Drawing.Size(864, 34)
         Me.lblMessage.TabIndex = 30
         Me.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -434,7 +432,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.dgvSader.RowHeadersWidth = 51
         Me.dgvSader.RowTemplate.Height = 24
         Me.dgvSader.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvSader.Size = New System.Drawing.Size(1365, 278)
+        Me.dgvSader.Size = New System.Drawing.Size(1332, 252)
         Me.dgvSader.TabIndex = 24
         '
         'Label4

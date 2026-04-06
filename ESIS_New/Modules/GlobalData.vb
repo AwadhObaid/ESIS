@@ -72,7 +72,6 @@ Module GlobalData
 
 #End Region
 
-
 #Region "====================== ( Archive Veribles ) ==========================="
 
     'Clear Archive Veribles Controls
@@ -517,7 +516,6 @@ Module GlobalData
     End Sub
 
 #End Region
-
 
 #Region "================ Confirmation Messages ================"
 
@@ -1649,6 +1647,188 @@ Module GlobalData
             Return False
         End Try
     End Function
+
+#End Region
+
+#Region "=================( إجراءات التاب كنترول )================="
+
+    Public Sub CreateNewTab(url As String, tabControl As TabControl)
+
+        ' الحصول على الفورم أولاً
+        Dim frm As WebBrowserForm = TryCast(tabControl.FindForm(), WebBrowserForm)
+        If frm Is Nothing Then Exit Sub
+
+        ' منع التكرار
+        If frm.isCreatingTab Then Exit Sub
+        frm.isCreatingTab = True
+
+        Try
+
+            Dim tab As New TabPage("تبويب جديد")
+
+            Dim browser As New WebBrowser
+            browser.Dock = DockStyle.Fill
+            browser.ScriptErrorsSuppressed = True
+
+            tab.Controls.Add(browser)
+
+            tabControl.TabPages.Add(tab)
+            tabControl.SelectedTab = tab
+
+            ' ==============================
+            ' Progress
+            ' ==============================
+            AddHandler browser.ProgressChanged,
+        Sub(sender, e)
+            If e.MaximumProgress <= 0 Then Exit Sub
+
+            frm.pageLoader.Visible = True
+
+            Dim progress As Integer =
+            CInt((e.CurrentProgress / e.MaximumProgress) * 100)
+
+            frm.pageLoader.Value = Math.Max(0, Math.Min(100, progress))
+        End Sub
+
+            ' ==============================
+            ' Complete
+            ' ==============================
+            AddHandler browser.DocumentCompleted,
+        Sub()
+            frm.pageLoader.Value = 100
+
+            Dim t As New System.Windows.Forms.Timer With {.Interval = 300}
+            AddHandler t.Tick,
+            Sub()
+                frm.pageLoader.Visible = False
+                frm.pageLoader.Value = 0
+                t.Stop()
+            End Sub
+            t.Start()
+        End Sub
+
+            ' ==============================
+            ' Title
+            ' ==============================
+            AddHandler browser.DocumentTitleChanged,
+        Sub()
+            tab.Text = If(String.IsNullOrEmpty(browser.DocumentTitle), "تبويب", browser.DocumentTitle)
+        End Sub
+
+            ' ==============================
+            ' URL + History
+            ' ==============================
+            AddHandler browser.Navigated,
+        Sub(sender, e)
+
+            Try
+                Dim wb As WebBrowser = CType(sender, WebBrowser)
+
+                If wb.Url IsNot Nothing Then
+
+                    Dim urlX As String = wb.Url.ToString()
+
+                    ' تحديث شريط العنوان
+                    frm.txtUrl.Text = urlX
+
+                    ' ==============================
+                    ' History (بدون تكرار + ترتيب)
+                    ' ==============================
+                    frm.HistoryList.Remove(urlX)   ' حذف إذا موجود
+                    frm.HistoryList.Insert(0, urlX) ' إضافة في الأعلى
+
+                End If
+
+                frm.UpdateNavigationButtons()
+
+            Catch
+            End Try
+
+        End Sub
+
+            ' ==============================
+            ' New Window FIX
+            ' ==============================
+            AddHandler browser.NewWindow,
+        Sub(sender, e)
+
+            e.Cancel = True
+
+            If frm.isCreatingTab Then Exit Sub
+
+            Dim wb As WebBrowser = CType(sender, WebBrowser)
+            Dim newUrl As String = wb.StatusText
+
+            If Not String.IsNullOrWhiteSpace(newUrl) Then
+                CreateNewTab(newUrl, tabControl)
+            End If
+
+        End Sub
+
+            ' ==============================
+            ' Navigate SAFE
+            ' ==============================
+            If String.IsNullOrWhiteSpace(url) Then
+                browser.Navigate("about:blank")
+            Else
+
+                url = url.Trim()
+
+                If Not url.StartsWith("http://") AndAlso Not url.StartsWith("https://") Then
+
+                    If url.Contains(".") Then
+                        url = "http://" & url
+                    Else
+                        url = "https://www.google.com"
+                    End If
+
+                End If
+
+                Dim uriResult As Uri = Nothing
+
+                If Uri.TryCreate(url, UriKind.Absolute, uriResult) Then
+                    browser.Navigate(uriResult)
+                Else
+                    browser.Navigate("https://www.google.com")
+                End If
+
+            End If
+
+        Finally
+            frm.isCreatingTab = False
+        End Try
+
+    End Sub
+    Public Sub OpenBrowserTab(mdiParent As Form, url As String,
+                              Optional title As String = "متصفح الويب")
+
+        Dim browserForm As WebBrowserForm = Nothing
+
+        ' البحث عن فورم المتصفح المفتوح
+        For Each f As Form In mdiParent.MdiChildren
+            If TypeOf f Is WebBrowserForm Then
+                browserForm = CType(f, WebBrowserForm)
+                Exit For
+            End If
+        Next
+
+        ' إذا لم يكن موجود يتم إنشاؤه
+        If browserForm Is Nothing Then
+
+            browserForm = New WebBrowserForm(url, title, True)
+            browserForm.MdiParent = mdiParent
+            browserForm.Show()
+
+        Else
+
+            ' إضافة تبويب جديد
+            CreateNewTab(url, browserForm.TabControl1)
+
+            browserForm.Activate()
+
+        End If
+
+    End Sub
 
 #End Region
 

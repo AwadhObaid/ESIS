@@ -1,7 +1,8 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Drawing
 Imports System.IO
-Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Security.Policy
+
 
 Public Class MainForm : Inherits BaseFormWithPermissions
     Private scaler As ControlScaler
@@ -171,7 +172,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
             ' تسجيل العملية في سجل الأحداث
             If deletedCount > 0 Then
-                ActivityLogClass.LogUserActivity("System", "AutoCleanup", "TbArchive", -1, $"تم حذف {deletedCount} أرشيف محذوف نهائيًا.")
+                activityLogClass.LogUserActivity("System", "AutoCleanup", "TbArchive", -1, $"تم حذف {deletedCount} أرشيف محذوف نهائيًا.")
             End If
 
         Catch ex As Exception
@@ -1480,188 +1481,327 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
 #Region "النماذج الالكترونية"
 
-    ''' <summary>
-    ''' فتح نموذج إلكتروني في نافذة فرعية (MDI Child)
-    ''' </summary>
-    Private Sub OpenElectronicForm(url As String, title As String)
-        Try
-            ' التحقق من وجود نموذج مفتوح بالفعل بنفس العنوان
-            For Each form As Form In Me.MdiChildren
-                If TypeOf form Is WebBrowserForm AndAlso form.Text.Contains(title) Then
-                    form.BringToFront()
-                    Return
-                End If
-            Next
+    '''' <summary>
+    '''' فتح نموذج إلكتروني في نافذة فرعية (MDI Child)
+    '''' </summary>
+    'Private Sub OpenElectronicForm(url As String, title As String)
+    '    Try
+    '        ' التحقق من وجود نموذج مفتوح بالفعل بنفس العنوان
+    '        For Each form As Form In Me.MdiChildren
+    '            If TypeOf form Is WebBrowserForm AndAlso form.Text.Contains(title) Then
+    '                form.BringToFront()
+    '                Return
+    '            End If
+    '        Next
 
-            ' إنشاء النموذج الجديد
-            Dim webForm As New WebBrowserForm(url, title)
-            webForm.Text = title
-            webForm.MdiParent = Me
-            webForm.WindowState = FormWindowState.Normal
+    '        ' إنشاء النموذج الجديد
+    '        Dim webForm As New WebBrowserForm(url, title)
+    '        webForm.Text = title
+    '        webForm.MdiParent = Me
+    '        webForm.WindowState = FormWindowState.Normal
 
-            ' تحميل الرابط
-            Try
+    '        ' تحميل الرابط
+    '        Try
 
-                ' التأكد من تنسيق الرابط الصحيح
-                Dim uri As New Uri(url)
-                webForm.webBrowser.Navigate(uri)
-                webForm.txtUrl.Text = url
-            Catch ex As UriFormatException
-                Try
-                    ' محاولة إضافة http:// إذا كان الرابط غير مكتمل
-                    Dim safeUrl As String = "http://" & url
-                    Dim uri As New Uri(safeUrl)
-                    webForm.webBrowser.Navigate(uri)
-                    webForm.txtUrl.Text = safeUrl
-                Catch ex2 As Exception
-                    MessageBox.Show($"الرابط غير صحيح: {url}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Return
-                End Try
-            End Try
+    '            ' التأكد من تنسيق الرابط الصحيح
+    '            Dim uri As New Uri(url)
+    '            webForm.webBrowser.Navigate(uri)
+    '            webForm.txtUrl.Text = url
+    '        Catch ex As UriFormatException
+    '            Try
+    '                ' محاولة إضافة http:// إذا كان الرابط غير مكتمل
+    '                Dim safeUrl As String = "http://" & url
+    '                Dim uri As New Uri(safeUrl)
+    '                webForm.webBrowser.Navigate(uri)
+    '                webForm.txtUrl.Text = safeUrl
+    '            Catch ex2 As Exception
+    '                MessageBox.Show($"الرابط غير صحيح: {url}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '                Return
+    '            End Try
+    '        End Try
 
-            webForm.Show()
-        Catch ex As Exception
-            MessageBox.Show($"خطأ في فتح النموذج الإلكتروني: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
+    '        webForm.Show()
+    '    Catch ex As Exception
+    '        MessageBox.Show($"خطأ في فتح النموذج الإلكتروني: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
 
     ''' <summary>
     ''' فتح نموذج إجازة وإقرار عودة
     ''' </summary>
     Private Sub leaveFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles leaveFormToolStripMenuItem.Click
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-12.htm",
             "نموذج إجازة وإقرار عودة")
+
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-12.htm",
+        '    "نموذج إجازة وإقرار عودة")
     End Sub
 
     ''' <summary>
     ''' فتح نموذج طلب إستقالة / تقاعد
     ''' </summary>
     Private Sub resignationFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles resignationFormToolStripMenuItem.Click
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-06.htm",
             "نموذج طلب إستقالة / تقاعد")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-06.htm",
+        '    "نموذج طلب إستقالة / تقاعد")
     End Sub
 
     ''' <summary>
     ''' فتح طلب ترشيح لوظيفة إشرافية
     ''' </summary>
     Private Sub promotionFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles promotionFormToolStripMenuItem.Click
-        OpenElectronicForm(
+
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-13.htm",
             "طلب ترشيح لوظيفة إشرافية")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-13.htm",
+        '    "طلب ترشيح لوظيفة إشرافية")
     End Sub
 
     ''' <summary>
     ''' فتح نموذج نقل وندب داخلي للهيئة الإدارية والمالية
     ''' </summary>
     Private Sub transferFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles transferFormToolStripMenuItem.Click
-        OpenElectronicForm(
+
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-27.htm",
             "نموذج نقل وندب داخلي للهيئة الإدارية والمالية")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-27.htm",
+        '    "نموذج نقل وندب داخلي للهيئة الإدارية والمالية")
     End Sub
 
     ''' <summary>
     ''' فتح نموذج استمارة كشف حضور وانصراف
     ''' </summary>
     Private Sub attendanceFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles attendanceFormToolStripMenuItem.Click
-        OpenElectronicForm(
-            "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-40.htm",
-            "نموذج استمارة كشف حضور وانصراف للموظفين العاملين بالمواقع الميدانية")
+        OpenBrowserTab(Me,
+    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-40.htm",
+    "بدل موقع")
+
+
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-40.htm",
+        '    "نموذج استمارة كشف حضور وانصراف للموظفين العاملين بالمواقع الميدانية")
     End Sub
 
     ''' <summary>
     ''' فتح نموذج طلب معاملة
     ''' </summary>
     Private Sub requestFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles requestFormToolStripMenuItem.Click
-        OpenElectronicForm(
-            "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-37.htm",
-            "نموذج طلب معاملة")
+        OpenBrowserTab(Me,
+    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-37.htm",
+    "طلب معاملة")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-37.htm",
+        '    "نموذج طلب معاملة")
     End Sub
 
     ''' <summary>
     ''' فتح نموذج طلب هوية
     ''' </summary>
     Private Sub idRequestFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles idRequestFormToolStripMenuItem.Click
-        OpenElectronicForm(
-            "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-12.htm",
-            "نموذج طلب هوية")
+        OpenBrowserTab(Me,
+               "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-12.htm",
+               "نموذج طلب هوية")
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-12.htm",
+        '    "نموذج طلب هوية")
     End Sub
 
     ''' <summary>
     ''' فتح نموذج استمارة صرف بدلات
     ''' </summary>
     Private Sub allowanceFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles allowanceFormToolStripMenuItem.Click
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-43.htm",
             "نموذج استمارة صرف بدلات")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-43.htm",
+        '    "نموذج استمارة صرف بدلات")
     End Sub
 
     ''' <summary>
     ''' فتح تصريح خروج
     ''' </summary>
     Private Sub exitPermitFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles exitPermitFormToolStripMenuItem.Click
-        OpenElectronicForm(
+
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-08%20.htm",
             "تصريح خروج")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-08%20.htm",
+        '    "تصريح خروج")
     End Sub
 
     ''' <summary>
     ''' فتح إخلاء طرف عهدة شخصية / تنظيمية
     ''' </summary>
     Private Sub clearanceFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles clearanceFormToolStripMenuItem.Click
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/240000-23.htm",
             "إخلاء طرف عهدة شخصية / تنظيمية")
+
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/240000-23.htm",
+        '    "إخلاء طرف عهدة شخصية / تنظيمية")
     End Sub
 
     ''' <summary>
     ''' فتح براءة ذمة لموظفي العقود الخاصة
     ''' </summary>
     Private Sub clearanceContractFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles clearanceContractFormToolStripMenuItem.Click
-        OpenElectronicForm(
+
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/232000-08.htm",
             "براءة ذمة لموظفي العقود الخاصة")
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/232000-08.htm",
+        '    "براءة ذمة لموظفي العقود الخاصة")
     End Sub
 
     ''' <summary>
     ''' فتح نموذج علاج موظف
     ''' </summary>
     Private Sub medicalFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles medicalFormToolStripMenuItem.Click
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-41.htm",
             "نموذج علاج موظف")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-41.htm",
+        '    "نموذج علاج موظف")
     End Sub
 
     ''' <summary>
     ''' فتح اشعار اجازة طارئة
     ''' </summary>
     Private Sub emergencyLeaveFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles emergencyLeaveFormToolStripMenuItem.Click
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-26.htm",
             "اشعار اجازة طارئة")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-26.htm",
+        '    "اشعار اجازة طارئة")
+    End Sub
+
+    ''' <summary>
+    ''' فتح اشعار اجازة طارئة
+    ''' </summary>
+    Private Sub btnmaritalstatus_Click(sender As Object, e As EventArgs) Handles btnmaritalstatus.Click
+        OpenBrowserTab(Me,
+            "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-14.htm",
+            "إقرار الحالة الإجتماعية")
+
+        'OpenElectronicForm(
+        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-14.htm",
+        '    "إقرار الحالة الإجتماعية")
     End Sub
 
 
     Private Sub Tasreeh_Click(sender As Object, e As EventArgs) Handles Tasreeh.Click
-        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "231000-43.pdf")
-        OpenElectronicForm(
-            filePath,
-            "تصريح رسمي")
+        Try
+
+            Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "231000-43.pdf")
+
+            ' التحقق من وجود الملف
+            If Not File.Exists(filePath) Then
+
+                MessageBox.Show(
+                "الملف غير موجود أو تم تغيير اسمه." & vbCrLf &
+                "المسار:" & vbCrLf & filePath,
+                "تنبيه",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+
+                Exit Sub
+
+            End If
+
+            ' فتح الملف
+            Process.Start(New ProcessStartInfo(filePath) With {
+            .UseShellExecute = True
+        })
+
+        Catch ex As Exception
+
+            MessageBox.Show(
+            "حدث خطأ أثناء فتح الملف:" & vbCrLf & ex.Message,
+            "خطأ",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
+
+        End Try
+
+
+
     End Sub
 
     Private Sub AQuood_Click(sender As Object, e As EventArgs) Handles AQuood.Click
         Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "3good.html")
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             filePath,
             "مناطق نائية | عقود خاصة")
     End Sub
 
     Private Sub Kuwait_Click(sender As Object, e As EventArgs) Handles Kuwait.Click
         Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "Kuwait.html")
-        OpenElectronicForm(
+        OpenBrowserTab(Me,
             filePath,
             "مناطق نائية | كويتيين")
+    End Sub
+
+    Private Sub btnAttendance_Click(sender As Object, e As EventArgs) Handles btnAttendance.Click
+
+        Try
+
+            Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "بدل_مناطق_نائية.docx")
+
+            ' التحقق من وجود الملف
+            If Not File.Exists(filePath) Then
+
+                MessageBox.Show(
+                "الملف غير موجود أو تم تغيير اسمه." & vbCrLf &
+                "المسار:" & vbCrLf & filePath,
+                "تنبيه",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+
+                Exit Sub
+
+            End If
+
+            ' فتح الملف
+            Process.Start(New ProcessStartInfo(filePath) With {
+            .UseShellExecute = True
+        })
+
+        Catch ex As Exception
+
+            MessageBox.Show(
+            "حدث خطأ أثناء فتح الملف:" & vbCrLf & ex.Message,
+            "خطأ",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
+
+        End Try
+
     End Sub
 
 #End Region
@@ -1727,7 +1867,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             clearanceContractFormToolStripMenuItem.Enabled = isConnected
             medicalFormToolStripMenuItem.Enabled = isConnected
             emergencyLeaveFormToolStripMenuItem.Enabled = isConnected
-
+            btnmaritalstatus.Enabled = isConnected
 
 
             'btnOnlineBackup.Enabled = isConnected

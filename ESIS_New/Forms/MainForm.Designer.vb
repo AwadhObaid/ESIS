@@ -64,6 +64,7 @@ Partial Class MainForm
         Me.clearanceFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.clearanceContractFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.medicalFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnmaritalstatus = New System.Windows.Forms.ToolStripMenuItem()
         Me.emergencyLeaveFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Tasreeh = New System.Windows.Forms.ToolStripMenuItem()
         Me.AQuood = New System.Windows.Forms.ToolStripMenuItem()
@@ -106,6 +107,7 @@ Partial Class MainForm
         Me.lblUser2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBoxUser = New System.Windows.Forms.PictureBox()
+        Me.btnAttendance = New System.Windows.Forms.ToolStripMenuItem()
         Me.men.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -317,7 +319,7 @@ Partial Class MainForm
         '
         'btnOpenWebForms
         '
-        Me.btnOpenWebForms.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.leaveFormToolStripMenuItem, Me.attendanceFormToolStripMenuItem, Me.transferFormToolStripMenuItem, Me.promotionFormToolStripMenuItem, Me.resignationFormToolStripMenuItem, Me.requestFormToolStripMenuItem, Me.idRequestFormToolStripMenuItem, Me.allowanceFormToolStripMenuItem, Me.exitPermitFormToolStripMenuItem, Me.clearanceFormToolStripMenuItem, Me.clearanceContractFormToolStripMenuItem, Me.medicalFormToolStripMenuItem, Me.emergencyLeaveFormToolStripMenuItem, Me.Tasreeh, Me.AQuood, Me.Kuwait})
+        Me.btnOpenWebForms.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.leaveFormToolStripMenuItem, Me.attendanceFormToolStripMenuItem, Me.transferFormToolStripMenuItem, Me.promotionFormToolStripMenuItem, Me.resignationFormToolStripMenuItem, Me.requestFormToolStripMenuItem, Me.idRequestFormToolStripMenuItem, Me.allowanceFormToolStripMenuItem, Me.exitPermitFormToolStripMenuItem, Me.clearanceFormToolStripMenuItem, Me.clearanceContractFormToolStripMenuItem, Me.medicalFormToolStripMenuItem, Me.btnmaritalstatus, Me.emergencyLeaveFormToolStripMenuItem, Me.Tasreeh, Me.AQuood, Me.Kuwait, Me.btnAttendance})
         Me.btnOpenWebForms.ForeColor = System.Drawing.Color.White
         Me.btnOpenWebForms.Name = "btnOpenWebForms"
         Me.btnOpenWebForms.Size = New System.Drawing.Size(124, 28)
@@ -328,7 +330,7 @@ Partial Class MainForm
         Me.leaveFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.leaveFormToolStripMenuItem.Enabled = False
         Me.leaveFormToolStripMenuItem.Name = "leaveFormToolStripMenuItem"
-        Me.leaveFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.leaveFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.leaveFormToolStripMenuItem.Text = "نموذج إجازة وإقرار عودة"
         '
         'attendanceFormToolStripMenuItem
@@ -336,16 +338,15 @@ Partial Class MainForm
         Me.attendanceFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.attendanceFormToolStripMenuItem.Enabled = False
         Me.attendanceFormToolStripMenuItem.Name = "attendanceFormToolStripMenuItem"
-        Me.attendanceFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
-        Me.attendanceFormToolStripMenuItem.Text = "نموذج استمارة كشف حضور وانصراف للموظفين العاملين بالمواقع الميدانية الثابتة وغير " &
-    "الثابتة"
+        Me.attendanceFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
+        Me.attendanceFormToolStripMenuItem.Text = "نموذج بدل موقع"
         '
         'transferFormToolStripMenuItem
         '
         Me.transferFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.transferFormToolStripMenuItem.Enabled = False
         Me.transferFormToolStripMenuItem.Name = "transferFormToolStripMenuItem"
-        Me.transferFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.transferFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.transferFormToolStripMenuItem.Text = "نموذج نقل وندب داخلي للهيئة الإدارية والمالية"
         '
         'promotionFormToolStripMenuItem
@@ -353,7 +354,7 @@ Partial Class MainForm
         Me.promotionFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.promotionFormToolStripMenuItem.Enabled = False
         Me.promotionFormToolStripMenuItem.Name = "promotionFormToolStripMenuItem"
-        Me.promotionFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.promotionFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.promotionFormToolStripMenuItem.Text = "طلب ترشيح لوظيفة إشرافية"
         '
         'resignationFormToolStripMenuItem
@@ -361,7 +362,7 @@ Partial Class MainForm
         Me.resignationFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.resignationFormToolStripMenuItem.Enabled = False
         Me.resignationFormToolStripMenuItem.Name = "resignationFormToolStripMenuItem"
-        Me.resignationFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.resignationFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.resignationFormToolStripMenuItem.Text = "نموذج طلب إستقالة / تقاعد"
         '
         'requestFormToolStripMenuItem
@@ -369,7 +370,7 @@ Partial Class MainForm
         Me.requestFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.requestFormToolStripMenuItem.Enabled = False
         Me.requestFormToolStripMenuItem.Name = "requestFormToolStripMenuItem"
-        Me.requestFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.requestFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.requestFormToolStripMenuItem.Text = "نموذج طلب معاملة"
         '
         'idRequestFormToolStripMenuItem
@@ -377,7 +378,7 @@ Partial Class MainForm
         Me.idRequestFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.idRequestFormToolStripMenuItem.Enabled = False
         Me.idRequestFormToolStripMenuItem.Name = "idRequestFormToolStripMenuItem"
-        Me.idRequestFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.idRequestFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.idRequestFormToolStripMenuItem.Text = "نموذج طلب هوية"
         '
         'allowanceFormToolStripMenuItem
@@ -385,7 +386,7 @@ Partial Class MainForm
         Me.allowanceFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.allowanceFormToolStripMenuItem.Enabled = False
         Me.allowanceFormToolStripMenuItem.Name = "allowanceFormToolStripMenuItem"
-        Me.allowanceFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.allowanceFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.allowanceFormToolStripMenuItem.Text = "نموذج استمارة صرف بدلات"
         '
         'exitPermitFormToolStripMenuItem
@@ -393,7 +394,7 @@ Partial Class MainForm
         Me.exitPermitFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.exitPermitFormToolStripMenuItem.Enabled = False
         Me.exitPermitFormToolStripMenuItem.Name = "exitPermitFormToolStripMenuItem"
-        Me.exitPermitFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.exitPermitFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.exitPermitFormToolStripMenuItem.Text = "تصريح خروج"
         '
         'clearanceFormToolStripMenuItem
@@ -401,7 +402,7 @@ Partial Class MainForm
         Me.clearanceFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.clearanceFormToolStripMenuItem.Enabled = False
         Me.clearanceFormToolStripMenuItem.Name = "clearanceFormToolStripMenuItem"
-        Me.clearanceFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.clearanceFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.clearanceFormToolStripMenuItem.Text = "إخلاء طرف عهدة شخصية / تنظيمية"
         '
         'clearanceContractFormToolStripMenuItem
@@ -409,7 +410,7 @@ Partial Class MainForm
         Me.clearanceContractFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.clearanceContractFormToolStripMenuItem.Enabled = False
         Me.clearanceContractFormToolStripMenuItem.Name = "clearanceContractFormToolStripMenuItem"
-        Me.clearanceContractFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.clearanceContractFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.clearanceContractFormToolStripMenuItem.Text = "براءة ذمة لموظفي العقود الخاصة"
         '
         'medicalFormToolStripMenuItem
@@ -417,34 +418,42 @@ Partial Class MainForm
         Me.medicalFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.medicalFormToolStripMenuItem.Enabled = False
         Me.medicalFormToolStripMenuItem.Name = "medicalFormToolStripMenuItem"
-        Me.medicalFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.medicalFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.medicalFormToolStripMenuItem.Text = "نموذج علاج موظف"
+        '
+        'btnmaritalstatus
+        '
+        Me.btnmaritalstatus.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
+        Me.btnmaritalstatus.Enabled = False
+        Me.btnmaritalstatus.Name = "btnmaritalstatus"
+        Me.btnmaritalstatus.Size = New System.Drawing.Size(341, 28)
+        Me.btnmaritalstatus.Text = "إقرار الحالة الإجتماعية"
         '
         'emergencyLeaveFormToolStripMenuItem
         '
         Me.emergencyLeaveFormToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.emergencyLeaveFormToolStripMenuItem.Enabled = False
         Me.emergencyLeaveFormToolStripMenuItem.Name = "emergencyLeaveFormToolStripMenuItem"
-        Me.emergencyLeaveFormToolStripMenuItem.Size = New System.Drawing.Size(611, 28)
+        Me.emergencyLeaveFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.emergencyLeaveFormToolStripMenuItem.Text = "اشعار اجازة طارئة"
         '
         'Tasreeh
         '
         Me.Tasreeh.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
         Me.Tasreeh.Name = "Tasreeh"
-        Me.Tasreeh.Size = New System.Drawing.Size(611, 28)
+        Me.Tasreeh.Size = New System.Drawing.Size(341, 28)
         Me.Tasreeh.Text = "تصريح رسمي"
         '
         'AQuood
         '
         Me.AQuood.Name = "AQuood"
-        Me.AQuood.Size = New System.Drawing.Size(611, 28)
+        Me.AQuood.Size = New System.Drawing.Size(341, 28)
         Me.AQuood.Text = "مناطق نائية | عقود خاصة"
         '
         'Kuwait
         '
         Me.Kuwait.Name = "Kuwait"
-        Me.Kuwait.Size = New System.Drawing.Size(611, 28)
+        Me.Kuwait.Size = New System.Drawing.Size(341, 28)
         Me.Kuwait.Text = "مناطق نائية | كويتيين"
         '
         'القاريرToolStripMenuItem
@@ -820,6 +829,12 @@ Partial Class MainForm
         Me.PictureBoxUser.TabIndex = 5
         Me.PictureBoxUser.TabStop = False
         '
+        'btnAttendance
+        '
+        Me.btnAttendance.Name = "btnAttendance"
+        Me.btnAttendance.Size = New System.Drawing.Size(341, 28)
+        Me.btnAttendance.Text = "بدل مناطق نائية حضور وانصراف"
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -933,5 +948,7 @@ Partial Class MainForm
     Friend WithEvents AQuood As ToolStripMenuItem
     Friend WithEvents Kuwait As ToolStripMenuItem
     Friend WithEvents btnEmail As ToolStripMenuItem
+    Friend WithEvents btnmaritalstatus As ToolStripMenuItem
+    Friend WithEvents btnAttendance As ToolStripMenuItem
 End Class
 

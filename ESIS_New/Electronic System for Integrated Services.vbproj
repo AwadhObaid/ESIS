@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\chromiumembeddedframework.runtime.win-x86.146.0.7\build\chromiumembeddedframework.runtime.win-x86.props" Condition="Exists('..\packages\chromiumembeddedframework.runtime.win-x86.146.0.7\build\chromiumembeddedframework.runtime.win-x86.props')" />
+  <Import Project="..\packages\chromiumembeddedframework.runtime.win-x64.146.0.7\build\chromiumembeddedframework.runtime.win-x64.props" Condition="Exists('..\packages\chromiumembeddedframework.runtime.win-x64.146.0.7\build\chromiumembeddedframework.runtime.win-x64.props')" />
   <Import Project="..\packages\PdfiumViewer.Native.x86.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86.no_v8-no_xfa.props" Condition="Exists('..\packages\PdfiumViewer.Native.x86.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86.no_v8-no_xfa.props')" />
   <Import Project="..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props" Condition="Exists('..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -645,9 +647,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -711,7 +713,6 @@
     </Content>
     <None Include="packages.config" />
     <None Include="Resources\pdf.png" />
-    <None Include="Resources\google-docs.png" />
     <None Include="Resources\file.png" />
     <None Include="Resources\open-in-browser.png" />
     <None Include="Resources\printer.png" />
@@ -765,5 +766,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FastReport.OpenSource.2025.2.12\build\FastReport.OpenSource.props'))" />
     <Error Condition="!Exists('..\packages\PdfiumViewer.Native.x86.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86.no_v8-no_xfa.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PdfiumViewer.Native.x86.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86.no_v8-no_xfa.props'))" />
+    <Error Condition="!Exists('..\packages\chromiumembeddedframework.runtime.win-x64.146.0.7\build\chromiumembeddedframework.runtime.win-x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\chromiumembeddedframework.runtime.win-x64.146.0.7\build\chromiumembeddedframework.runtime.win-x64.props'))" />
+    <Error Condition="!Exists('..\packages\chromiumembeddedframework.runtime.win-x86.146.0.7\build\chromiumembeddedframework.runtime.win-x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\chromiumembeddedframework.runtime.win-x86.146.0.7\build\chromiumembeddedframework.runtime.win-x86.props'))" />
   </Target>
 </Project>

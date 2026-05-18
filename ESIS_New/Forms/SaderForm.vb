@@ -5,19 +5,15 @@ Imports System.Threading
 Imports FastReport
 Imports FastReport.Export.PdfSimple
 Imports PdfiumViewer
+Imports System.Runtime.InteropServices
 
 Public Class SaderForm : Inherits BaseFormWithPermissions
 #Region "Variables and Initialization     المتغيرات والتهيئة"
     Private scaler As ControlScaler
     Private saderClass As New SaderClass()
     Private activityLogClass As New ActivityLogClass()
-
     Private bookCategories As List(Of String) = New List(Of String)()
-
     Private isLoadingData As Boolean = False ' متغير لتتبع حالة تحميل البيانات
-    ' إضافة متغير للتحكم في التوقيت
-    Private searchTimer As Timer
-    Private lastSearchText As String = ""
     Private masterPolicyNumber As String = Nothing
     Private subPolicyNumber As String = Nothing
     Private dt_TbSader As New DataTable
@@ -28,6 +24,8 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
     Private currentSaderID As Integer = 0
     Private _eventsWired As Boolean = False
 
+
+
     Public Sub New()
         ' هذا السطر مطلوب لتهيئة النموذج.
         InitializeComponent()
@@ -35,6 +33,13 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         scaler = New ControlScaler(Me)
         'InitializeDeleteButton()
     End Sub
+#End Region
+
+#Region "🔍 Search Variables"
+
+    Private searchTimer As New System.Windows.Forms.Timer With {.Interval = 500}
+    Private lastSearchText As String = ""
+    Private isSearching As Boolean = False
 #End Region
 
 #Region "Form Events     أحداث النماذج"
@@ -64,6 +69,9 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         isLoadingData = True
 
         Try
+            ' تشغيل التايمر
+            IdleTime.Interval = 60000  ' كل ثانية
+            IdleTime.Start()
             WireEventsOnce()
 
             PrepareUI()
@@ -76,6 +84,9 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
             FinishLoad()
 
+            LinkTextBoxesVertical(txtWillMaster, txtWillSub)
+
+            AddHandler searchTimer.Tick, AddressOf PerformSearch
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء تحميل النموذج: {ex.Message}",
                         "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -157,6 +168,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         LoadBookCategories()
         PopulatePrintersList()
         LoadSavedPrinter()
+        LoadYearsFilter()
     End Sub
 
     '========================
@@ -178,70 +190,6 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
     Private Sub FinishLoad()
         dgvSader.ClearSelection()
     End Sub
-
-
-    'Private Sub SaderForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    '    Try
-
-    '        ' الاشتراك في الحدث
-    '        AddHandler DataHelper.SaderCountChanged, AddressOf HandleDataCountChanged
-    '        'lblArchiveMsg.Visible = False
-    '        ' تحديث العداد في الواجهة
-    '        UpdateRecordCount()
-    '        ' ربط تلقائي لأحداث التحقق من البوليصات
-    '        PolicyValidationEvents.AttachPolicyValidationEvents(Me)
-
-    '        ' إضافة معالجات الأحداث للحقول لتحديد حالة وجود بيانات غير محفوظة
-    '        AddHandler txtWillMaster.TextChanged, AddressOf PolicyFields_TextChanged
-    '        AddHandler txtWillSub.TextChanged, AddressOf PolicyFields_TextChanged
-    '        'RBDirectPrint.Checked = True
-    '        isLoadingData = True
-    '        txtWillMaster.Clear()
-    '        txtWillSub.Clear()
-    '        ' إعداد معالج أخطاء DataGridView
-    '        DataGridViewErrorHandler.SetupErrorHandling(dgvSader)
-    '        ' تعطيل الأحداث قبل تحميل البيانات
-
-    '        RemoveHandler dgvSader.CellClick, AddressOf dgvSader_CellClick
-    '        ' إعداد DataGridView للتطبيقات العربية
-    '        DataGridViewHelper.SetupArabicDataGridView(dgvSader)
-    '        ClearFields()
-    '        ' تعبئة ميزة الإكمال التلقائي في مربع النصوص
-    '        saderClass.AutoCompleteForTextBox("WillMaster", "TbSader", txtWillMaster)
-    '        saderClass.AutoCompleteForTextBox("WillSub", "TbSader", txtWillSub)
-    '        saderClass.AutoCompleteForTextBox("NumberBook", "TbSader", txtSearch)
-    '        ' تعبئة القائمة المنسدلة بالبيانات
-    '        FillComboBox(ComboSubjBook, "SELECT Subject_Book FROM TbSubjBooks ORDER BY Subject_Book", "Subject_Book")
-    '        Me.RightToLeft = RightToLeft.Yes
-    '        Me.RightToLeftLayout = True
-    '        dtpDateBook.Value = DateTime.Now
-    '        dtpStartDate.Value = DateTime.Now.AddDays(-30)
-    '        dtpEndDate.Value = DateTime.Now
-    '        SelectAll_TbSader(dgvSader)
-    '        GenerateNextBookNumber()
-    '        PopulatePrintersList()
-    '        LoadSavedPrinter()
-    '        LoadBookCategories() ' تحميل تصنيفات الكتاب
-    '        HighlightUnarchivedRecords()
-    '        txtUserName.Text = GlobalData.LoggedInUserName
-    '        txtUserName.ReadOnly = True
-    '        ClearFieldsOnLoad()
-    '        txtSearch.Enabled = False
-    '        ' إلغاء تحديد أي صفوف في dgvSader بعد تحميل البيانات
-    '        dgvSader.ClearSelection()
-    '        ' تعطيل أدوات التعديل في البداية
-    '        EnableEditingTools(False)
-    '        isLoadingData = False
-    '        ' إعادة تسجيل الأحداث بعد تحميل البيانات
-    '        AddHandler dgvSader.CellClick, AddressOf dgvSader_CellClick
-    '        ComboSubjBook.SelectedIndex = -1
-    '    Catch ex As Exception
-    '        isLoadingData = False
-    '        MessageBox.Show($"حدث خطأ أثناء تحميل النموذج: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-
-
-    'End Sub
 
     Private Sub SaderForm_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         btnNew.PerformClick()
@@ -321,6 +269,99 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 #End Region
 
+#Region "YearsFilter - فلترة السنوات"
+    Private Sub LoadYearsFilter()
+
+        Try
+            Dim dt = saderClass.GetYears()
+
+            cmbYears.DataSource = Nothing
+
+            cmbYears.DisplayMember = "Year"
+            cmbYears.ValueMember = "Year"
+            cmbYears.DataSource = dt
+
+            cmbYears.SelectedIndex = 0
+
+        Catch ex As Exception
+            MessageBox.Show("خطأ في تحميل السنوات: " & ex.Message)
+        End Try
+
+    End Sub
+
+    Private Sub cmbYears_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbYears.SelectedIndexChanged
+
+        Try
+            If cmbYears.SelectedIndex = -1 Then Return
+            If cmbYears.SelectedValue Is Nothing Then Return
+
+            Dim selectedYear As Integer
+
+            If Not Integer.TryParse(cmbYears.SelectedValue.ToString(), selectedYear) Then
+                Return
+            End If
+
+            Dim dt = saderClass.SearchSaderAdvanced(
+            txtSearch.Text,
+            GetSelectedSearchColumn(),
+            Nothing,
+            Nothing,
+            rbUnarchivedSader.Checked,
+            selectedYear
+        )
+
+            dgvSader.DataSource = dt
+
+        Catch ex As Exception
+            MessageBox.Show("خطأ في فلترة السنة: " & ex.Message)
+        End Try
+
+    End Sub
+
+    Private Function GetSelectedSearchColumn() As String
+
+        If rbNumberBook.Checked Then Return "NumberBook"
+        If rbSubjBook.Checked Then Return "SubjBook"
+        If rbWillMaster.Checked Then Return "WillMaster"
+        If rbWillSub.Checked Then Return "WillSub"
+
+        ' إذا لم يتم اختيار شيء → لا ترسل عمود
+        Return Nothing
+
+    End Function
+
+    Private Sub cmbYears_DrawItem(sender As Object, e As DrawItemEventArgs) Handles cmbYears.DrawItem
+
+        If e.Index < 0 Then Return
+
+        Dim row As DataRowView = CType(cmbYears.Items(e.Index), DataRowView)
+        Dim status As Integer = Convert.ToInt32(row("YearStatus"))
+
+        Dim color As Color = If(status = 1, Color.Green, Color.Red)
+
+        e.DrawBackground()
+
+        Using brush As New SolidBrush(color)
+            e.Graphics.DrawString(e.Index.ToString(), e.Font, brush, e.Bounds)
+        End Using
+
+        e.DrawFocusRectangle()
+
+    End Sub
+
+    Private Sub cmbYears_Format(sender As Object, e As ListControlConvertEventArgs) Handles cmbYears.Format
+
+        Dim row As DataRowView = CType(e.ListItem, DataRowView)
+
+        Dim year = row("Year").ToString()
+        Dim status = row("StatusText").ToString()
+
+        e.Value = $"{year} - {status}"
+
+    End Sub
+
+#End Region
+
 #Region "Data Loading and Display     تحميل البيانات وعرضها"
     Private Sub LoadSaderSafely()
         Try
@@ -329,7 +370,8 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             Dim dataTable As DataTable = saderClass.GetAllSader()
             ' ربط البيانات بشكل آمن
             DataGridViewErrorHandler.SafeBindData(dgvSader, dataTable)
-
+            'currentDataView = dataTable.DefaultView
+            'dgvSader.DataSource = currentDataView
             ' التحقق من وجود سجلات غير مؤرشفة
             Dim nonArchivedCount As Integer = 0
             For Each row As DataRow In dataTable.Rows
@@ -368,7 +410,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                 End If
                 If dgvSader.Columns.Contains("DateBook") Then
                     dgvSader.Columns("DateBook").HeaderText = "التاريخ"
-                    dgvSader.Columns("DateBook").Width = 90
+                    dgvSader.Columns("DateBook").Width = 60
                 End If
                 If dgvSader.Columns.Contains("SubjBook") Then
                     dgvSader.Columns("SubjBook").HeaderText = "الموضوع"
@@ -394,6 +436,10 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                 If dgvSader.Columns.Contains("ArchiveID") Then
                     dgvSader.Columns("ArchiveID").HeaderText = "الإرشيف"
                     dgvSader.Columns("ArchiveID").Width = 60
+                End If
+                If dgvSader.Columns.Contains("Year") Then
+                    dgvSader.Columns("Year").HeaderText = "السنة"
+                    dgvSader.Columns("Year").Width = 60
                 End If
 
 
@@ -481,6 +527,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         'MessageBox.Show("تم ربط الأرشيف رقم " & archiveId.ToString() & " بنجاح مع فورم الصادر.", "ربط الأرشيف", MessageBoxButtons.OK, MessageBoxIcon.Information)
         btnNew.PerformClick()
     End Sub
+
 #End Region
 
 #Region "DataGridView Events     أحداث DataGridView"
@@ -554,6 +601,62 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             lblArchiveMsg.Text = "إضغط على الجدول مرتين لارشفة الكتاب"
         Catch ex As Exception
             MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub dgvSader_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSader.CellDoubleClick
+        Try
+            If e.RowIndex >= 0 Then
+                Dim row As DataGridViewRow = dgvSader.Rows(e.RowIndex)
+                ' استخراج البيانات من الصف المحدد مع التحقق من القيم الفارغة
+                Dim numberBook As String = GetSelectedRowStringValue("NumberBook")
+                Dim dateBook As Date = GetSelectedRowDateValue("DateBook")
+                Dim subjBook As String = GetSelectedRowStringValue("SubjBook")
+                Dim willMaster As String = GetSelectedRowStringValue("WillMaster")
+                Dim willSub As String = GetSelectedRowStringValue("WillSub")
+                Dim bookCategory As String = GetSelectedRowStringValue("bookCategory")
+
+                ' البحث عن نموذج الأرشيف المفتوح
+                Dim archiveForm As ArchiveForm = TryCast(Application.OpenForms("ArchiveForm"), ArchiveForm)
+
+                If archiveForm IsNot Nothing Then
+                    ' إذا كان النموذج مفتوحًا، قم بتحديثه بالبيانات الجديدة
+
+                    archiveForm.txtArchiveNum.Text = numberBook
+                    archiveForm.dtpArchiveDate.Value = dateBook
+                    archiveForm.txtArchiveSubject.Text = subjBook
+                    archiveForm.txtArchiveWillMaster.Text = willMaster
+                    archiveForm.txtArchiveWillSub.Text = willSub
+                    archiveForm.ComboArchiveFolder.Text = bookCategory
+                    archiveForm.CalculateDestinationPath()
+                    ClearPdf(archiveForm.pdfViewer)
+
+                    archiveForm.btnBrowseFile.PerformClick()
+                    archiveForm.BringToFront()
+                Else
+                    ' إذا كان النموذج مغلقًا، قم بفتحه
+                    Dim main As MainForm = TryCast(Application.OpenForms("MainForm"), MainForm)
+                    If main IsNot Nothing Then
+                        Dim newArchiveForm As New ArchiveForm(numberBook, dateBook, subjBook, willMaster, willSub, bookCategory)
+                        newArchiveForm.MdiParent = main
+                        newArchiveForm.Show()
+                        Select Case MessageBox.Show("هل تريد مسح الملف ضوئيا؟", "رسالة تنبيه", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
+                            Case DialogResult.Yes
+                                Dim scanForm As New ScannerForm
+                                scanForm.Show(Me)
+                            Case DialogResult.No
+                                newArchiveForm.btnBrowseFile.PerformClick()
+                            Case DialogResult.Cancel
+                                newArchiveForm.Close()
+                        End Select
+
+                    Else
+                        MessageBox.Show("لا يمكن العثور على الفورم الرئيسي")
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            MessageBox.Show("حدث خطأ أثناء نقل البيانات إلى فورم الأرشيف: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -671,10 +774,11 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 #Region "CRUD Operations  عمليات CRUD"
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
-        'RBDirectPrint.Checked = True
+
         SelectAll_TbSader(dgvSader)
         StopFlashingLabel()
         Me.Refresh()
+        cmbYears.SelectedIndex = 0
         cmbBookCategory.DroppedDown = True
         cmbBookCategory.Focus()
         ' 6. تحديث العدد بعد العملية الناجحة
@@ -693,13 +797,12 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
     End Sub
 
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+
         Try
-            ' التحقق من صلاحية الإضافة
-            If Not CheckPermission(1, "إضافة ملف صادر") Then
-                Return
-            End If
+            If Not CheckPermission(1, "إضافة ملف صادر") Then Return
 
             If ValidateInput() Then
+
                 Dim dateBook As Date = dtpDateBook.Value.Date
                 Dim subjBook As String = ComboSubjBook.Text.Trim()
                 Dim willMaster As String = txtWillMaster.Text.Trim()
@@ -707,44 +810,50 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
                 Dim bookCategory As String = cmbBookCategory.Text.Trim()
                 Dim userName As String = txtUserName.Text.Trim()
 
-                ' 1. الحصول على المعرف الجديد بعد الإضافة
-                Dim newSaderId As Integer = saderClass.AddSader(dateBook, subjBook, willMaster, willSub, bookCategory, userName)
+                ' 🔥 الإضافة
+                Dim newSaderId As Integer =
+                saderClass.AddSader(dateBook, subjBook, willMaster, willSub, bookCategory, userName)
 
                 If newSaderId > 0 Then
+
                     SavedSuccessfully(Me.lblMessage, Me.PicMsg, Me.TimerMsg)
-                    'MessageBox.Show("تم إضافة الصادر بنجاح", "نجح", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    ' تحديث العدد بعد الإضافة الناجحة
-                    DataHelper.UpdateSaderCount()
-                    ' 2. إعادة تحميل البيانات SelectAll_TbSader(dgvSader)
-                    btnNew.PerformClick()
 
-                    ' 3. تحديد السجل الجديد في الجدول
-                    Dim rowIndex As Integer = DataGridViewHelper.FindRowByValue(dgvSader, "ID", newSaderId, True)
+                    ' 🔄 تحديث البيانات
+                    SelectAll_TbSader(dgvSader)
 
-                    ' 4. إذا تم العثور على السجل وتحديده
+                    ' 🎯 تحديد السجل الجديد
+                    Dim rowIndex As Integer =
+                    DataGridViewHelper.FindRowByValue(dgvSader, "ID", newSaderId, True)
+
                     If rowIndex >= 0 Then
-                        ' 5. توليد رقم الكتاب التالي
-                        GenerateNextBookNumber()
 
-                        ' 6. طباعة السجل الجديد
+                        ' 🖨️ طباعة
                         HandlePrintAction()
+
                     Else
-                        ' إذا فشل تحديد السجل الجديد، اعرض رسالة تحذير
-                        MessageBox.Show("تم إضافة الصادر بنجاح، لكن فشل في تحديد السجل الجديد للطباعة.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        MessageBox.Show(
+                        "تمت الإضافة لكن لم يتم تحديد السجل للطباعة",
+                        "تنبيه",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning)
                     End If
 
-                    ' 7. مسح الحقول
+                    ' 🧹 تنظيف الحقول
                     ClearFields()
+
+                    ' 🆕 تجهيز سجل جديد
+                    btnNew.PerformClick()
+
                 Else
                     MessageBox.Show("فشل في إضافة الصادر", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
 
-                ' 8. إنشاء سجل جديد
-                btnNew.PerformClick()
             End If
+
         Catch ex As Exception
             MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
     End Sub
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
@@ -774,6 +883,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             End If
 
             Dim numberBook As String = txtNumberBook.Text.Trim()
+            Dim year As Integer = dtpDateBook.Value.Year
             Dim dateBook As Date = dtpDateBook.Value.Date
             Dim subjBook As String = ComboSubjBook.Text.Trim()
             Dim willMaster As String = txtWillMaster.Text.Trim()
@@ -782,7 +892,7 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             Dim userName As String = txtUserName.Text.Trim()
             Dim ArchiveID As String = txtArchiveID.Text.Trim()
 
-            If saderClass.UpdateSader(id, numberBook, dateBook, subjBook, willMaster, willSub, bookCategory, userName, ArchiveID) Then
+            If saderClass.UpdateSader(id, numberBook, year, dateBook, subjBook, willMaster, willSub, bookCategory, userName, ArchiveID) Then
                 UpdetedSuccessfully(lblMessage, PicMsg, TimerMsg)
                 'MessageBox.Show("تم تحديث الصادر بنجاح", "نجح", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 ' حفظ معرف الصف المحدث للعودة إليه
@@ -870,235 +980,203 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         End Try
     End Sub
 
+#End Region
 
-    'Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-    '    Try
-    '        '' التحقق من صلاحية الإضافة
-    '        'If Not CheckPermission(3, "حذف ملف صادر") Then
-    '        '    Return
-    '        'End If
+#Region "🔧 Search Field State Controller"
 
-    '        If dgvSader.SelectedRows.Count > 0 Then
-    '            If MessageBox.Show("هل تريد حذف هذا الصادر؟", "تأكيد الحذف", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-    '                Dim id As Integer = Convert.ToInt32(dgvSader.SelectedRows(0).Cells("ID").Value)
-    '                Dim archiveID As Object = dgvSader.SelectedRows(0).Cells("ArchiveID").Value
+    Private Sub UpdateSearchFieldState()
 
-    '                ' إذا كان هناك سجل مرتبط في الأرشيف
-    '                If archiveID IsNot Nothing AndAlso Not IsDBNull(archiveID) AndAlso Convert.ToInt32(archiveID) > 0 Then
-    '                    ' الحصول على مسار الملف من ArchiveClass
-    '                    Dim archiveClass As New ArchiveClass()
-    '                    Dim currentFilePath As String = archiveClass.GetFilePathByArchiveID(Convert.ToInt32(archiveID))
-    '                    Dim frm As New ArchiveForm
-    '                    ' إغلاق الملف المفتوح في WebBrowser قبل محاولة حذفه
-    '                    If Not String.IsNullOrEmpty(currentFilePath) Then
-    '                        If frm.WebBrowser1 IsNot Nothing Then
-    '                            frm.WebBrowser1.Navigate("about:blank")
-    '                            'frm.LoadActiveArchive()
-    '                            Application.DoEvents()
-    '                            Thread.Sleep(200)
-    '                            ForceCloseFileHandles(currentFilePath)
-    '                            Thread.Sleep(500) ' انتظار قصير للتأكد من إغلاق الملف
-    '                        End If
-    '                    End If
-    '                End If
+        ' 🔹 افتراضياً
+        txtSearch.Enabled = False
+        dtpSearchDate.Enabled = False
 
+        ' =========================
+        ' 🔍 البحث النصي
+        ' =========================
+        If rbNumberBook.Checked OrElse
+           rbSubjBook.Checked OrElse
+           rbWillMaster.Checked OrElse
+           rbWillSub.Checked Then
 
-    '                ' حذف الصادر من قاعدة البيانات (سيتم حذف الأرشيف المرتبط تلقائيًا)
-    '                If saderClass.DeleteSader(id) Then
-    '                    MessageBox.Show("تم حذف الصادر والأرشيف المرتبط به بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            txtSearch.Enabled = True
+        End If
 
-    '                    ' تحديث الواجهة
-    '                    btnNew.PerformClick()
-    '                    ' تحديث عداد الصادرة
-    '                    DataHelper.UpdateSaderCount()
-    '                    ' 5. تحديث عداد الأرشيف
-    '                    DataHelper.UpdateArchiveCount()
+        ' =========================
+        ' 📅 البحث بتاريخ
+        ' =========================
+        If RBDate.Checked Then
+            dtpSearchDate.Enabled = True
+            txtSearch.Enabled = False
+        End If
 
-    '                    GenerateNextBookNumber()
+        ' =========================
+        ' 📅 بين تاريخين أو إلى اليوم
+        ' =========================
+        If chkUseToday.Checked Then
+            txtSearch.Enabled = False
+        End If
 
-    '                    ' تحديث فورم الأرشيف إذا كان مفتوحًا
-    '                    For Each form As Form In Application.OpenForms
-    '                        If TypeOf form Is ArchiveForm Then
-    '                            Dim archiveForm As ArchiveForm = CType(form, ArchiveForm)
-    '                            archiveForm.LoadActiveArchive() ' تحديث قائمة الأرشيف
-    '                            Exit For
-    '                        End If
-    '                    Next
-    '                Else
-    '                    MessageBox.Show("فشل في حذف الصادر", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '                End If
-    '            End If
-    '        Else
-    '            MessageBox.Show("يرجى اختيار صادر للحذف", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '        End If
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
+        ' =========================
+        ' 📦 غير مؤرشف
+        ' =========================
+        If rbUnarchivedSader.Checked Then
+            txtSearch.Enabled = False
+        End If
+
+        ' 🔥 لا تمسح النص إطلاقاً
+
+        ' 🔄 تشغيل البحث تلقائياً
+        searchTimer.Stop()
+        searchTimer.Start()
+
+    End Sub
 
 #End Region
 
 #Region "Search Functionality     وظيفة البحث"
+    Private Async Sub PerformSearch(sender As Object, e As EventArgs)
 
-    Private Sub UpdateSearchFieldState(isEnabled As Boolean, Optional includeDatePicker As Boolean = False)
-        txtSearch.Enabled = isEnabled
-        If includeDatePicker Then
-            dtpSearchDate.Enabled = isEnabled
-        End If
-        If isEnabled Then
-            txtSearch.Clear()
-            txtSearch.Focus()
-        End If
-    End Sub
+        searchTimer.Stop()
 
-    'Private Sub btnSearchByDate_Click(sender As Object, e As EventArgs) Handles btnSearchByDate.Click
-    '    Try
-
-    '        Dim startDate As Date = dtpStartDate.Value.Date
-    '        Dim endDate As Date = dtpEndDate.Value.Date
-    '        If startDate > endDate Then
-    '            MessageBox.Show("تاريخ البداية لا يمكن أن يكون أكبر من تاريخ النهاية", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '            Return
-    '        End If
-
-    '        ' استخدام الكلاس المحسن للبحث
-    '        Dim dataTable As DataTable = saderClass.SearchSaderByDateRange(startDate, endDate)
-    '        ' ربط البيانات بشكل آمن
-    '        DataGridViewErrorHandler.SafeBindData(dgvSader, dataTable)
-    '        UpdateColumnHeaders()
-    '        ' تعطيل أدوات التعديل بعد البحث
-    '        EnableEditingTools(False)
-    '    Catch ex As Exception
-    '        MessageBox.Show("حدث خطأ أثناء البحث بالتاريخ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
-
-    Private Sub btnSearchByDate_Click(sender As Object, e As EventArgs) Handles btnSearchByDate.Click
         Try
-            Dim startDate As Date = dtpStartDate.Value.Date
+            Dim searchText As String = Nothing
+            Dim column As String = Nothing
+            Dim startDate As Date? = Nothing
+            Dim endDate As Date? = Nothing
+            Dim unarchived As Boolean = False
 
-            ' إذا لم يحدد المستخدم تاريخ نهاية → اليوم الحالي
-            Dim endDate As Date
-            If chkUseToday.Checked Then
+            ' 🧠 جلب القيم
+            GetSearchParameters(searchText, column, startDate, endDate, unarchived)
 
-                endDate = Date.Today
-            Else
-                endDate = dtpEndDate.Value.Date
-            End If
+            ' 🔥 إذا كل شيء فاضي → رجّع كل البيانات
+            If String.IsNullOrWhiteSpace(searchText) AndAlso
+           column Is Nothing AndAlso
+           startDate Is Nothing AndAlso
+           endDate Is Nothing AndAlso
+           Not unarchived Then
 
-            ' تحقق منطقي
-            If startDate > endDate Then
-                MessageBox.Show("تاريخ البداية لا يمكن أن يكون أكبر من تاريخ النهاية", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Dim allData = Await Task.Run(Function()
+                                                 Return saderClass.SearchSaderAdvanced(
+                                                Nothing, Nothing, Nothing, Nothing, False)
+                                             End Function)
+
+                dgvSader.DataSource = allData
+                UpdateColumnHeaders()
+                HighlightUnarchivedRecords()
                 Return
             End If
 
-            Dim dataTable As DataTable = saderClass.SearchSaderByDateRange(startDate, endDate)
-            DataGridViewErrorHandler.SafeBindData(dgvSader, dataTable)
+            ' 🔄 تنفيذ البحث
+            Dim dt = Await Task.Run(Function()
+                                        Return saderClass.SearchSaderAdvanced(
+                                       searchText,
+                                       column,
+                                       startDate,
+                                       endDate,
+                                       unarchived)
+                                    End Function)
+
+            dgvSader.DataSource = dt
             UpdateColumnHeaders()
+            HighlightUnarchivedRecords()
             EnableEditingTools(False)
 
         Catch ex As Exception
-            MessageBox.Show("حدث خطأ أثناء البحث بالتاريخ: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("خطأ في البحث: " & ex.Message)
         End Try
+
     End Sub
 
+    Private Sub GetSearchParameters(
+    ByRef searchText As String,
+    ByRef searchColumn As String,
+    ByRef startDate As Date?,
+    ByRef endDate As Date?,
+    ByRef unarchivedOnly As Boolean)
+
+        searchText = txtSearch.Text.Trim()
+        searchColumn = Nothing
+        startDate = Nothing
+        endDate = Nothing
+        unarchivedOnly = rbUnarchivedSader.Checked
+
+        ' =========================
+        ' 🔍 البحث النصي
+        ' =========================
+        If rbNumberBook.Checked Then searchColumn = "NumberBook"
+        If rbSubjBook.Checked Then searchColumn = "SubjBook"
+        If rbWillMaster.Checked Then searchColumn = "WillMaster"
+        If rbWillSub.Checked Then searchColumn = "WillSub"
+
+        ' =========================
+        ' 📅 تاريخ محدد
+        ' =========================
+        If RBDate.Checked Then
+            startDate = dtpSearchDate.Value.Date
+            endDate = dtpSearchDate.Value.Date
+        End If
+
+        ' =========================
+        ' 📅 بين تاريخين
+        ' =========================
+        If Not chkUseToday.Checked AndAlso Not RBDate.Checked Then
+            startDate = dtpStartDate.Value.Date
+            endDate = dtpEndDate.Value.Date
+        End If
+
+        ' =========================
+        ' 📅 من تاريخ إلى اليوم
+        ' =========================
+        If chkUseToday.Checked Then
+            startDate = dtpStartDate.Value.Date
+            endDate = Date.Today
+        End If
+
+    End Sub
+
+    Private Sub btnSearchByDate_Click(sender As Object, e As EventArgs) Handles btnSearchByDate.Click
+
+        searchTimer.Stop()
+
+        lastSearchText = "" ' إجبار البحث
+
+        PerformSearch(Nothing, Nothing)
+
+    End Sub
 
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
         ' التحقق من صلاحية الإضافة
-        If Not CheckPermission(1, "البحث عن الصادر") Then
-            Return
-        End If
+        'If Not CheckPermission(1, "البحث عن الصادر") Then
+        '    Return
+        'End If
 
-        Try
-            If String.IsNullOrWhiteSpace(txtSearch.Text) Then
-                dgvSader.DataSource = Nothing
-                RefreshData()
-                Return
-            End If
+        If Not txtSearch.Enabled Then Return
+        searchTimer.Stop()
+        searchTimer.Start()
 
-            Dim searchDate As DateTime
-            ' التحقق مما إذا كان النص يمثل تاريخًا
-            If DateTime.TryParse(txtSearch.Text, searchDate) Then
-                ' استخدام الإجراء المخزن للبحث بالتاريخ
-                Dim dt1 As DataTable = saderClass.SearchSaderByDateRange(searchDate.Date, searchDate.Date)
-                dgvSader.DataSource = dt1
-                Return
-            End If
-
-            ' إذا لم يكن نص البحث تاريخًا، استخدم البحث النصي
-            Dim dt As DataTable = Nothing
-
-            Select Case True
-                Case rbNumberBook.Checked
-                    dt = saderClass.SearchSader(txtSearch.Text.Trim(), "NumberBook")
-
-                Case rbSubjBook.Checked
-                    dt = saderClass.SearchSader(txtSearch.Text.Trim(), "SubjBook")
-
-                Case rbWillMaster.Checked
-                    dt = saderClass.SearchSader(txtSearch.Text.Trim(), "WillMaster")
-
-                Case rbWillSub.Checked
-                    dt = saderClass.SearchSader(txtSearch.Text.Trim(), "WillSub")
-
-
-                Case RBDate.Checked
-                    ' لا يمكن استخدام البحث بالنص لـ DateBook، لذا نستخدم التاريخ فقط
-                    MessageBox.Show("يرجى إدخال تاريخ صحيح للبحث بحسب التاريخ.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    txtSearch.Clear()
-                    txtSearch.Focus()
-                    Return
-
-                Case rbUnarchivedSader.Checked
-                    ' استخدام الإجراء المخزن للبحث عن الصادرة غير المرتبطة بالأرشيف
-                    dt = saderClass.SearchUnarchivedSader(txtSearch.Text.Trim())
-
-                Case Else
-                    Return
-            End Select
-
-            ' عرض النتائج
-            dgvSader.DataSource = dt
-
-        Catch ex As Exception
-            MessageBox.Show(ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
     End Sub
 
-    Private Sub rbNumberBook_CheckedChanged(sender As Object, e As EventArgs) Handles rbNumberBook.CheckedChanged
-        UpdateSearchFieldState(rbNumberBook.Checked)
+    Private Sub SearchOptionsChanged(sender As Object, e As EventArgs) Handles rbNumberBook.CheckedChanged,
+        rbSubjBook.CheckedChanged,
+        rbWillMaster.CheckedChanged,
+        rbWillSub.CheckedChanged,
+        rbUnarchivedSader.CheckedChanged,
+        RBDate.CheckedChanged
+
+        UpdateSearchFieldState()
     End Sub
 
-    Private Sub rbSubjBook_CheckedChanged(sender As Object, e As EventArgs) Handles rbSubjBook.CheckedChanged
-        UpdateSearchFieldState(rbSubjBook.Checked)
+    Private Sub DateChanged(sender As Object, e As EventArgs) _
+Handles dtpSearchDate.ValueChanged,
+        dtpStartDate.ValueChanged,
+        dtpEndDate.ValueChanged
+
+        UpdateSearchFieldState()
     End Sub
 
     Private Sub chkUseToday_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseToday.CheckedChanged
-        UpdateSearchFieldState(chkUseToday.Checked)
+        UpdateSearchFieldState()
     End Sub
-
-    Private Sub rbWillMaster_CheckedChanged(sender As Object, e As EventArgs) Handles rbWillMaster.CheckedChanged
-        UpdateSearchFieldState(rbWillMaster.Checked)
-    End Sub
-
-    Private Sub rbWillSub_CheckedChanged(sender As Object, e As EventArgs) Handles rbWillSub.CheckedChanged
-        UpdateSearchFieldState(rbWillSub.Checked)
-    End Sub
-
-    Private Sub RBDate_CheckedChanged(sender As Object, e As EventArgs) Handles RBDate.CheckedChanged
-        UpdateSearchFieldState(RBDate.Checked, True)
-    End Sub
-
-
-    Private Sub dtpSearchDate_ValueChanged(sender As Object, e As EventArgs) Handles dtpSearchDate.ValueChanged
-        txtSearch.Text = dtpSearchDate.Value.Date
-    End Sub
-
-
-    Private Sub rbUnarchivedSader_CheckedChanged(sender As Object, e As EventArgs) Handles rbUnarchivedSader.CheckedChanged
-        UpdateSearchFieldState(rbUnarchivedSader.Checked, True)
-    End Sub
-
 
 #End Region
 
@@ -1428,66 +1506,6 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
 
 #End Region
 
-#Region "Archive Functionality    وظيفة الأرشفة"
-
-    Private Sub dgvSader_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSader.CellDoubleClick
-        Try
-            If e.RowIndex >= 0 Then
-                Dim row As DataGridViewRow = dgvSader.Rows(e.RowIndex)
-                ' استخراج البيانات من الصف المحدد مع التحقق من القيم الفارغة
-                Dim numberBook As String = GetSelectedRowStringValue("NumberBook")
-                Dim dateBook As Date = GetSelectedRowDateValue("DateBook")
-                Dim subjBook As String = GetSelectedRowStringValue("SubjBook")
-                Dim willMaster As String = GetSelectedRowStringValue("WillMaster")
-                Dim willSub As String = GetSelectedRowStringValue("WillSub")
-                Dim bookCategory As String = GetSelectedRowStringValue("bookCategory")
-
-                ' البحث عن نموذج الأرشيف المفتوح
-                Dim archiveForm As ArchiveForm = TryCast(Application.OpenForms("ArchiveForm"), ArchiveForm)
-
-                If archiveForm IsNot Nothing Then
-                    ' إذا كان النموذج مفتوحًا، قم بتحديثه بالبيانات الجديدة
-
-                    archiveForm.txtArchiveNum.Text = numberBook
-                    archiveForm.dtpArchiveDate.Value = dateBook
-                    archiveForm.txtArchiveSubject.Text = subjBook
-                    archiveForm.txtArchiveWillMaster.Text = willMaster
-                    archiveForm.txtArchiveWillSub.Text = willSub
-                    archiveForm.ComboArchiveFolder.Text = bookCategory
-                    archiveForm.CalculateDestinationPath()
-                    ClearPdf(archiveForm.pdfViewer)
-
-                    archiveForm.btnBrowseFile.PerformClick()
-                    archiveForm.BringToFront()
-                Else
-                    ' إذا كان النموذج مغلقًا، قم بفتحه
-                    Dim main As MainForm = TryCast(Application.OpenForms("MainForm"), MainForm)
-                    If main IsNot Nothing Then
-                        Dim newArchiveForm As New ArchiveForm(numberBook, dateBook, subjBook, willMaster, willSub, bookCategory)
-                        newArchiveForm.MdiParent = main
-                        newArchiveForm.Show()
-                        Select Case MessageBox.Show("هل تريد مسح الملف ضوئيا؟", "رسالة تنبيه", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
-                            Case DialogResult.Yes
-                                Dim scanForm As New ScannerForm
-                                scanForm.Show(Me)
-                            Case DialogResult.No
-                                newArchiveForm.btnBrowseFile.PerformClick()
-                            Case DialogResult.Cancel
-                                newArchiveForm.Close()
-                        End Select
-
-                    Else
-                        MessageBox.Show("لا يمكن العثور على الفورم الرئيسي")
-                    End If
-                End If
-            End If
-        Catch ex As Exception
-            MessageBox.Show("حدث خطأ أثناء نقل البيانات إلى فورم الأرشيف: " & ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-#End Region
-
 #Region "Utility Methods     طرق الأدوات المساعدة"
 
 
@@ -1561,16 +1579,25 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
             ComboSubjBook.Text = "EXPEDITORS INTERNATIONAL | تصدير"
         End If
 
-        Dim currentBookNumber As String = txtNumberBook.Text.Trim()
+
+        Dim year As Integer = dtpDateBook.Value.Year
+        Dim currentBookNumber As Integer
         Dim excludeId As Integer = 0
+        If Not Integer.TryParse(txtNumberBook.Text.Trim(), currentBookNumber) Then
+            MessageBox.Show("رقم الكتاب غير صالح", "تنبيه")
+            Return False
+        End If
+
         If IsValidRowSelected() Then
             excludeId = GetSelectedRowId()
         End If
-        If saderClass.IsBookNumberExists(currentBookNumber, excludeId) Then
-            MessageBox.Show("رقم الكتاب موجود بالفعل. يرجى إدخال رقم كتاب فريد.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+
+        If saderClass.IsBookNumberExists(currentBookNumber, year, excludeId) Then
+            MessageBox.Show("رقم الكتاب موجود بالفعل في نفس السنة.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             txtNumberBook.Focus()
             Return False
         End If
+
         Return True
     End Function
 
@@ -1694,10 +1721,9 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         cmbBookCategory.DroppedDown = True
     End Sub
 
-
 #End Region
 
-#Region "الصلاحيات"
+#Region " Permissions الصلاحيات"
     ''' <summary>
     ''' تطبيق الصلاحيات على عناصر النموذج
     ''' </summary>
@@ -1822,14 +1848,50 @@ Public Class SaderForm : Inherits BaseFormWithPermissions
         End If
     End Sub
 
+#End Region
+
+#Region "  مراقبة حركة الماوس داخل الفورم"
+
+    <StructLayout(LayoutKind.Sequential)>
+    Public Structure LASTINPUTINFO
+        Public cbSize As UInteger
+        Public dwTime As UInteger
+    End Structure
+
+    <DllImport("user32.dll")>
+    Public Shared Function GetLastInputInfo(ByRef plii As LASTINPUTINFO) As Boolean
+    End Function
+
+    Private Function GetIdleTime() As Integer
+
+        Dim info As New LASTINPUTINFO()
+
+        info.cbSize = CUInt(Marshal.SizeOf(info))
+
+        GetLastInputInfo(info)
+
+        Dim idleTime As Integer =
+            Environment.TickCount - info.dwTime
+
+        Return idleTime
+
+    End Function
+    ' فحص الخمول
+    Private Sub IdleTime_Tick(sender As Object, e As EventArgs) Handles IdleTime.Tick
 
 
+        ' الوقت بالخمول بالثواني
+        Dim IdleSeconds As Integer = GetIdleTime() / 1000
 
+        ' إذا تجاوز دقيقة
+        If IdleSeconds >= 60 Then
 
+            ' تنفيذ الإجراء المطلوب
+            btnNew.PerformClick()
 
+        End If
 
-
-
+    End Sub
 
 
 #End Region

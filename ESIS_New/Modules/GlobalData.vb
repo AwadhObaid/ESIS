@@ -82,8 +82,8 @@ Module GlobalData
             xx.TabControl1.Enabled = True
             xx.GroupBox1.Enabled = True
 
-            ' تفريغ الحقول عبر دالتك
-            Clear_Control_On_TabControls(xx.TabControl1)
+            '' تفريغ الحقول عبر دالتك
+            'Clear_Control_On_TabControls(xx.TabControl1)
 
             ' قيم افتراضية
             If xx.ImageExtension.Items.Count > 0 Then
@@ -91,6 +91,7 @@ Module GlobalData
             End If
             xx.ScandImageName.Text = "ScanImage"
             xx.ScandImagePath.Text = Path.GetTempPath()
+            xx.txtdaysToKeep.Text = 30
 
             ' أزرار
             xx.btnSave.Enabled = True
@@ -283,6 +284,7 @@ Module GlobalData
                 With DT.Rows(0)
                     ' الحقول النصية
                     xx.ExternalSoredPath.Text = SafeGetString(DT.Rows(0), "ExternalSoredPath")
+                    xx.ScandImageName.Text = SafeGetString(DT.Rows(0), "ScandImageName")
                     xx.ScandImagePath.Text = SafeGetString(DT.Rows(0), "ScandImagePath")
                     xx.PDFStoredPath.Text = SafeGetString(DT.Rows(0), "PDFStoredPath")
                     xx.txtSearchDefaultPath.Text = SafeGetString(DT.Rows(0), "PathSearch")
@@ -1401,46 +1403,52 @@ Module GlobalData
     '    End Try
     'End Sub
     Public Sub OpenMdiForm(Of T As {Form, New})(Optional ByVal mdiParent As Form = Nothing)
-        ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
-        If mdiParent Is Nothing Then
-            ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
-            For Each form As Form In Application.OpenForms
-                If form.IsMdiContainer Then
-                    mdiParent = form
-                    Exit For
-                End If
-            Next
 
-            ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف (مثل MainFrm)
+        Try
+            ' إذا لم يتم تمرير النموذج الرئيسي، حاول العثور عليه تلقائيًا
             If mdiParent Is Nothing Then
+                ' البحث عن النموذج الرئيسي (عادةً ما يكون النموذج الأول في قائمة النماذج المفتوحة)
                 For Each form As Form In Application.OpenForms
-                    If TypeOf form Is MainForm Then ' استبدل MainFrm باسم نموذجك الرئيسي
+                    If form.IsMdiContainer Then
                         mdiParent = form
                         Exit For
                     End If
                 Next
+
+                ' إذا لم يتم العثور على نموذج رئيسي، حاول استخدام النموذج الرئيسي المعروف (مثل MainFrm)
+                If mdiParent Is Nothing Then
+                    For Each form As Form In Application.OpenForms
+                        If TypeOf form Is MainForm Then ' استبدل MainFrm باسم نموذجك الرئيسي
+                            mdiParent = form
+                            Exit For
+                        End If
+                    Next
+                End If
             End If
-        End If
 
-        ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
-        If mdiParent Is Nothing Then
-            MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ' إذا لم يتم العثور على النموذج الرئيسي بعد، أظهر خطأ
+            If mdiParent Is Nothing Then
+                MessageBox.Show("تعذر العثور على النموذج الرئيسي (MdiContainer).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            ' البحث عن النموذج المطلوب في النماذج الفرعية
+            Dim existingForm As T = mdiParent.MdiChildren.OfType(Of T)().FirstOrDefault()
+
+            If existingForm IsNot Nothing Then
+                ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
+                existingForm.BringToFront()
+                existingForm.Activate()
+            Else
+                ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد
+                Dim newForm As New T()
+                newForm.MdiParent = mdiParent
+                newForm.Show()
+            End If
+        Catch ex As Exception
             Return
-        End If
+        End Try
 
-        ' البحث عن النموذج المطلوب في النماذج الفرعية
-        Dim existingForm As T = mdiParent.MdiChildren.OfType(Of T)().FirstOrDefault()
-
-        If existingForm IsNot Nothing Then
-            ' إذا كان النموذج موجودًا، جلبه إلى المقدمة
-            existingForm.BringToFront()
-            existingForm.Activate()
-        Else
-            ' إذا لم يكن النموذج موجودًا، إنشاء نموذج جديد
-            Dim newForm As New T()
-            newForm.MdiParent = mdiParent
-            newForm.Show()
-        End If
     End Sub
 
     ''' <summary>
@@ -1830,6 +1838,68 @@ Module GlobalData
 
     End Sub
 
+    Public Sub OpenFileSafe(relativePath As String)
+
+        Try
+            ' تكوين المسار الكامل
+            Dim filePath As String =
+            Path.Combine(Application.StartupPath, relativePath)
+
+            ' التحقق من وجود الملف
+            If Not File.Exists(filePath) Then
+
+                MessageBox.Show(
+                "الملف غير موجود أو تم تغيير اسمه." & vbCrLf &
+                "المسار:" & vbCrLf & filePath,
+                "تنبيه",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning)
+
+                Exit Sub
+            End If
+
+            ' فتح الملف
+            Process.Start(New ProcessStartInfo(filePath) With {
+            .UseShellExecute = True
+        })
+
+        Catch ex As Exception
+
+            MessageBox.Show(
+            "حدث خطأ أثناء فتح الملف:" & vbCrLf & ex.Message,
+            "خطأ",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error)
+
+        End Try
+
+    End Sub
+
 #End Region
+
+#Region "=================( استخدام مفاتيح الأسفل والأعلى )================="
+
+    ''' <summary>
+    ''' ربط بين مربعي نص للتنقل العمودي باستخدام مفاتيح الأسفل والأعلى.
+    ''' </summary>
+    ''' <param name="topBox">مربع النص العلوي – الضغط على مفتاح Down فيه ينتقل إلى bottomBox.</param>
+    ''' <param name="bottomBox">مربع النص السفلي – الضغط على مفتاح Up فيه ينتقل إلى topBox.</param>
+    Public Sub LinkTextBoxesVertical(ByVal topBox As TextBox, ByVal bottomBox As TextBox)
+        ' معالج حدث KeyDown للمربع العلوي
+        AddHandler topBox.KeyDown, Sub(sender As Object, e As KeyEventArgs)
+                                       If e.KeyCode = Keys.Down Then
+                                           bottomBox.Focus()
+                                       End If
+                                   End Sub
+
+        ' معالج حدث KeyDown للمربع السفلي
+        AddHandler bottomBox.KeyDown, Sub(sender As Object, e As KeyEventArgs)
+                                          If e.KeyCode = Keys.Up Then
+                                              topBox.Focus()
+                                          End If
+                                      End Sub
+    End Sub
+#End Region
+
 
 End Module

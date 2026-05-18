@@ -66,15 +66,20 @@ Partial Class MainForm
         Me.medicalFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnmaritalstatus = New System.Windows.Forms.ToolStripMenuItem()
         Me.emergencyLeaveFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Tasreeh = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.AQuood = New System.Windows.Forms.ToolStripMenuItem()
         Me.Kuwait = New System.Windows.Forms.ToolStripMenuItem()
-        Me.القاريرToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BtnReportCriteriaForm = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BtnReportSelectionForm = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnAttendance = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btncleaning = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Tasreeh1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Tasreeh = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnReportsForm = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnNotification = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnAbout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnFrmAlerts = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.lblMainAlert = New System.Windows.Forms.Label()
         Me.lblArchiveCount = New System.Windows.Forms.Label()
         Me.lblUnarchivedCount = New System.Windows.Forms.Label()
         Me.lblDeletedArchiveCount = New System.Windows.Forms.Label()
@@ -107,9 +112,9 @@ Partial Class MainForm
         Me.lblUser2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBoxUser = New System.Windows.Forms.PictureBox()
-        Me.btnAttendance = New System.Windows.Forms.ToolStripMenuItem()
         Me.men.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.Panel3.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -133,7 +138,7 @@ Partial Class MainForm
         '
         Me.men.BackColor = System.Drawing.SystemColors.Highlight
         Me.men.Font = New System.Drawing.Font("Cairo", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.men.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.عامToolStripMenuItem, Me.النسخالإحتياطيوالإستعادةToolStripMenuItem, Me.إدارةالبريدToolStripMenuItem, Me.btnDeletedForm1, Me.menuUnarchivedRecords, Me.BtnDateDeff, Me.btnOpenWebForms, Me.القاريرToolStripMenuItem, Me.btnNotification, Me.btnAbout})
+        Me.men.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.عامToolStripMenuItem, Me.النسخالإحتياطيوالإستعادةToolStripMenuItem, Me.إدارةالبريدToolStripMenuItem, Me.btnDeletedForm1, Me.menuUnarchivedRecords, Me.BtnDateDeff, Me.btnOpenWebForms, Me.btnReportsForm, Me.btnNotification, Me.btnAbout, Me.btnFrmAlerts})
         Me.men.Location = New System.Drawing.Point(0, 0)
         Me.men.Name = "men"
         Me.men.Size = New System.Drawing.Size(1552, 32)
@@ -319,7 +324,7 @@ Partial Class MainForm
         '
         'btnOpenWebForms
         '
-        Me.btnOpenWebForms.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.leaveFormToolStripMenuItem, Me.attendanceFormToolStripMenuItem, Me.transferFormToolStripMenuItem, Me.promotionFormToolStripMenuItem, Me.resignationFormToolStripMenuItem, Me.requestFormToolStripMenuItem, Me.idRequestFormToolStripMenuItem, Me.allowanceFormToolStripMenuItem, Me.exitPermitFormToolStripMenuItem, Me.clearanceFormToolStripMenuItem, Me.clearanceContractFormToolStripMenuItem, Me.medicalFormToolStripMenuItem, Me.btnmaritalstatus, Me.emergencyLeaveFormToolStripMenuItem, Me.Tasreeh, Me.AQuood, Me.Kuwait, Me.btnAttendance})
+        Me.btnOpenWebForms.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.leaveFormToolStripMenuItem, Me.attendanceFormToolStripMenuItem, Me.transferFormToolStripMenuItem, Me.promotionFormToolStripMenuItem, Me.resignationFormToolStripMenuItem, Me.requestFormToolStripMenuItem, Me.idRequestFormToolStripMenuItem, Me.allowanceFormToolStripMenuItem, Me.exitPermitFormToolStripMenuItem, Me.clearanceFormToolStripMenuItem, Me.clearanceContractFormToolStripMenuItem, Me.medicalFormToolStripMenuItem, Me.btnmaritalstatus, Me.emergencyLeaveFormToolStripMenuItem, Me.ToolStripSeparator1, Me.AQuood, Me.Kuwait, Me.btnAttendance, Me.btncleaning, Me.Tasreeh1, Me.Tasreeh})
         Me.btnOpenWebForms.ForeColor = System.Drawing.Color.White
         Me.btnOpenWebForms.Name = "btnOpenWebForms"
         Me.btnOpenWebForms.Size = New System.Drawing.Size(124, 28)
@@ -437,45 +442,65 @@ Partial Class MainForm
         Me.emergencyLeaveFormToolStripMenuItem.Size = New System.Drawing.Size(341, 28)
         Me.emergencyLeaveFormToolStripMenuItem.Text = "اشعار اجازة طارئة"
         '
-        'Tasreeh
+        'ToolStripSeparator1
         '
-        Me.Tasreeh.BackColor = System.Drawing.Color.FromArgb(CType(CType(241, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(251, Byte), Integer))
-        Me.Tasreeh.Name = "Tasreeh"
-        Me.Tasreeh.Size = New System.Drawing.Size(341, 28)
-        Me.Tasreeh.Text = "تصريح رسمي"
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(338, 6)
         '
         'AQuood
         '
+        Me.AQuood.BackColor = System.Drawing.Color.FromArgb(CType(CType(170, Byte), Integer), CType(CType(70, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.AQuood.ForeColor = System.Drawing.Color.White
         Me.AQuood.Name = "AQuood"
         Me.AQuood.Size = New System.Drawing.Size(341, 28)
         Me.AQuood.Text = "مناطق نائية | عقود خاصة"
         '
         'Kuwait
         '
+        Me.Kuwait.BackColor = System.Drawing.Color.FromArgb(CType(CType(170, Byte), Integer), CType(CType(70, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.Kuwait.ForeColor = System.Drawing.Color.White
         Me.Kuwait.Name = "Kuwait"
         Me.Kuwait.Size = New System.Drawing.Size(341, 28)
         Me.Kuwait.Text = "مناطق نائية | كويتيين"
         '
-        'القاريرToolStripMenuItem
+        'btnAttendance
         '
-        Me.القاريرToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BtnReportCriteriaForm, Me.BtnReportSelectionForm})
-        Me.القاريرToolStripMenuItem.Enabled = False
-        Me.القاريرToolStripMenuItem.ForeColor = System.Drawing.Color.White
-        Me.القاريرToolStripMenuItem.Name = "القاريرToolStripMenuItem"
-        Me.القاريرToolStripMenuItem.Size = New System.Drawing.Size(63, 28)
-        Me.القاريرToolStripMenuItem.Text = "التقارير"
+        Me.btnAttendance.BackColor = System.Drawing.Color.FromArgb(CType(CType(170, Byte), Integer), CType(CType(70, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.btnAttendance.ForeColor = System.Drawing.Color.White
+        Me.btnAttendance.Name = "btnAttendance"
+        Me.btnAttendance.Size = New System.Drawing.Size(341, 28)
+        Me.btnAttendance.Text = "بدل مناطق نائية حضور وانصراف"
         '
-        'BtnReportCriteriaForm
+        'btncleaning
         '
-        Me.BtnReportCriteriaForm.Name = "BtnReportCriteriaForm"
-        Me.BtnReportCriteriaForm.Size = New System.Drawing.Size(220, 28)
-        Me.BtnReportCriteriaForm.Text = "btnReportCriteriaForm"
+        Me.btncleaning.BackColor = System.Drawing.Color.FromArgb(CType(CType(170, Byte), Integer), CType(CType(70, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.btncleaning.ForeColor = System.Drawing.Color.White
+        Me.btncleaning.Name = "btncleaning"
+        Me.btncleaning.Size = New System.Drawing.Size(341, 28)
+        Me.btncleaning.Text = "صرف مواد النظافة الشهرية"
         '
-        'BtnReportSelectionForm
+        'Tasreeh1
         '
-        Me.BtnReportSelectionForm.Name = "BtnReportSelectionForm"
-        Me.BtnReportSelectionForm.Size = New System.Drawing.Size(220, 28)
-        Me.BtnReportSelectionForm.Text = "btnReportSelectionForm"
+        Me.Tasreeh1.BackColor = System.Drawing.Color.FromArgb(CType(CType(170, Byte), Integer), CType(CType(70, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.Tasreeh1.ForeColor = System.Drawing.Color.White
+        Me.Tasreeh1.Name = "Tasreeh1"
+        Me.Tasreeh1.Size = New System.Drawing.Size(341, 28)
+        Me.Tasreeh1.Text = "تصريح رسمي 1"
+        '
+        'Tasreeh
+        '
+        Me.Tasreeh.BackColor = System.Drawing.Color.FromArgb(CType(CType(170, Byte), Integer), CType(CType(70, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.Tasreeh.ForeColor = System.Drawing.Color.White
+        Me.Tasreeh.Name = "Tasreeh"
+        Me.Tasreeh.Size = New System.Drawing.Size(341, 28)
+        Me.Tasreeh.Text = "تصريح رسمي 2"
+        '
+        'btnReportsForm
+        '
+        Me.btnReportsForm.ForeColor = System.Drawing.Color.White
+        Me.btnReportsForm.Name = "btnReportsForm"
+        Me.btnReportsForm.Size = New System.Drawing.Size(63, 28)
+        Me.btnReportsForm.Text = "التقارير"
         '
         'btnNotification
         '
@@ -497,9 +522,18 @@ Partial Class MainForm
         Me.btnAbout.Text = "عن النظام"
         Me.btnAbout.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage
         '
+        'btnFrmAlerts
+        '
+        Me.btnFrmAlerts.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.btnFrmAlerts.ForeColor = System.Drawing.Color.Yellow
+        Me.btnFrmAlerts.Name = "btnFrmAlerts"
+        Me.btnFrmAlerts.Size = New System.Drawing.Size(127, 28)
+        Me.btnFrmAlerts.Text = "إدارة التنبيهات 🔔"
+        '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.LightCyan
+        Me.Panel1.Controls.Add(Me.Panel3)
         Me.Panel1.Controls.Add(Me.lblArchiveCount)
         Me.Panel1.Controls.Add(Me.lblUnarchivedCount)
         Me.Panel1.Controls.Add(Me.lblDeletedArchiveCount)
@@ -508,14 +542,37 @@ Partial Class MainForm
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 32)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1552, 48)
+        Me.Panel1.Size = New System.Drawing.Size(1552, 53)
         Me.Panel1.TabIndex = 10
+        '
+        'Panel3
+        '
+        Me.Panel3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
+        Me.Panel3.Controls.Add(Me.lblMainAlert)
+        Me.Panel3.Location = New System.Drawing.Point(380, 0)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(200, 53)
+        Me.Panel3.TabIndex = 4
+        '
+        'lblMainAlert
+        '
+        Me.lblMainAlert.BackColor = System.Drawing.Color.LightYellow
+        Me.lblMainAlert.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lblMainAlert.Font = New System.Drawing.Font("Cairo SemiBold", 10.0!, System.Drawing.FontStyle.Bold)
+        Me.lblMainAlert.Location = New System.Drawing.Point(0, 0)
+        Me.lblMainAlert.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblMainAlert.Name = "lblMainAlert"
+        Me.lblMainAlert.Size = New System.Drawing.Size(200, 53)
+        Me.lblMainAlert.TabIndex = 3
+        Me.lblMainAlert.Text = "لا يوجد تنبيهات"
+        Me.lblMainAlert.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMainAlert.Visible = False
         '
         'lblArchiveCount
         '
         Me.lblArchiveCount.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblArchiveCount.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblArchiveCount.Location = New System.Drawing.Point(8, 23)
+        Me.lblArchiveCount.Location = New System.Drawing.Point(8, 25)
         Me.lblArchiveCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblArchiveCount.Name = "lblArchiveCount"
         Me.lblArchiveCount.Size = New System.Drawing.Size(159, 17)
@@ -528,7 +585,7 @@ Partial Class MainForm
         Me.lblUnarchivedCount.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblUnarchivedCount.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblUnarchivedCount.Font = New System.Drawing.Font("Cairo SemiBold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUnarchivedCount.Location = New System.Drawing.Point(1079, 10)
+        Me.lblUnarchivedCount.Location = New System.Drawing.Point(1079, 12)
         Me.lblUnarchivedCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblUnarchivedCount.Name = "lblUnarchivedCount"
         Me.lblUnarchivedCount.Size = New System.Drawing.Size(471, 29)
@@ -540,7 +597,7 @@ Partial Class MainForm
         '
         Me.lblDeletedArchiveCount.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblDeletedArchiveCount.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDeletedArchiveCount.Location = New System.Drawing.Point(152, 7)
+        Me.lblDeletedArchiveCount.Location = New System.Drawing.Point(152, 9)
         Me.lblDeletedArchiveCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblDeletedArchiveCount.Name = "lblDeletedArchiveCount"
         Me.lblDeletedArchiveCount.Size = New System.Drawing.Size(177, 17)
@@ -552,7 +609,7 @@ Partial Class MainForm
         '
         Me.lblRecordCount.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblRecordCount.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRecordCount.Location = New System.Drawing.Point(8, 7)
+        Me.lblRecordCount.Location = New System.Drawing.Point(8, 9)
         Me.lblRecordCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblRecordCount.Name = "lblRecordCount"
         Me.lblRecordCount.Size = New System.Drawing.Size(159, 17)
@@ -675,9 +732,9 @@ Partial Class MainForm
         Me.Panel2.Controls.Add(Me.Label1)
         Me.Panel2.Controls.Add(Me.PictureBoxUser)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Left
-        Me.Panel2.Location = New System.Drawing.Point(0, 80)
+        Me.Panel2.Location = New System.Drawing.Point(0, 85)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(118, 463)
+        Me.Panel2.Size = New System.Drawing.Size(118, 458)
         Me.Panel2.TabIndex = 14
         '
         'TableLayoutPanel1
@@ -829,12 +886,6 @@ Partial Class MainForm
         Me.PictureBoxUser.TabIndex = 5
         Me.PictureBoxUser.TabStop = False
         '
-        'btnAttendance
-        '
-        Me.btnAttendance.Name = "btnAttendance"
-        Me.btnAttendance.Size = New System.Drawing.Size(341, 28)
-        Me.btnAttendance.Text = "بدل مناطق نائية حضور وانصراف"
-        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -859,6 +910,7 @@ Partial Class MainForm
         Me.men.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
@@ -924,9 +976,7 @@ Partial Class MainForm
     Friend WithEvents txtIPAddress As ToolStripStatusLabel
     Friend WithEvents ToolStripStatusLabel8 As ToolStripStatusLabel
     Friend WithEvents txtHostName As ToolStripStatusLabel
-    Friend WithEvents القاريرToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents BtnReportCriteriaForm As ToolStripMenuItem
-    Friend WithEvents BtnReportSelectionForm As ToolStripMenuItem
+    Friend WithEvents btnReportsForm As ToolStripMenuItem
     Friend WithEvents btnNotification As ToolStripMenuItem
     Friend WithEvents Panel2 As Panel
     Friend WithEvents btnDeletedForm2 As Button
@@ -950,5 +1000,11 @@ Partial Class MainForm
     Friend WithEvents btnEmail As ToolStripMenuItem
     Friend WithEvents btnmaritalstatus As ToolStripMenuItem
     Friend WithEvents btnAttendance As ToolStripMenuItem
+    Friend WithEvents btncleaning As ToolStripMenuItem
+    Friend WithEvents lblMainAlert As Label
+    Friend WithEvents Panel3 As Panel
+    Friend WithEvents btnFrmAlerts As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents Tasreeh1 As ToolStripMenuItem
 End Class
 

@@ -84,6 +84,7 @@ Partial Class ArchiveVariablesForm
         Me.ScandImageName = New System.Windows.Forms.TextBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.btnYearManagementForm = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.Panel7.SuspendLayout()
@@ -566,6 +567,7 @@ Partial Class ArchiveVariablesForm
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel4.AutoScroll = True
         Me.Panel4.BackColor = System.Drawing.Color.White
+        Me.Panel4.Controls.Add(Me.btnYearManagementForm)
         Me.Panel4.Controls.Add(Me.btnBrowseSearchDefaultPath)
         Me.Panel4.Controls.Add(Me.Label3)
         Me.Panel4.Controls.Add(Me.txtSearchDefaultPath)
@@ -815,6 +817,22 @@ Partial Class ArchiveVariablesForm
         '
         Me.Timer1.Interval = 3000
         '
+        'btnYearManagementForm
+        '
+        Me.btnYearManagementForm.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(208, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.btnYearManagementForm.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(200, Byte), Integer), CType(CType(200, Byte), Integer), CType(CType(200, Byte), Integer))
+        Me.btnYearManagementForm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnYearManagementForm.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnYearManagementForm.Font = New System.Drawing.Font("Cairo", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.btnYearManagementForm.ForeColor = System.Drawing.SystemColors.HotTrack
+        Me.btnYearManagementForm.Location = New System.Drawing.Point(436, 362)
+        Me.btnYearManagementForm.Name = "btnYearManagementForm"
+        Me.btnYearManagementForm.Size = New System.Drawing.Size(154, 30)
+        Me.btnYearManagementForm.TabIndex = 698
+        Me.btnYearManagementForm.Text = "فتح نموذج إدارة السنوات"
+        Me.ToolTip1.SetToolTip(Me.btnYearManagementForm, "إدارة السنوات")
+        Me.btnYearManagementForm.UseVisualStyleBackColor = False
+        '
         'ArchiveVariablesForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -923,6 +941,7 @@ Partial Class ArchiveVariablesForm
     Friend WithEvents Label12 As Label
     Friend WithEvents Label13 As Label
     Friend WithEvents btnBrowseSearchDefaultPath As Button
+    Friend WithEvents btnYearManagementForm As Button
 End Class
 
 

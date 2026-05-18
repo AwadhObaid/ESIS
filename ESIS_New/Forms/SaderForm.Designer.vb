@@ -37,13 +37,13 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblFilterStatus = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkUseToday = New System.Windows.Forms.RadioButton()
         Me.rbUnarchivedSader = New System.Windows.Forms.RadioButton()
         Me.rbNumberBook = New System.Windows.Forms.RadioButton()
         Me.rbWillMaster = New System.Windows.Forms.RadioButton()
         Me.RBDate = New System.Windows.Forms.RadioButton()
         Me.rbSubjBook = New System.Windows.Forms.RadioButton()
         Me.rbWillSub = New System.Windows.Forms.RadioButton()
+        Me.chkUseToday = New System.Windows.Forms.CheckBox()
         Me.dtpSearchDate = New System.Windows.Forms.DateTimePicker()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.cmbBookCategory = New System.Windows.Forms.ComboBox()
@@ -53,6 +53,8 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.ListPrinter = New System.Windows.Forms.CheckedListBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cmbYears = New System.Windows.Forms.ComboBox()
         Me.lblArchiveMsg = New System.Windows.Forms.Label()
         Me.RBDirectPrint = New System.Windows.Forms.RadioButton()
         Me.RBPreviewBeforePrint = New System.Windows.Forms.RadioButton()
@@ -91,6 +93,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.lblRecordCount = New System.Windows.Forms.Label()
         Me.TimerMsg = New System.Windows.Forms.Timer(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.IdleTime = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         CType(Me.nudCopies, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -144,7 +147,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.nudCopies.Location = New System.Drawing.Point(16, 317)
         Me.nudCopies.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.nudCopies.Name = "nudCopies"
-        Me.nudCopies.Size = New System.Drawing.Size(100, 32)
+        Me.nudCopies.Size = New System.Drawing.Size(219, 32)
         Me.nudCopies.TabIndex = 55
         Me.nudCopies.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.nudCopies.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -153,9 +156,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         '
         Me.cmbTrays.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbTrays.FormattingEnabled = True
-        Me.cmbTrays.Location = New System.Drawing.Point(122, 317)
+        Me.cmbTrays.Location = New System.Drawing.Point(13, 257)
         Me.cmbTrays.Name = "cmbTrays"
-        Me.cmbTrays.Size = New System.Drawing.Size(117, 32)
+        Me.cmbTrays.Size = New System.Drawing.Size(223, 32)
         Me.cmbTrays.TabIndex = 33
         '
         'Panel3
@@ -244,13 +247,13 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel3.ColumnCount = 2
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.17742!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.82258!))
-        Me.TableLayoutPanel3.Controls.Add(Me.chkUseToday, 0, 3)
         Me.TableLayoutPanel3.Controls.Add(Me.rbUnarchivedSader, 0, 2)
         Me.TableLayoutPanel3.Controls.Add(Me.rbNumberBook, 0, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.rbWillMaster, 1, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.RBDate, 1, 2)
         Me.TableLayoutPanel3.Controls.Add(Me.rbSubjBook, 0, 1)
         Me.TableLayoutPanel3.Controls.Add(Me.rbWillSub, 1, 1)
+        Me.TableLayoutPanel3.Controls.Add(Me.chkUseToday, 0, 3)
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(3, 30)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 4
@@ -260,20 +263,6 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(248, 152)
         Me.TableLayoutPanel3.TabIndex = 26
-        '
-        'chkUseToday
-        '
-        Me.chkUseToday.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.chkUseToday.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.chkUseToday.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.chkUseToday.Location = New System.Drawing.Point(133, 116)
-        Me.chkUseToday.Margin = New System.Windows.Forms.Padding(2)
-        Me.chkUseToday.Name = "chkUseToday"
-        Me.chkUseToday.Size = New System.Drawing.Size(113, 34)
-        Me.chkUseToday.TabIndex = 55
-        Me.chkUseToday.TabStop = True
-        Me.chkUseToday.Text = "بتاريخ اليوم"
-        Me.chkUseToday.UseVisualStyleBackColor = True
         '
         'rbUnarchivedSader
         '
@@ -359,6 +348,16 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.rbWillSub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.rbWillSub.UseVisualStyleBackColor = True
         '
+        'chkUseToday
+        '
+        Me.chkUseToday.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.chkUseToday.Location = New System.Drawing.Point(134, 117)
+        Me.chkUseToday.Name = "chkUseToday"
+        Me.chkUseToday.Size = New System.Drawing.Size(111, 32)
+        Me.chkUseToday.TabIndex = 56
+        Me.chkUseToday.Text = "بتاريخ اليوم"
+        Me.chkUseToday.UseVisualStyleBackColor = True
+        '
         'dtpSearchDate
         '
         Me.dtpSearchDate.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -366,7 +365,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.dtpSearchDate.Enabled = False
         Me.dtpSearchDate.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
         Me.dtpSearchDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpSearchDate.Location = New System.Drawing.Point(7, 212)
+        Me.dtpSearchDate.Location = New System.Drawing.Point(5, 239)
         Me.dtpSearchDate.Name = "dtpSearchDate"
         Me.dtpSearchDate.Size = New System.Drawing.Size(242, 30)
         Me.dtpSearchDate.TabIndex = 50
@@ -374,7 +373,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'txtSearch
         '
         Me.txtSearch.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.txtSearch.Location = New System.Drawing.Point(3, 250)
+        Me.txtSearch.Location = New System.Drawing.Point(3, 276)
         Me.txtSearch.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(250, 30)
@@ -438,10 +437,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'Label4
         '
         Me.Label4.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.Label4.Location = New System.Drawing.Point(16, 285)
+        Me.Label4.Location = New System.Drawing.Point(16, 292)
         Me.Label4.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(100, 30)
+        Me.Label4.Size = New System.Drawing.Size(219, 23)
         Me.Label4.TabIndex = 4
         Me.Label4.Text = "عدد النسخ"
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -449,10 +448,10 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         'Label3
         '
         Me.Label3.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.Label3.Location = New System.Drawing.Point(122, 283)
+        Me.Label3.Location = New System.Drawing.Point(13, 227)
         Me.Label3.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(117, 30)
+        Me.Label3.Size = New System.Drawing.Size(223, 26)
         Me.Label3.TabIndex = 4
         Me.Label3.Text = "الدرج"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -465,7 +464,7 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox3.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Padding = New System.Windows.Forms.Padding(3, 6, 3, 6)
-        Me.GroupBox3.Size = New System.Drawing.Size(231, 242)
+        Me.GroupBox3.Size = New System.Drawing.Size(231, 189)
         Me.GroupBox3.TabIndex = 25
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "الطابعات 🖨️"
@@ -480,11 +479,13 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.ListPrinter.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.ListPrinter.Name = "ListPrinter"
         Me.ListPrinter.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ListPrinter.Size = New System.Drawing.Size(225, 210)
+        Me.ListPrinter.Size = New System.Drawing.Size(225, 157)
         Me.ListPrinter.TabIndex = 19
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Controls.Add(Me.cmbYears)
         Me.GroupBox1.Controls.Add(Me.lblArchiveMsg)
         Me.GroupBox1.Controls.Add(Me.RBDirectPrint)
         Me.GroupBox1.Controls.Add(Me.RBPreviewBeforePrint)
@@ -505,6 +506,32 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
         Me.GroupBox1.TabIndex = 22
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "بيانات الصادر"
+        '
+        'Label1
+        '
+        Me.Label1.BackColor = System.Drawing.Color.FromArgb(CType(CType(22, Byte), Integer), CType(CType(53, Byte), Integer), CType(CType(69, Byte), Integer))
+        Me.Label1.Font = New System.Drawing.Font("Cairo", 8.999999!, System.Drawing.FontStyle.Bold)
+        Me.Label1.ForeColor = System.Drawing.Color.White
+        Me.Label1.Location = New System.Drawing.Point(420, 206)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(113, 28)
+        Me.Label1.TabIndex = 56
+        Me.Label1.Text = "سنة الصادر"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'cmbYears
+        '
+        Me.cmbYears.DropDownHeight = 100
+        Me.cmbYears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbYears.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmbYears.Font = New System.Drawing.Font("Cairo", 8.0!, System.Drawing.FontStyle.Bold)
+        Me.cmbYears.FormattingEnabled = True
+        Me.cmbYears.IntegralHeight = False
+        Me.cmbYears.Location = New System.Drawing.Point(284, 206)
+        Me.cmbYears.Name = "cmbYears"
+        Me.cmbYears.Size = New System.Drawing.Size(131, 28)
+        Me.cmbYears.TabIndex = 56
         '
         'lblArchiveMsg
         '
@@ -1104,6 +1131,9 @@ Partial Class SaderForm : Inherits BaseFormWithPermissions
     Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents nudCopies As NumericUpDown
-    Friend WithEvents chkUseToday As RadioButton
+    Friend WithEvents chkUseToday As CheckBox
+    Friend WithEvents cmbYears As ComboBox
+    Friend WithEvents IdleTime As Timer
+    Friend WithEvents Label1 As Label
 End Class
 

@@ -44,6 +44,8 @@ Partial Class CustomSearch
         Me.TxtMsg = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ProgressBar1 = New System.Windows.Forms.ToolStripProgressBar()
         Me.progressLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.txtSearchPath = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.backgroundWorker = New System.ComponentModel.BackgroundWorker()
         Me.resultsTreeView = New System.Windows.Forms.TreeView()
@@ -51,8 +53,6 @@ Partial Class CustomSearch
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.pdfViewer = New PdfiumViewer.PdfViewer()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-        Me.ToolStripStatusLabel2 = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.txtSearchPath = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Panel1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -222,6 +222,17 @@ Partial Class CustomSearch
         Me.progressLabel.Size = New System.Drawing.Size(50, 18)
         Me.progressLabel.Text = "0"
         '
+        'ToolStripStatusLabel2
+        '
+        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
+        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(98, 18)
+        Me.ToolStripStatusLabel2.Text = "مسار البحث :  "
+        '
+        'txtSearchPath
+        '
+        Me.txtSearchPath.Name = "txtSearchPath"
+        Me.txtSearchPath.Size = New System.Drawing.Size(0, 18)
+        '
         'Panel4
         '
         Me.Panel4.Controls.Add(Me.StatusStrip1)
@@ -291,17 +302,6 @@ Partial Class CustomSearch
         Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
         Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
         Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        '
-        'ToolStripStatusLabel2
-        '
-        Me.ToolStripStatusLabel2.Name = "ToolStripStatusLabel2"
-        Me.ToolStripStatusLabel2.Size = New System.Drawing.Size(98, 18)
-        Me.ToolStripStatusLabel2.Text = "مسار البحث :  "
-        '
-        'txtSearchPath
-        '
-        Me.txtSearchPath.Name = "txtSearchPath"
-        Me.txtSearchPath.Size = New System.Drawing.Size(0, 18)
         '
         'CustomSearch
         '

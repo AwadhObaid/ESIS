@@ -1,13 +1,15 @@
-﻿Imports System.IO
+﻿Imports System.Data.SqlClient
+Imports System.Drawing.Printing
+Imports System.IO
 Imports System.Threading
 Imports System.Threading.Tasks
-Imports System.Drawing.Printing
 Imports PdfiumViewer
-
+Imports Microsoft.WindowsAPICodePack.Dialogs
 
 Public Class CustomSearch
 
 #Region "************************ الإعلان عن المتغيرات والثوابت ***********************"
+    Private saderClass As New SaderClass()
     ' تعريف المتغيرات
     ' تعريف المؤقت مع استخدام الفئة الصحيحة و WithEvents
     Private WithEvents DelayTimer As New System.Windows.Forms.Timer()
@@ -74,7 +76,7 @@ Public Class CustomSearch
         ' تعطيل أزرار الملفات حتى يتم اختيار ملف
         btnOpenLoction.Enabled = False
         btnPrint.Enabled = False
-        txtSearchPath.Text = My.Settings.DefaultPathSearch
+        txtSearchPath.Text = SaderClass.GetUserSearchPath(GlobalData.LoggedInUserID)
 
         ' ✅ بدلاً من ذلك، ابدأ البحث بعد أن يتم عرض النموذج
         AddHandler Me.Shown, AddressOf CustomSearch_Shown
@@ -394,6 +396,7 @@ Public Class CustomSearch
             Return $"ARC-{DateTime.Now.Ticks}"
         End Try
     End Function
+
 #End Region
 
 #Region "************************ إدارة البحث والتنفيذ ***********************"
@@ -491,98 +494,78 @@ Public Class CustomSearch
                               End Sub)
         End Try
     End Function
+
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         If cts IsNot Nothing Then
             cts.Cancel()
         End If
     End Sub
+
 #End Region
 
 #Region "************************ خوارزميات البحث والمعالجة ***********************"
     ''' <summary>
     ''' تنفيذ عملية البحث وإرجاع النتائج
     ''' </summary>
-    Private Function PerformSearch(query As String, token As CancellationToken) As List(Of Tuple(Of String, String))
-        Dim searchResults As New List(Of Tuple(Of String, String))()
+    Private Function PerformSearch(query As String, token As CancellationToken) As List(Of SearchResult)
+
+        Dim results As New List(Of SearchResult)
 
         Try
-            ' حفظ التحديد الحالي قبل البدء في البحث
             If Not isUserSelecting Then
                 SaveCurrentSelection()
             End If
 
-            ' البحث في مجلد الأرشيف الافتراضي
-            Dim folderToSearch As String = My.Settings.DefaultPathSearch
+            Dim folderToSearch As String = saderClass.GetUserSearchPath(GlobalData.LoggedInUserID)
 
-            ' التحقق من وجود المجلد
             If Not String.IsNullOrEmpty(folderToSearch) AndAlso Directory.Exists(folderToSearch) Then
-                token.ThrowIfCancellationRequested()
-                SearchInFolder(folderToSearch, query, token, searchResults)
-            Else
-                ' إذا لم يكن المجلد موجودًا، استخدام مجلد النظام المؤقت
-                Dim tempFolder As String = Path.GetTempPath()
-                If Directory.Exists(tempFolder) Then
-                    token.ThrowIfCancellationRequested()
-                    SearchInFolder(tempFolder, query, token, searchResults)
-                End If
+                SearchInFolder(folderToSearch, query, token, results)
             End If
+
         Catch ex As OperationCanceledException
-            ' تم إلغاء البحث
+            ' تم الإلغاء
         Catch ex As Exception
-            ' حدث خطأ
-            System.Diagnostics.Debug.WriteLine($"حدث خطأ في PerformSearch: {ex.Message}")
+            Debug.WriteLine(ex.Message)
         End Try
 
-        Return searchResults
+        Return results
+
     End Function
 
-    Private Sub SearchInFolder(folderPath As String, query As String, token As CancellationToken, ByRef results As List(Of Tuple(Of String, String)))
+    Private Sub SearchInFolder(folderPath As String, query As String, token As CancellationToken, ByRef results As List(Of SearchResult))
+
         Try
-            ' التحقق من وجود المجلد
-            If Not Directory.Exists(folderPath) Then
-                Return
-            End If
+            For Each file In Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories)
 
-            ' البحث في الملفات
-            Dim files = Directory.GetFiles(folderPath, $"*{query}*", SearchOption.AllDirectories)
-            Dim totalFiles = files.Length
-
-            ' التحقق من وجود ملفات
-            If totalFiles = 0 Then
-                Return
-            End If
-
-            Dim processedFiles = 0
-
-            For Each file In files
-                ' التحقق من طلب الإلغاء
                 token.ThrowIfCancellationRequested()
 
-                Dim fileName As String = Path.GetFileName(file)
-                results.Add(Tuple.Create(fileName, file))
+                Dim fileName = Path.GetFileName(file)
 
-                processedFiles += 1
-                Dim progress = CInt((processedFiles / totalFiles) * 100)
+                ' 🔥 فلترة
+                'If fileName.Contains(query, StringComparison.OrdinalIgnoreCase) Then
+                If fileName.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0 Then
 
-                ' تحديث شريط التقدم
-                If ProgressBar1.GetCurrentParent().InvokeRequired Then
-                    ProgressBar1.GetCurrentParent().Invoke(Sub()
-                                                               ProgressBar1.Value = progress
-                                                               progressLabel.Text = $"{progress}%"
-                                                           End Sub)
-                Else
-                    ProgressBar1.Value = progress
-                    progressLabel.Text = $"{progress}%"
+                    results.Add(New SearchResult With {
+                    .FileName = fileName,
+                    .FullPath = file
+                })
+
                 End If
+
             Next
+
+        Catch ex As UnauthorizedAccessException
+            ' تجاهل
         Catch ex As Exception
-            ' التعامل مع الأخطاء (مثل الوصول غير المصرح به)
-            System.Diagnostics.Debug.WriteLine($"Error accessing folder: {folderPath}. {ex.Message}")
+            Debug.WriteLine(ex.Message)
         End Try
+
     End Sub
+
 #End Region
 
 #Region "************************ إدارة واجهة المستخدم والتحكم ***********************"
+
     Private Async Sub DelayTimer_Tick(sender As Object, e As EventArgs) Handles DelayTimer.Tick
         ' إيقاف Timer بعد انتهاء الوقت
         DelayTimer.Stop()
@@ -654,53 +637,74 @@ Public Class CustomSearch
     End Sub
 
     ' تحسين دالة لتحديث واجهة المستخدم بالنتائج
-    Private Sub UpdateUIWithResults(results As List(Of Tuple(Of String, String)))
+    Private Sub UpdateUIWithResults(results As List(Of SearchResult))
+
         ' تنظيف TreeView والـ ImageList
         iconsImageList.Images.Clear()
         resultsTreeView.Nodes.Clear()
 
-        ' إضافة أيقونات افتراضية للمجلدات والملفات
-        Dim folderIcon As Icon = SystemIcons.WinLogo ' أيقونة المجلد (يمكنك تخصيصها)
-        Dim fileIcon As Icon = SystemIcons.Application ' أيقونة الملف (يمكنك تخصيصها)
+        ' أيقونات افتراضية
+        Dim folderIcon As Icon = SystemIcons.WinLogo
+        Dim fileIcon As Icon = SystemIcons.Application
+
         iconsImageList.Images.Add("folder", folderIcon.ToBitmap())
         iconsImageList.Images.Add("file", fileIcon.ToBitmap())
 
-        ' تجميع النتائج في TreeView
+        ' 🔥 تحسين الأداء (منع التجميد)
+        resultsTreeView.BeginUpdate()
+
         For Each result In results
-            Dim fileName = result.Item1
-            Dim filePath = result.Item2
 
-            ' التحقق إن كان المسار مجلدًا أو ملفًا
-            Dim isFolder = IO.Directory.Exists(filePath)
+            Dim fileName = result.FileName
+            Dim filePath = result.FullPath
 
-            ' تحديد نوع الأيقونة
+            ' تحقق
+            If String.IsNullOrEmpty(filePath) Then Continue For
+
+            Dim isFolder = Directory.Exists(filePath)
+
             Dim iconKey = If(isFolder, "folder", "file")
+
+            ' 🧠 استخراج أيقونة الملف
             If Not isFolder AndAlso File.Exists(filePath) Then
-                ' استخراج أيقونة مخصصة إذا كان ملفًا
-                Dim customIcon = Icon.ExtractAssociatedIcon(filePath)?.ToBitmap()
-                If customIcon IsNot Nothing Then
-                    iconsImageList.Images.Add(filePath, customIcon)
-                    iconKey = filePath ' استخدام الأيقونة الخاصة
-                End If
+
+                Try
+                    If Not iconsImageList.Images.ContainsKey(filePath) Then
+                        Dim customIcon = Icon.ExtractAssociatedIcon(filePath)
+
+                        If customIcon IsNot Nothing Then
+                            iconsImageList.Images.Add(filePath, customIcon.ToBitmap())
+                        End If
+                    End If
+
+                    iconKey = filePath
+
+                Catch
+                    iconKey = "file"
+                End Try
+
             End If
 
-            ' إنشاء عقدة
-            Dim node = New TreeNode(fileName) With {
-                .Tag = filePath,
-                .ImageKey = iconKey,
-                .SelectedImageKey = iconKey
-            }
+            ' إنشاء Node
+            Dim node As New TreeNode(fileName) With {
+            .Tag = filePath,
+            .ImageKey = iconKey,
+            .SelectedImageKey = iconKey
+        }
 
-            ' إذا كان مجلدًا، يمكن إضافة عقد فرعية
+            ' 📁 لو مجلد → أضف sub nodes
             If isFolder Then
                 AddSubNodes(node, filePath)
             End If
 
             resultsTreeView.Nodes.Add(node)
+
         Next
+
+        resultsTreeView.EndUpdate()
+
     End Sub
 
-    ' دالة لإضافة المجلدات والملفات الفرعية
     Private Sub AddSubNodes(parentNode As TreeNode, folderPath As String)
         Try
             ' إضافة المجلدات الفرعية
@@ -761,32 +765,40 @@ Public Class CustomSearch
     End Sub
 
     Private Sub btnChooseFolder_Click(sender As Object, e As EventArgs) Handles btnChooseFolder.Click
-        Using fbd As New FolderBrowserDialog()
-            fbd.Description = "اختر مجلد البحث"
-            fbd.ShowNewFolderButton = True
 
-            ' افتح على المسار الحالي إن وجد
-            Dim currentPath As String = My.Settings.DefaultPathSearch
-            If Not String.IsNullOrWhiteSpace(currentPath) AndAlso IO.Directory.Exists(currentPath) Then
-                fbd.SelectedPath = currentPath
-            End If
+        Dim dialog As New CommonOpenFileDialog()
 
-            If fbd.ShowDialog(Me) = DialogResult.OK Then
-                ' حفظ المسار في الإعدادات
-                My.Settings.DefaultPathSearch = fbd.SelectedPath
-                My.Settings.Save()
+        With dialog
+            .IsFolderPicker = True ' 🔥 هذا يخليها اختيار مجلد
+            .Title = "اختر مجلد البحث"
+            .EnsurePathExists = True
+            .AllowNonFileSystemItems = False
+            .Multiselect = False
+        End With
 
-                ' (اختياري) عرض المسار في TextBox
-                If Controls.Find("txtSearchPath", True).Length > 0 Then
-                    Dim tb = TryCast(Me.Controls.Find("txtSearchPath", True).FirstOrDefault(), TextBox)
-                    If tb IsNot Nothing Then tb.Text = fbd.SelectedPath
-                End If
+        ' 📁 تحميل المسار الحالي
+        Dim currentPath As String = saderClass.GetUserSearchPath(GlobalData.LoggedInUserID)
 
-                ' (اختياري) إعادة تنفيذ البحث مباشرة إن كان عندك TextBox للبحث
-                ' مثال: StartSearch() أو TriggerSearchWithDelay()
-                ' StartSearch()
-            End If
-        End Using
+        If Not String.IsNullOrWhiteSpace(currentPath) AndAlso IO.Directory.Exists(currentPath) Then
+            dialog.InitialDirectory = currentPath
+        End If
+
+        ' عرض النافذة
+        If dialog.ShowDialog() = CommonFileDialogResult.Ok Then
+
+            Dim selectedPath As String = dialog.FileName
+
+            ' 💾 حفظ في قاعدة البيانات
+            saderClass.SaveUserSearchPath(GlobalData.LoggedInUserID, selectedPath)
+
+            ' عرض في TextBox
+            Dim tb = TryCast(Me.Controls.Find("txtSearchPath", True).FirstOrDefault(), TextBox)
+            If tb IsNot Nothing Then tb.Text = selectedPath
+
+            MessageBox.Show("تم حفظ المسار بنجاح ✅", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        End If
+
     End Sub
 
 #End Region
@@ -830,19 +842,6 @@ Public Class CustomSearch
             System.Diagnostics.Debug.WriteLine($"خطأ في SaveCurrentSelection: {ex.Message}")
         End Try
     End Sub
-
-
-    'Private Sub SaveCurrentSelection()
-    '    Try
-    '        If resultsTreeView.SelectedNode IsNot Nothing AndAlso resultsTreeView.SelectedNode.Tag IsNot Nothing Then
-    '            selectedNodeTag = resultsTreeView.SelectedNode.Tag.ToString()
-    '        Else
-    '            selectedNodeTag = String.Empty
-    '        End If
-    '    Catch ex As Exception
-    '        System.Diagnostics.Debug.WriteLine($"خطأ في SaveCurrentSelection: {ex.Message}")
-    '    End Try
-    'End Sub
 
     ''' <summary>
     ''' استعادة التحديد السابق بعد تحديث النتائج
@@ -966,7 +965,7 @@ Public Class CustomSearch
     ''' </summary>
     Private Sub InitializeDefaultFolder()
         ' تحديد المجلد الافتراضي للبحث
-        Dim defaultFolder As String = My.Settings.DefaultPathSearch
+        Dim defaultFolder As String = saderClass.GetUserSearchPath(GlobalData.LoggedInUserID)
 
         ' التأكد من وجود المجلد
         If Not String.IsNullOrEmpty(defaultFolder) AndAlso Directory.Exists(defaultFolder) Then
@@ -976,6 +975,7 @@ Public Class CustomSearch
             defaultFolder = Path.GetTempPath()
         End If
     End Sub
+
 #End Region
 
 #Region "************************ عارض PDF (PdfiumViewer) ***********************"
@@ -1066,6 +1066,9 @@ Public Class CustomSearch
     End Sub
 #End Region
 
+End Class
 
-
+Public Class SearchResult
+    Public Property FileName As String
+    Public Property FullPath As String
 End Class

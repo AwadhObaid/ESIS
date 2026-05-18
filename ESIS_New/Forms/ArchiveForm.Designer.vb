@@ -21,9 +21,8 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.lblWarning = New System.Windows.Forms.Label()
-        Me.lblDeletedRecordCount = New System.Windows.Forms.Label()
-        Me.lblRecordCount = New System.Windows.Forms.Label()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.lblArchiveWillMaster = New System.Windows.Forms.Label()
         Me.lblArchiveWillSub = New System.Windows.Forms.Label()
@@ -56,6 +55,8 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtArchiveNotes = New System.Windows.Forms.TextBox()
         Me.lblArchiveNotes = New System.Windows.Forms.Label()
         Me.txtOriginalPath = New System.Windows.Forms.TextBox()
+        Me.lblDeletedRecordCount = New System.Windows.Forms.Label()
+        Me.lblRecordCount = New System.Windows.Forms.Label()
         Me.cmbFileType = New System.Windows.Forms.ComboBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -88,9 +89,8 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.lblWarning)
-        Me.GroupBox1.Controls.Add(Me.lblDeletedRecordCount)
-        Me.GroupBox1.Controls.Add(Me.lblRecordCount)
         Me.GroupBox1.Controls.Add(Me.TableLayoutPanel3)
         Me.GroupBox1.Controls.Add(Me.TableLayoutPanel2)
         Me.GroupBox1.Controls.Add(Me.TableLayoutPanel1)
@@ -112,6 +112,17 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "بيانات الأرشيف 🧮"
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(446, 220)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(92, 19)
+        Me.Label2.TabIndex = 33
+        Me.Label2.Text = "مسار الملف الأصلي:"
+        '
         'lblWarning
         '
         Me.lblWarning.AutoSize = True
@@ -121,30 +132,6 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.lblWarning.Size = New System.Drawing.Size(24, 26)
         Me.lblWarning.TabIndex = 31
         Me.lblWarning.Text = "...."
-        '
-        'lblDeletedRecordCount
-        '
-        Me.lblDeletedRecordCount.Font = New System.Drawing.Font("Cairo SemiBold", 10.0!, System.Drawing.FontStyle.Bold)
-        Me.lblDeletedRecordCount.ForeColor = System.Drawing.Color.FromArgb(CType(CType(108, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(125, Byte), Integer))
-        Me.lblDeletedRecordCount.Location = New System.Drawing.Point(233, 193)
-        Me.lblDeletedRecordCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.lblDeletedRecordCount.Name = "lblDeletedRecordCount"
-        Me.lblDeletedRecordCount.Size = New System.Drawing.Size(238, 23)
-        Me.lblDeletedRecordCount.TabIndex = 6
-        Me.lblDeletedRecordCount.Text = "عدد المحذوفات: 0"
-        Me.lblDeletedRecordCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lblRecordCount
-        '
-        Me.lblRecordCount.Font = New System.Drawing.Font("Cairo SemiBold", 10.0!, System.Drawing.FontStyle.Bold)
-        Me.lblRecordCount.ForeColor = System.Drawing.Color.FromArgb(CType(CType(108, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(125, Byte), Integer))
-        Me.lblRecordCount.Location = New System.Drawing.Point(8, 193)
-        Me.lblRecordCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
-        Me.lblRecordCount.Name = "lblRecordCount"
-        Me.lblRecordCount.Size = New System.Drawing.Size(238, 23)
-        Me.lblRecordCount.TabIndex = 6
-        Me.lblRecordCount.Text = "..."
-        Me.lblRecordCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'TableLayoutPanel3
         '
@@ -163,22 +150,21 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(5, 24)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 4
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(366, 161)
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(366, 139)
         Me.TableLayoutPanel3.TabIndex = 30
         '
         'lblArchiveWillMaster
         '
         Me.lblArchiveWillMaster.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblArchiveWillMaster.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblArchiveWillMaster.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
         Me.lblArchiveWillMaster.Location = New System.Drawing.Point(253, 1)
         Me.lblArchiveWillMaster.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblArchiveWillMaster.Name = "lblArchiveWillMaster"
-        Me.lblArchiveWillMaster.Size = New System.Drawing.Size(110, 39)
+        Me.lblArchiveWillMaster.Size = New System.Drawing.Size(110, 33)
         Me.lblArchiveWillMaster.TabIndex = 8
         Me.lblArchiveWillMaster.Text = " البوليصة الرئيسية:"
         Me.lblArchiveWillMaster.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -186,11 +172,11 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'lblArchiveWillSub
         '
         Me.lblArchiveWillSub.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblArchiveWillSub.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblArchiveWillSub.Location = New System.Drawing.Point(253, 41)
+        Me.lblArchiveWillSub.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.lblArchiveWillSub.Location = New System.Drawing.Point(253, 35)
         Me.lblArchiveWillSub.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblArchiveWillSub.Name = "lblArchiveWillSub"
-        Me.lblArchiveWillSub.Size = New System.Drawing.Size(110, 39)
+        Me.lblArchiveWillSub.Size = New System.Drawing.Size(110, 33)
         Me.lblArchiveWillSub.TabIndex = 10
         Me.lblArchiveWillSub.Text = "البوليصة الفرعية:"
         Me.lblArchiveWillSub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -198,11 +184,11 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'lblArchiveDate
         '
         Me.lblArchiveDate.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblArchiveDate.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblArchiveDate.Location = New System.Drawing.Point(253, 81)
+        Me.lblArchiveDate.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.lblArchiveDate.Location = New System.Drawing.Point(253, 69)
         Me.lblArchiveDate.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblArchiveDate.Name = "lblArchiveDate"
-        Me.lblArchiveDate.Size = New System.Drawing.Size(110, 38)
+        Me.lblArchiveDate.Size = New System.Drawing.Size(110, 33)
         Me.lblArchiveDate.TabIndex = 6
         Me.lblArchiveDate.Text = "تاريخ الأرشيف:"
         Me.lblArchiveDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -210,45 +196,45 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'txtArchiveWillMaster
         '
         Me.txtArchiveWillMaster.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtArchiveWillMaster.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtArchiveWillMaster.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtArchiveWillMaster.Location = New System.Drawing.Point(3, 5)
         Me.txtArchiveWillMaster.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtArchiveWillMaster.Name = "txtArchiveWillMaster"
-        Me.txtArchiveWillMaster.Size = New System.Drawing.Size(245, 30)
+        Me.txtArchiveWillMaster.Size = New System.Drawing.Size(245, 25)
         Me.txtArchiveWillMaster.TabIndex = 9
         Me.txtArchiveWillMaster.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtUserName
         '
         Me.txtUserName.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtUserName.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtUserName.Location = New System.Drawing.Point(3, 124)
+        Me.txtUserName.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtUserName.Location = New System.Drawing.Point(3, 107)
         Me.txtUserName.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtUserName.Name = "txtUserName"
         Me.txtUserName.ReadOnly = True
-        Me.txtUserName.Size = New System.Drawing.Size(245, 30)
+        Me.txtUserName.Size = New System.Drawing.Size(245, 25)
         Me.txtUserName.TabIndex = 21
         Me.txtUserName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtArchiveWillSub
         '
         Me.txtArchiveWillSub.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtArchiveWillSub.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtArchiveWillSub.Location = New System.Drawing.Point(3, 45)
+        Me.txtArchiveWillSub.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtArchiveWillSub.Location = New System.Drawing.Point(3, 39)
         Me.txtArchiveWillSub.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtArchiveWillSub.Name = "txtArchiveWillSub"
-        Me.txtArchiveWillSub.Size = New System.Drawing.Size(245, 30)
+        Me.txtArchiveWillSub.Size = New System.Drawing.Size(245, 25)
         Me.txtArchiveWillSub.TabIndex = 11
         Me.txtArchiveWillSub.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblUserName
         '
         Me.lblUserName.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblUserName.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUserName.Location = New System.Drawing.Point(253, 120)
+        Me.lblUserName.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.lblUserName.Location = New System.Drawing.Point(253, 103)
         Me.lblUserName.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblUserName.Name = "lblUserName"
-        Me.lblUserName.Size = New System.Drawing.Size(110, 40)
+        Me.lblUserName.Size = New System.Drawing.Size(110, 35)
         Me.lblUserName.TabIndex = 20
         Me.lblUserName.Text = "اسم المستخدم:"
         Me.lblUserName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -256,12 +242,12 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'dtpArchiveDate
         '
         Me.dtpArchiveDate.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dtpArchiveDate.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpArchiveDate.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtpArchiveDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpArchiveDate.Location = New System.Drawing.Point(3, 85)
+        Me.dtpArchiveDate.Location = New System.Drawing.Point(3, 73)
         Me.dtpArchiveDate.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.dtpArchiveDate.Name = "dtpArchiveDate"
-        Me.dtpArchiveDate.Size = New System.Drawing.Size(245, 30)
+        Me.dtpArchiveDate.Size = New System.Drawing.Size(245, 25)
         Me.dtpArchiveDate.TabIndex = 7
         '
         'TableLayoutPanel2
@@ -281,21 +267,20 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(377, 24)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 4
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(379, 160)
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(379, 139)
         Me.TableLayoutPanel2.TabIndex = 29
         '
         'CbArchiveNum
         '
         Me.CbArchiveNum.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.CbArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold)
-        Me.CbArchiveNum.Location = New System.Drawing.Point(276, 82)
+        Me.CbArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.CbArchiveNum.Location = New System.Drawing.Point(276, 72)
         Me.CbArchiveNum.Name = "CbArchiveNum"
-        Me.CbArchiveNum.Size = New System.Drawing.Size(99, 32)
+        Me.CbArchiveNum.Size = New System.Drawing.Size(99, 27)
         Me.CbArchiveNum.TabIndex = 33
         Me.CbArchiveNum.Text = "رقم الأرشيف:"
         Me.CbArchiveNum.UseVisualStyleBackColor = True
@@ -303,11 +288,11 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'lblArchiveFolder
         '
         Me.lblArchiveFolder.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblArchiveFolder.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblArchiveFolder.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
         Me.lblArchiveFolder.Location = New System.Drawing.Point(275, 1)
         Me.lblArchiveFolder.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblArchiveFolder.Name = "lblArchiveFolder"
-        Me.lblArchiveFolder.Size = New System.Drawing.Size(101, 38)
+        Me.lblArchiveFolder.Size = New System.Drawing.Size(101, 33)
         Me.lblArchiveFolder.TabIndex = 4
         Me.lblArchiveFolder.Text = "مجلد الأرشيف:"
         Me.lblArchiveFolder.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -315,11 +300,11 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'lblArchiveSubject
         '
         Me.lblArchiveSubject.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblArchiveSubject.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblArchiveSubject.Location = New System.Drawing.Point(275, 40)
+        Me.lblArchiveSubject.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.lblArchiveSubject.Location = New System.Drawing.Point(275, 35)
         Me.lblArchiveSubject.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblArchiveSubject.Name = "lblArchiveSubject"
-        Me.lblArchiveSubject.Size = New System.Drawing.Size(101, 38)
+        Me.lblArchiveSubject.Size = New System.Drawing.Size(101, 33)
         Me.lblArchiveSubject.TabIndex = 2
         Me.lblArchiveSubject.Text = "موضوع الأرشيف:"
         Me.lblArchiveSubject.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -327,46 +312,46 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'txtArchiveSubject
         '
         Me.txtArchiveSubject.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtArchiveSubject.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtArchiveSubject.Location = New System.Drawing.Point(3, 44)
+        Me.txtArchiveSubject.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtArchiveSubject.Location = New System.Drawing.Point(3, 39)
         Me.txtArchiveSubject.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtArchiveSubject.Name = "txtArchiveSubject"
-        Me.txtArchiveSubject.Size = New System.Drawing.Size(267, 30)
+        Me.txtArchiveSubject.Size = New System.Drawing.Size(267, 25)
         Me.txtArchiveSubject.TabIndex = 3
         Me.txtArchiveSubject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtArchiveNum
         '
         Me.txtArchiveNum.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtArchiveNum.Location = New System.Drawing.Point(3, 83)
+        Me.txtArchiveNum.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtArchiveNum.Location = New System.Drawing.Point(3, 73)
         Me.txtArchiveNum.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtArchiveNum.Name = "txtArchiveNum"
         Me.txtArchiveNum.ReadOnly = True
-        Me.txtArchiveNum.Size = New System.Drawing.Size(267, 30)
+        Me.txtArchiveNum.Size = New System.Drawing.Size(267, 25)
         Me.txtArchiveNum.TabIndex = 1
         Me.txtArchiveNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'txtFileType
         '
         Me.txtFileType.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtFileType.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFileType.Location = New System.Drawing.Point(3, 122)
+        Me.txtFileType.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFileType.Location = New System.Drawing.Point(3, 107)
         Me.txtFileType.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtFileType.Name = "txtFileType"
         Me.txtFileType.ReadOnly = True
-        Me.txtFileType.Size = New System.Drawing.Size(267, 30)
+        Me.txtFileType.Size = New System.Drawing.Size(267, 25)
         Me.txtFileType.TabIndex = 17
         Me.txtFileType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblFileType
         '
         Me.lblFileType.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lblFileType.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFileType.Location = New System.Drawing.Point(275, 118)
+        Me.lblFileType.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold)
+        Me.lblFileType.Location = New System.Drawing.Point(275, 103)
         Me.lblFileType.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblFileType.Name = "lblFileType"
-        Me.lblFileType.Size = New System.Drawing.Size(101, 41)
+        Me.lblFileType.Size = New System.Drawing.Size(101, 35)
         Me.lblFileType.TabIndex = 16
         Me.lblFileType.Text = "نوع الملف:"
         Me.lblFileType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -374,11 +359,11 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'ComboArchiveFolder
         '
         Me.ComboArchiveFolder.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ComboArchiveFolder.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ComboArchiveFolder.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ComboArchiveFolder.FormattingEnabled = True
         Me.ComboArchiveFolder.Location = New System.Drawing.Point(4, 4)
         Me.ComboArchiveFolder.Name = "ComboArchiveFolder"
-        Me.ComboArchiveFolder.Size = New System.Drawing.Size(265, 31)
+        Me.ComboArchiveFolder.Size = New System.Drawing.Size(265, 25)
         Me.ComboArchiveFolder.TabIndex = 18
         '
         'TableLayoutPanel1
@@ -496,23 +481,24 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'txtFilepath
         '
         Me.txtFilepath.Font = New System.Drawing.Font("Consolas", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFilepath.Location = New System.Drawing.Point(4, 223)
+        Me.txtFilepath.Location = New System.Drawing.Point(8, 193)
         Me.txtFilepath.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtFilepath.Name = "txtFilepath"
+        Me.txtFilepath.ReadOnly = True
         Me.txtFilepath.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtFilepath.Size = New System.Drawing.Size(541, 23)
+        Me.txtFilepath.Size = New System.Drawing.Size(530, 23)
         Me.txtFilepath.TabIndex = 19
         '
         'lblFilepath
         '
         Me.lblFilepath.AutoSize = True
-        Me.lblFilepath.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilepath.Location = New System.Drawing.Point(470, 193)
+        Me.lblFilepath.Font = New System.Drawing.Font("Cairo SemiBold", 7.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilepath.Location = New System.Drawing.Point(446, 170)
         Me.lblFilepath.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblFilepath.Name = "lblFilepath"
-        Me.lblFilepath.Size = New System.Drawing.Size(73, 23)
+        Me.lblFilepath.Size = New System.Drawing.Size(88, 19)
         Me.lblFilepath.TabIndex = 18
-        Me.lblFilepath.Text = "مسار الملف:"
+        Me.lblFilepath.Text = "مسار الملف الحالي:"
         '
         'txtFilename
         '
@@ -520,7 +506,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.txtFilename.Location = New System.Drawing.Point(4, 274)
         Me.txtFilename.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtFilename.Name = "txtFilename"
-        Me.txtFilename.Size = New System.Drawing.Size(541, 27)
+        Me.txtFilename.Size = New System.Drawing.Size(534, 27)
         Me.txtFilename.TabIndex = 15
         Me.txtFilename.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -528,7 +514,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         '
         Me.lblFilename.AutoSize = True
         Me.lblFilename.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilename.Location = New System.Drawing.Point(474, 249)
+        Me.lblFilename.Location = New System.Drawing.Point(549, 276)
         Me.lblFilename.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblFilename.Name = "lblFilename"
         Me.lblFilename.Size = New System.Drawing.Size(68, 23)
@@ -539,7 +525,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         '
         Me.txtArchiveNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtArchiveNotes.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtArchiveNotes.Location = New System.Drawing.Point(549, 220)
+        Me.txtArchiveNotes.Location = New System.Drawing.Point(549, 193)
         Me.txtArchiveNotes.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtArchiveNotes.Multiline = True
         Me.txtArchiveNotes.Name = "txtArchiveNotes"
@@ -551,7 +537,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         '
         Me.lblArchiveNotes.AutoSize = True
         Me.lblArchiveNotes.Font = New System.Drawing.Font("Cairo SemiBold", 8.999999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblArchiveNotes.Location = New System.Drawing.Point(693, 193)
+        Me.lblArchiveNotes.Location = New System.Drawing.Point(693, 166)
         Me.lblArchiveNotes.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblArchiveNotes.Name = "lblArchiveNotes"
         Me.lblArchiveNotes.Size = New System.Drawing.Size(59, 23)
@@ -561,13 +547,37 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         'txtOriginalPath
         '
         Me.txtOriginalPath.Font = New System.Drawing.Font("Consolas", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOriginalPath.Location = New System.Drawing.Point(4, 223)
+        Me.txtOriginalPath.Location = New System.Drawing.Point(7, 243)
         Me.txtOriginalPath.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.txtOriginalPath.Name = "txtOriginalPath"
+        Me.txtOriginalPath.ReadOnly = True
         Me.txtOriginalPath.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtOriginalPath.Size = New System.Drawing.Size(541, 23)
+        Me.txtOriginalPath.Size = New System.Drawing.Size(531, 23)
         Me.txtOriginalPath.TabIndex = 32
-        Me.txtOriginalPath.Visible = False
+        '
+        'lblDeletedRecordCount
+        '
+        Me.lblDeletedRecordCount.Font = New System.Drawing.Font("Cairo SemiBold", 10.0!, System.Drawing.FontStyle.Bold)
+        Me.lblDeletedRecordCount.ForeColor = System.Drawing.Color.FromArgb(CType(CType(108, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(125, Byte), Integer))
+        Me.lblDeletedRecordCount.Location = New System.Drawing.Point(1191, 9)
+        Me.lblDeletedRecordCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblDeletedRecordCount.Name = "lblDeletedRecordCount"
+        Me.lblDeletedRecordCount.Size = New System.Drawing.Size(238, 23)
+        Me.lblDeletedRecordCount.TabIndex = 6
+        Me.lblDeletedRecordCount.Text = "عدد المحذوفات: 0"
+        Me.lblDeletedRecordCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblRecordCount
+        '
+        Me.lblRecordCount.Font = New System.Drawing.Font("Cairo SemiBold", 10.0!, System.Drawing.FontStyle.Bold)
+        Me.lblRecordCount.ForeColor = System.Drawing.Color.FromArgb(CType(CType(108, Byte), Integer), CType(CType(117, Byte), Integer), CType(CType(125, Byte), Integer))
+        Me.lblRecordCount.Location = New System.Drawing.Point(783, 9)
+        Me.lblRecordCount.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.lblRecordCount.Name = "lblRecordCount"
+        Me.lblRecordCount.Size = New System.Drawing.Size(238, 23)
+        Me.lblRecordCount.TabIndex = 6
+        Me.lblRecordCount.Text = "..."
+        Me.lblRecordCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'cmbFileType
         '
@@ -769,7 +779,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.pdfViewer.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.pdfViewer.MinimumSize = New System.Drawing.Size(17, 30)
         Me.pdfViewer.Name = "pdfViewer"
-        Me.pdfViewer.Size = New System.Drawing.Size(654, 472)
+        Me.pdfViewer.Size = New System.Drawing.Size(654, 446)
         Me.pdfViewer.TabIndex = 5
         '
         'GroupBox3
@@ -778,9 +788,9 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox3.Controls.Add(Me.pdfViewer)
-        Me.GroupBox3.Location = New System.Drawing.Point(780, 9)
+        Me.GroupBox3.Location = New System.Drawing.Point(780, 35)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(660, 503)
+        Me.GroupBox3.Size = New System.Drawing.Size(660, 477)
         Me.GroupBox3.TabIndex = 7
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "مستعرض الملفات 📂"
@@ -823,8 +833,10 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(254, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1440, 702)
         Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.lblRecordCount)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.btnClose)
+        Me.Controls.Add(Me.lblDeletedRecordCount)
         Me.Controls.Add(Me.dgvArchive)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
@@ -907,6 +919,7 @@ Partial Class ArchiveForm : Inherits BaseFormWithPermissions
     Friend WithEvents TimerMsg As Timer
     Friend WithEvents PicMsg As PictureBox
     Friend WithEvents lblMessage As Label
+    Friend WithEvents Label2 As Label
 End Class
 
 

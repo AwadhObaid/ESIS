@@ -123,6 +123,7 @@
     <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
     </Reference>
+    <Reference Include="CustomMarshalers" />
     <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
@@ -193,6 +194,12 @@
     </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.5.0, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Core.1.1.5\lib\net472\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.5.0, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Shell.1.1.5\lib\net472\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
     <Reference Include="MicroVisionPCID">
       <HintPath>C:\Users\Awadh\Downloads\Dll files\MicroVisionPCID.dll</HintPath>
@@ -304,6 +311,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ActivityLogClass.vb" />
+    <Compile Include="Classes\AlertsClass.vb" />
     <Compile Include="Classes\ArchiveClass.vb" />
     <Compile Include="Classes\ArchiveClass_ForScanner.vb" />
     <Compile Include="Classes\BaseFormWithPermissions.vb">
@@ -322,6 +330,7 @@
     <Compile Include="Classes\PermissionHelper.vb" />
     <Compile Include="Classes\PermissionsManager.vb" />
     <Compile Include="Classes\PolicyValidationHelper.vb" />
+    <Compile Include="Classes\ReportsHelper.vb" />
     <Compile Include="Classes\SaderClass.vb" />
     <Compile Include="Classes\SaderEvents.vb" />
     <Compile Include="Classes\ServerConnectionManager.vb" />
@@ -403,6 +412,18 @@
       <DependentUpon>EMailForm.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\EMailForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmAlerts.Designer.vb">
+      <DependentUpon>FrmAlerts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmAlerts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmReports.Designer.vb">
+      <DependentUpon>FrmReports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmReports.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\PasswordForm.Designer.vb">
@@ -525,6 +546,12 @@
     <Compile Include="Forms\WebBrowserForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\YearManagementForm.Designer.vb">
+      <DependentUpon>YearManagementForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\YearManagementForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Modules\ArchiveVariablesStore.vb" />
     <Compile Include="Modules\DatabaseHelper.vb" />
     <Compile Include="Modules\GlobalData.vb" />
@@ -588,6 +615,12 @@
     <EmbeddedResource Include="Forms\EMailForm.resx">
       <DependentUpon>EMailForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmAlerts.resx">
+      <DependentUpon>FrmAlerts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmReports.resx">
+      <DependentUpon>FrmReports.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImgSettingsForm.resx">
       <DependentUpon>ImgSettingsForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -645,6 +678,9 @@
     <EmbeddedResource Include="Forms\WebBrowserForm.resx">
       <DependentUpon>WebBrowserForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\YearManagementForm.resx">
+      <DependentUpon>YearManagementForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -697,6 +733,12 @@
     <None Include="Resources\Close_16x161.png" />
     <None Include="Resources\iconfinder_Open_file_1323001.png" />
     <None Include="Resources\folder_delete.png" />
+    <Content Include="Resources\application.png" />
+    <Content Include="Resources\favorite.png" />
+    <Content Include="Resources\history.png" />
+    <Content Include="Resources\PrintPreview.png" />
+    <Content Include="Resources\star.png" />
+    <Content Include="Resources\unlock.png" />
     <Content Include="SqlServerTypes\Loader.cs" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
@@ -759,6 +801,7 @@
       <Isolated>False</Isolated>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

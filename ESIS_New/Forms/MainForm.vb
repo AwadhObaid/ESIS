@@ -10,6 +10,11 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     Private activityLogClass As New ActivityLogClass()
     Private cleanupTimer As New System.Windows.Forms.Timer()
 
+    'إدارة التنبيهات
+    Private alertTimer As New Timer()
+    Private alertClass As New AlertsClass()
+    Private lastAlertID As Integer = 0
+
     ' تعريف المتغيرات في بداية النموذج الرئيسي
     Private _notificationsForm As NotificationsForm = Nothing
     Private _notificationBalloon As NotificationsForm = Nothing
@@ -18,11 +23,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     ' متغير لتحديد حالة تسجيل الخروج
     Private isLoggingOut As Boolean = False
     Private Shared currentInstance As BackupForm = Nothing
-
-
-
-
-
 
 #Region "التهيئة والتحميل"
     ''' <summary>
@@ -109,6 +109,24 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             RefreshUserImage()
             ' بدء مؤقت التحديث
             timerClock.Start()
+
+            With lblMainAlert
+                .Visible = False
+                .BackColor = Color.FromArgb(255, 249, 196) ' أصفر فاتح
+                .ForeColor = Color.Black
+                .Font = New Font("Cairo", 10, FontStyle.Bold)
+                .TextAlign = ContentAlignment.MiddleCenter
+                .Dock = DockStyle.Top
+                .Height = 40
+            End With
+
+            alertTimer.Interval = 60000 ' كل دقيقة
+            AddHandler alertTimer.Tick, AddressOf CheckAlerts
+            alertTimer.Start()
+
+            ' تشغيل أول مرة مباشرة
+            CheckAlerts(Nothing, Nothing)
+
 
             ' تحديث حالة الترخيص
             'RefreshLicenseStatus()
@@ -815,6 +833,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
     End Sub
 #End Region
 
+
 #Region "الأحداث الخاصة بالأزرار"
 
     ''' <summary>
@@ -844,7 +863,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             ' إنشاء نموذج لوحة التحكم
             Dim dashboardForm As New DashboardForm()
             dashboardForm.MdiParent = Me
-            dashboardForm.WindowState = FormWindowState.Maximized
+            dashboardForm.WindowState = FormWindowState.Normal
             dashboardForm.Show()
 
         Catch ex As Exception
@@ -876,12 +895,29 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             'If Not CheckPermission("View", "عرض نموذج إدارة الصادر") Then
             '    Return
             'End If
-            Dim frm As New SaderForm()
-            frm.MdiParent = Me
-            frm.Show()
-            'OpenMdiForm(Of SaderForm)(Me)
+            'Dim frm As New SaderForm()
+            'frm.MdiParent = Me
+            'frm.Show()
+            OpenMdiForm(Of SaderForm)(Me)
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج الصادر: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+
+    Private Sub btnReportsForm_Click(sender As Object, e As EventArgs) Handles btnReportsForm.Click
+
+        Try
+            '' التحقق من صلاحية عرض نموذج المستخدمين
+            'If Not CheckPermission("View", "عرض نموذج إدارة التقارير ") Then
+            '    Return
+            'End If
+            'Dim frm As New SaderForm()
+            'frm.MdiParent = Me
+            'frm.Show()
+            OpenMdiForm(Of FrmReports)(Me)
+        Catch ex As Exception
+            MessageBox.Show($"حدث خطأ أثناء فتح نموذج التقارير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -1119,7 +1155,23 @@ Public Class MainForm : Inherits BaseFormWithPermissions
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج إدارة النسخ الاحتياطية: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+    ''' <summary>
+    ''' زر إدارة التنبيهات
+    ''' </summary>
+    Private Sub btnFrmAlerts_Click(sender As Object, e As EventArgs) Handles btnFrmAlerts.Click
+        Try
+            '' التحقق من صلاحية عرض نموذج المستخدمين
+            'If Not CheckPermission("View", "عرض نموذج سلة المحذوفات") Then
+            '    Return
+            'End If
+            OpenMdiForm(Of FrmAlerts)(Me)
+        Catch ex As Exception
+            MessageBox.Show($"حدث خطأ أثناء فتح نموذج إدارة النسخ الاحتياطية: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
 #End Region
+
 
 #Region "التعامل مع تسمية العدد غير المرتبط"
     ''' <summary>
@@ -1192,6 +1244,7 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
 #End Region
 
+
 #Region "الوظائف المساعدة"
 
     ''' <summary>
@@ -1257,23 +1310,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         Catch ex As Exception
             MessageBox.Show($"حدث خطأ أثناء فتح نموذج حساب بين تاريخين: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-    End Sub
-
-    Private Sub BtnReportCriteriaForm_Click(sender As Object, e As EventArgs) Handles BtnReportCriteriaForm.Click
-        'OpenMdiForm(Of ReportCriteriaForm)()
-    End Sub
-
-    Private Sub BtnReportSelectionForm_Click(sender As Object, e As EventArgs) Handles BtnReportSelectionForm.Click
-        'Try
-        '    ' فتح نموذج اختيار التقرير
-        '    Dim reportSelectionForm As New ReportSelectionForm()
-        '    AddHandler reportSelectionForm.ReportSelected, AddressOf OnReportSelected
-        '    AddHandler reportSelectionForm.CancelReportSelection, AddressOf OnReportSelectionCancelled
-        '    reportSelectionForm.ShowDialog(Me)
-        'Catch ex As Exception
-        '    MessageBox.Show($"خطأ في فتح نافذة التقارير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        'End Try
-
     End Sub
 
     ''' <summary>
@@ -1358,173 +1394,8 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
 #End Region
 
-    '#Region "التقارير"
-
-    '    ' في تعريف المتغيرات في النموذج الرئيسي (MainForm.vb)
-    '    Private _reportGenerator As New ReportGenerator()
-    '    Private _reportType As ReportGenerator.ReportType = ReportGenerator.ReportType.OutgoingRecords
-
-    '    '''' <summary>
-    '    '''' معالجة تأكيد معايير التقرير
-    '    '''' </summary>
-    '    'Private Sub OnCriteriaConfirmed(criteria As ReportGenerator.ReportCriteria)
-    '    '    Try
-    '    '        ' تعيين معايير التقرير
-    '    '        _reportGenerator.SetReportType(_reportType) ' تم تعديل هذا السطر ليكون صحيحاً
-    '    '        _reportGenerator.SetReportCriteria(criteria)
-
-    '    '        ' إنشاء التقرير
-    '    '        Dim reportDocument As ReportDocument = _reportGenerator.GenerateReport()
-
-    '    '        ' فتح عارض التقرير
-    '    '        Dim reportViewerForm As New ReportViewerForm(reportDocument, _reportType, criteria)
-    '    '        AddHandler reportViewerForm.ReportClosed, AddressOf OnReportClosed
-    '    '        reportViewerForm.MdiParent = Me
-    '    '        reportViewerForm.Show()
-    '    '    Catch ex As Exception
-    '    '        MessageBox.Show($"خطأ في إنشاء التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    '    End Try
-    '    'End Sub
-
-    '    '''' <summary>
-    '    '''' معالجة اختيار نوع التقرير
-    '    '''' </summary>
-    '    'Private Sub OnReportSelected(reportType As ReportGenerator.ReportType)
-    '    '    Try
-    '    '        ' فتح نموذج معايير التقرير
-    '    '        Dim reportCriteriaForm As New ReportCriteriaForm(reportType)
-    '    '        AddHandler reportCriteriaForm.CriteriaConfirmed, AddressOf OnCriteriaConfirmed
-    '    '        AddHandler reportCriteriaForm.CancelCriteria, AddressOf OnCriteriaCancelled
-    '    '        reportCriteriaForm.ShowDialog(Me)
-    '    '    Catch ex As Exception
-    '    '        MessageBox.Show($"خطأ في اختيار معايير التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    '    End Try
-    '    'End Sub
-
-    '    ''' <summary>
-    '    ''' معالجة اختيار نوع التقرير
-    '    ''' </summary>
-    '    Private Sub OnReportSelected(reportType As ReportGenerator.ReportType)
-    '        Try
-    '            ' حفظ نوع التقرير
-    '            _reportType = reportType
-
-    '            ' فتح نموذج معايير التقرير
-    '            Dim reportCriteriaForm As New ReportCriteriaForm(reportType)
-    '            AddHandler reportCriteriaForm.CriteriaConfirmed, AddressOf OnCriteriaConfirmed
-    '            AddHandler reportCriteriaForm.CancelCriteria, AddressOf OnCriteriaCancelled
-    '            reportCriteriaForm.ShowDialog(Me)
-    '        Catch ex As Exception
-    '            MessageBox.Show($"خطأ في اختيار معايير التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        End Try
-    '    End Sub
-
-    '    ''' <summary>
-    '    ''' معالجة تأكيد معايير التقرير
-    '    ''' </summary>
-    '    Private Sub OnCriteriaConfirmed(criteria As ReportGenerator.ReportCriteria)
-    '        Try
-    '            ' تعيين معايير التقرير
-    '            _reportGenerator.SetReportType(_reportType)
-    '            _reportGenerator.SetReportCriteria(criteria)
-
-    '            ' إنشاء التقرير
-    '            Dim reportDocument As ReportDocument = _reportGenerator.GenerateReport()
-
-    '            ' فتح عارض التقرير
-    '            Dim reportViewerForm As New ReportViewerForm(reportDocument, _reportType, criteria)
-    '            AddHandler reportViewerForm.ReportClosed, AddressOf OnReportClosed
-    '            reportViewerForm.MdiParent = Me
-    '            reportViewerForm.Show()
-    '        Catch ex As Exception
-    '            MessageBox.Show($"خطأ في إنشاء التقرير: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        End Try
-    '    End Sub
-
-    '    ''' <summary>
-    '    ''' معالجة إغلاق التقرير
-    '    ''' </summary>
-    '    Private Sub OnReportClosed()
-    '        Try
-    '            ' يمكن إضافة أي معالجة إضافية هنا
-    '            System.Diagnostics.Debug.WriteLine("تم إغلاق التقرير")
-    '        Catch ex As Exception
-    '            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إغلاق التقرير: {ex.Message}")
-    '        End Try
-    '    End Sub
-
-    '    ''' <summary>
-    '    ''' معالجة إلغاء اختيار التقرير
-    '    ''' </summary>
-    '    Private Sub OnReportSelectionCancelled()
-    '        Try
-    '            ' يمكن إضافة أي معالجة إضافية هنا
-    '            System.Diagnostics.Debug.WriteLine("تم إلغاء اختيار التقرير")
-    '        Catch ex As Exception
-    '            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إلغاء اختيار التقرير: {ex.Message}")
-    '        End Try
-    '    End Sub
-
-    '    ''' <summary>
-    '    ''' معالجة إلغاء معايير التقرير
-    '    ''' </summary>
-    '    Private Sub OnCriteriaCancelled()
-    '        Try
-    '            ' يمكن إضافة أي معالجة إضافية هنا
-    '            System.Diagnostics.Debug.WriteLine("تم إلغاء معايير التقرير")
-    '        Catch ex As Exception
-    '            System.Diagnostics.Debug.WriteLine($"خطأ في معالجة إلغاء معايير التقرير: {ex.Message}")
-    '        End Try
-    '    End Sub
-
-    '#End Region
 
 #Region "النماذج الالكترونية"
-
-    '''' <summary>
-    '''' فتح نموذج إلكتروني في نافذة فرعية (MDI Child)
-    '''' </summary>
-    'Private Sub OpenElectronicForm(url As String, title As String)
-    '    Try
-    '        ' التحقق من وجود نموذج مفتوح بالفعل بنفس العنوان
-    '        For Each form As Form In Me.MdiChildren
-    '            If TypeOf form Is WebBrowserForm AndAlso form.Text.Contains(title) Then
-    '                form.BringToFront()
-    '                Return
-    '            End If
-    '        Next
-
-    '        ' إنشاء النموذج الجديد
-    '        Dim webForm As New WebBrowserForm(url, title)
-    '        webForm.Text = title
-    '        webForm.MdiParent = Me
-    '        webForm.WindowState = FormWindowState.Normal
-
-    '        ' تحميل الرابط
-    '        Try
-
-    '            ' التأكد من تنسيق الرابط الصحيح
-    '            Dim uri As New Uri(url)
-    '            webForm.webBrowser.Navigate(uri)
-    '            webForm.txtUrl.Text = url
-    '        Catch ex As UriFormatException
-    '            Try
-    '                ' محاولة إضافة http:// إذا كان الرابط غير مكتمل
-    '                Dim safeUrl As String = "http://" & url
-    '                Dim uri As New Uri(safeUrl)
-    '                webForm.webBrowser.Navigate(uri)
-    '                webForm.txtUrl.Text = safeUrl
-    '            Catch ex2 As Exception
-    '                MessageBox.Show($"الرابط غير صحيح: {url}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '                Return
-    '            End Try
-    '        End Try
-
-    '        webForm.Show()
-    '    Catch ex As Exception
-    '        MessageBox.Show($"خطأ في فتح النموذج الإلكتروني: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-    'End Sub
 
     ''' <summary>
     ''' فتح نموذج إجازة وإقرار عودة
@@ -1533,11 +1404,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-12.htm",
             "نموذج إجازة وإقرار عودة")
-
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-12.htm",
-        '    "نموذج إجازة وإقرار عودة")
     End Sub
 
     ''' <summary>
@@ -1547,10 +1413,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-06.htm",
             "نموذج طلب إستقالة / تقاعد")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-06.htm",
-        '    "نموذج طلب إستقالة / تقاعد")
     End Sub
 
     ''' <summary>
@@ -1561,10 +1423,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-13.htm",
             "طلب ترشيح لوظيفة إشرافية")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-13.htm",
-        '    "طلب ترشيح لوظيفة إشرافية")
     End Sub
 
     ''' <summary>
@@ -1575,10 +1433,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-27.htm",
             "نموذج نقل وندب داخلي للهيئة الإدارية والمالية")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-27.htm",
-        '    "نموذج نقل وندب داخلي للهيئة الإدارية والمالية")
     End Sub
 
     ''' <summary>
@@ -1588,12 +1442,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
     "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-40.htm",
     "بدل موقع")
-
-
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-40.htm",
-        '    "نموذج استمارة كشف حضور وانصراف للموظفين العاملين بالمواقع الميدانية")
     End Sub
 
     ''' <summary>
@@ -1603,10 +1451,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
     "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-37.htm",
     "طلب معاملة")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-37.htm",
-        '    "نموذج طلب معاملة")
     End Sub
 
     ''' <summary>
@@ -1616,9 +1460,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
                "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-12.htm",
                "نموذج طلب هوية")
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-12.htm",
-        '    "نموذج طلب هوية")
     End Sub
 
     ''' <summary>
@@ -1628,10 +1469,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-43.htm",
             "نموذج استمارة صرف بدلات")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-43.htm",
-        '    "نموذج استمارة صرف بدلات")
     End Sub
 
     ''' <summary>
@@ -1642,10 +1479,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-08%20.htm",
             "تصريح خروج")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-08%20.htm",
-        '    "تصريح خروج")
     End Sub
 
     ''' <summary>
@@ -1655,11 +1488,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/240000-23.htm",
             "إخلاء طرف عهدة شخصية / تنظيمية")
-
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/240000-23.htm",
-        '    "إخلاء طرف عهدة شخصية / تنظيمية")
     End Sub
 
     ''' <summary>
@@ -1670,9 +1498,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/232000-08.htm",
             "براءة ذمة لموظفي العقود الخاصة")
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/232000-08.htm",
-        '    "براءة ذمة لموظفي العقود الخاصة")
     End Sub
 
     ''' <summary>
@@ -1682,10 +1507,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-41.htm",
             "نموذج علاج موظف")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/230000-41.htm",
-        '    "نموذج علاج موظف")
     End Sub
 
     ''' <summary>
@@ -1695,10 +1516,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-26.htm",
             "اشعار اجازة طارئة")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-26.htm",
-        '    "اشعار اجازة طارئة")
     End Sub
 
     ''' <summary>
@@ -1708,10 +1525,6 @@ Public Class MainForm : Inherits BaseFormWithPermissions
         OpenBrowserTab(Me,
             "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-14.htm",
             "إقرار الحالة الإجتماعية")
-
-        'OpenElectronicForm(
-        '    "https://www.mod.gov.kw/resources/skins/EformImages/000000/231000-14.htm",
-        '    "إقرار الحالة الإجتماعية")
     End Sub
 
 
@@ -1753,25 +1566,10 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
     End Sub
 
-    Private Sub AQuood_Click(sender As Object, e As EventArgs) Handles AQuood.Click
-        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "3good.html")
-        OpenBrowserTab(Me,
-            filePath,
-            "مناطق نائية | عقود خاصة")
-    End Sub
-
-    Private Sub Kuwait_Click(sender As Object, e As EventArgs) Handles Kuwait.Click
-        Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "Kuwait.html")
-        OpenBrowserTab(Me,
-            filePath,
-            "مناطق نائية | كويتيين")
-    End Sub
-
-    Private Sub btnAttendance_Click(sender As Object, e As EventArgs) Handles btnAttendance.Click
-
+    Private Sub Tasreeh1_Click(sender As Object, e As EventArgs) Handles Tasreeh1.Click
         Try
 
-            Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "بدل_مناطق_نائية.docx")
+            Dim filePath As String = Path.Combine(Application.StartupPath, "Templets", "index.html")
 
             ' التحقق من وجود الملف
             If Not File.Exists(filePath) Then
@@ -1802,10 +1600,345 @@ Public Class MainForm : Inherits BaseFormWithPermissions
 
         End Try
 
+
+
+    End Sub
+
+    Private Sub AQuood_Click(sender As Object, e As EventArgs) Handles AQuood.Click
+        OpenFileSafe(Path.Combine("Templets", "3good.html"))
+    End Sub
+
+    Private Sub Kuwait_Click(sender As Object, e As EventArgs) Handles Kuwait.Click
+        OpenFileSafe(Path.Combine("Templets", "Kuwait.html"))
+    End Sub
+
+    Private Sub btnAttendance_Click(sender As Object, e As EventArgs) Handles btnAttendance.Click
+        OpenFileSafe(Path.Combine("Templets", "بدل_مناطق_نائية.docx"))
+    End Sub
+    Private Sub btncleaning_Click(sender As Object, e As EventArgs) Handles btncleaning.Click
+        OpenFileSafe(Path.Combine("Templets", "صرف_مواد_النظافة_الشهرية.docx"))
+    End Sub
+#End Region
+
+#Region "إدارة التنبيهات"
+
+
+    Private Sub CheckAlerts(sender As Object, e As EventArgs)
+
+        Try
+            Dim dt = alertClass.GetDueAlerts()
+
+            If dt.Rows.Count = 0 Then
+                lblMainAlert.Visible = False
+                lastAlertID = 0
+                Return
+            End If
+
+            For Each row As DataRow In dt.Rows
+
+                Dim id As Integer = Convert.ToInt32(row("ID"))
+                Dim title As String = row("Title").ToString()
+                Dim desc As String = row("Description").ToString()
+                Dim type As String = row("AlertType").ToString()
+
+                ' ================= التكرار =================
+                Dim repeatInterval As Integer = 0
+
+                If Not IsDBNull(row("RepeatInterval")) Then
+                    repeatInterval = Convert.ToInt32(row("RepeatInterval"))
+                End If
+
+                Dim allowShow As Boolean = True
+
+                If Not IsDBNull(row("LastShownDate")) Then
+                    Dim lastShown As DateTime = Convert.ToDateTime(row("LastShownDate"))
+
+                    If repeatInterval > 0 Then
+                        ' 🔁 متكرر
+                        If (Date.Now - lastShown).TotalMinutes < repeatInterval Then
+                            allowShow = False
+                        End If
+                    Else
+                        ' ❌ غير متكرر (مرة واحدة يومياً)
+                        If lastShown.Date = Date.Today Then
+                            allowShow = False
+                        End If
+                    End If
+                End If
+
+                ' ================= العرض =================
+                If allowShow AndAlso lastAlertID <> id Then
+
+                    ' 🔔 اللابل الرئيسي
+                    lblMainAlert.Text = $"🔔 {title} - {desc}"
+                    lblMainAlert.Visible = True
+
+                    Select Case type.ToLower()
+
+                        Case "يومي", "daily"
+                            lblMainAlert.BackColor = Color.FromArgb(200, 230, 201)
+
+                        Case "أسبوعي", "weekly"
+                            lblMainAlert.BackColor = Color.FromArgb(255, 224, 178)
+
+                        Case "شهري", "monthly"
+                            lblMainAlert.BackColor = Color.FromArgb(187, 222, 251)
+
+                        Case "مرة واحدة", "once"
+                            lblMainAlert.BackColor = Color.FromArgb(255, 205, 210)
+
+                        Case Else
+                            lblMainAlert.BackColor = Color.LightGray
+
+                    End Select
+
+                    ' 🔥 حفظ ID
+                    lastAlertID = id
+
+                    ' 🔔 Popup
+                    ShowAlertPopup(title, desc, type)
+
+                    '' 🔊 صوت
+                    ''My.Computer.Audio.PlaySystemSound(System.Media.SystemSounds.Exclamation)
+                    'Dim soundPath As String = IO.Path.Combine(Application.StartupPath, "alert.wav")
+                    'My.Computer.Audio.Play(soundPath)
+
+                    ' 🔥 تحديث DB
+                    alertClass.MarkAlertAsShown(id)
+
+                End If
+
+            Next
+
+        Catch ex As Exception
+            Debug.WriteLine("Alert Error: " & ex.Message)
+        End Try
+
+    End Sub
+
+    'Private Sub CheckAlerts(sender As Object, e As EventArgs)
+
+    '    Try
+    '        Dim dt = alertClass.GetDueAlerts()
+
+    '        If dt.Rows.Count = 0 Then
+    '            lblMainAlert.Visible = False
+    '            lastAlertID = 0
+    '            Return
+    '        End If
+
+    '        For Each row As DataRow In dt.Rows
+
+    '            Dim id As Integer = Convert.ToInt32(row("ID"))
+    '            Dim title As String = row("Title").ToString()
+    '            Dim desc As String = row("Description").ToString()
+    '            Dim type As String = row("AlertType").ToString()
+
+    '            ' ================= التكرار =================
+    '            Dim isRepeating As Boolean = False
+    '            If Not IsDBNull(row("IsRepeating")) Then
+    '                isRepeating = Convert.ToBoolean(row("IsRepeating"))
+    '            End If
+
+    '            Dim allowShow As Boolean = True
+
+    '            ' ================= منطق التكرار =================
+
+    '            If Not isRepeating Then
+    '                ' ❌ غير متكرر → مرة واحدة يومياً
+    '                If Not IsDBNull(row("LastShownDate")) Then
+    '                    Dim lastShown As Date = Convert.ToDateTime(row("LastShownDate"))
+
+    '                    If lastShown.Date = Date.Today Then
+    '                        allowShow = False
+    '                    End If
+    '                End If
+
+    '            Else
+    '                ' 🔁 متكرر → كل دقيقتين
+    '                If Not IsDBNull(row("LastShownDate")) Then
+    '                    Dim lastShown As DateTime = Convert.ToDateTime(row("LastShownDate"))
+
+    '                    If (Date.Now - lastShown).TotalMinutes < 2 Then
+    '                        allowShow = False
+    '                    End If
+    '                End If
+    '            End If
+
+    '            ' ================= العرض =================
+    '            If allowShow AndAlso lastAlertID <> id Then
+
+    '                ' 🔔 اللابل الرئيسي
+    '                lblMainAlert.Text = $"🔔 {title} - {desc}"
+    '                lblMainAlert.Visible = True
+
+    '                Select Case type.ToLower()
+
+    '                    Case "يومي", "daily"
+    '                        lblMainAlert.BackColor = Color.FromArgb(200, 230, 201)
+
+    '                    Case "أسبوعي", "weekly"
+    '                        lblMainAlert.BackColor = Color.FromArgb(255, 224, 178)
+
+    '                    Case "شهري", "monthly"
+    '                        lblMainAlert.BackColor = Color.FromArgb(187, 222, 251)
+
+    '                    Case "مرة واحدة", "once"
+    '                        lblMainAlert.BackColor = Color.FromArgb(255, 205, 210)
+
+    '                    Case Else
+    '                        lblMainAlert.BackColor = Color.LightGray
+
+    '                End Select
+
+    '                ' 🔥 تحديث ID
+    '                lastAlertID = id
+
+    '                ' 🔔 Popup
+    '                ShowAlertPopup(title, desc, type)
+
+    '                ' 🔥 تحديث قاعدة البيانات
+    '                alertClass.MarkAlertAsShown(id)
+
+    '            End If
+
+    '        Next
+
+    '    Catch ex As Exception
+    '        Debug.WriteLine("Alert Error: " & ex.Message)
+    '    End Try
+
+    'End Sub
+
+    'Private Sub CheckAlerts(sender As Object, e As EventArgs)
+
+    '    Try
+    '        Dim dt = alertClass.GetDueAlerts()
+
+    '        If dt.Rows.Count = 0 Then
+    '            lblMainAlert.Visible = False
+    '            lastAlertID = 0
+    '            Return
+    '        End If
+
+    '        For Each row As DataRow In dt.Rows
+
+    '            Dim id As Integer = Convert.ToInt32(row("ID"))
+    '            Dim title As String = row("Title").ToString()
+    '            Dim desc As String = row("Description").ToString()
+    '            Dim type As String = row("AlertType").ToString()
+
+    '            If lastAlertID <> id Then
+
+    '                ' 🔔 اللابل الرئيسي
+    '                lblMainAlert.Text = $"🔔 {title} - {desc}"
+    '                lblMainAlert.Visible = True
+
+    '                Select Case type
+    '                    Case "يومي"
+    '                        lblMainAlert.BackColor = Color.FromArgb(200, 230, 201)
+    '                    Case "أسبوعي"
+    '                        lblMainAlert.BackColor = Color.FromArgb(255, 224, 178)
+    '                    Case "شهري"
+    '                        lblMainAlert.BackColor = Color.FromArgb(187, 222, 251)
+    '                    Case "مرة واحدة"
+    '                        lblMainAlert.BackColor = Color.FromArgb(255, 205, 210)
+    '                End Select
+
+    '                lastAlertID = id
+
+    '                ' 🔔 Popup
+    '                ShowAlertPopup(title, desc, type)
+
+    '                ' 🔥 تحديث قاعدة البيانات
+    '                alertClass.MarkAlertAsShown(id)
+
+    '            End If
+
+    '        Next
+
+    '    Catch ex As Exception
+    '        Debug.WriteLine("Alert Error: " & ex.Message)
+    '    End Try
+
+    'End Sub
+
+
+    Private Sub ShowAlertPopup(title As String, message As String, alertType As String)
+
+        ' 🔊 تشغيل الصوت
+        Try
+            Dim soundPath As String = IO.Path.Combine(Application.StartupPath, "alert.wav")
+
+            If IO.File.Exists(soundPath) Then
+                Dim player As New System.Media.SoundPlayer(soundPath)
+                player.Play()
+            Else
+                System.Media.SystemSounds.Exclamation.Play()
+            End If
+
+        Catch
+            System.Media.SystemSounds.Exclamation.Play()
+        End Try
+
+
+        Dim f As New Form With {
+        .Size = New Size(320, 150),
+        .StartPosition = FormStartPosition.Manual,
+        .Location = New Point(
+            Screen.PrimaryScreen.WorkingArea.Width - 340,
+            Screen.PrimaryScreen.WorkingArea.Height - 180),
+        .BackColor = Color.White,
+        .TopMost = True,
+        .FormBorderStyle = FormBorderStyle.None,
+        .RightToLeft = RightToLeft.Yes,
+        .RightToLeftLayout = True
+    }
+
+        Dim lblTitle As New Label With {
+        .Text = title,
+        .Dock = DockStyle.Top,
+        .Height = 35,
+        .ForeColor = Color.White,
+        .TextAlign = ContentAlignment.MiddleCenter,
+        .Font = New Font("Cairo", 11, FontStyle.Bold)
+    }
+
+        Select Case alertType.ToLower()
+            Case "يومي", "daily"
+                lblTitle.BackColor = Color.Green
+            Case "أسبوعي", "weekly"
+                lblTitle.BackColor = Color.Orange
+            Case "شهري", "monthly"
+                lblTitle.BackColor = Color.Blue
+            Case "مرة واحدة", "once"
+                lblTitle.BackColor = Color.Red
+            Case Else
+                lblTitle.BackColor = Color.Gray
+        End Select
+
+        Dim lblMsg As New Label With {
+        .Text = message,
+        .Dock = DockStyle.Fill,
+        .TextAlign = ContentAlignment.MiddleCenter,
+        .Font = New Font("Cairo", 9)
+    }
+
+        f.Controls.Add(lblMsg)
+        f.Controls.Add(lblTitle)
+
+        f.Show()
+
+        Dim t As New Timer With {.Interval = 5000}
+        AddHandler t.Tick, Sub()
+                               f.Close()
+                               t.Stop()
+                           End Sub
+        t.Start()
+
     End Sub
 
 #End Region
-
 
 #Region "الشبكة المحلية والانترنت"
 

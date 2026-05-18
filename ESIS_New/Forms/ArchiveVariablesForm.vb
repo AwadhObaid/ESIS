@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports Microsoft.WindowsAPICodePack.Dialogs
 
 Public Class ArchiveVariablesForm
 
@@ -44,43 +45,106 @@ Public Class ArchiveVariablesForm
     ' أزرار اختيار المسارات
     '=========================
     Private Sub btnFolderBrows1_Click(sender As Object, e As EventArgs) Handles btnFolderBrows1.Click
-        Using f As New FolderBrowserDialog()
-            f.Description = "اختر مسار حفظ الأرشيف الخارجي"
-            If Directory.Exists(ExternalSoredPath.Text) Then f.SelectedPath = ExternalSoredPath.Text
-            If f.ShowDialog(Me) = DialogResult.OK Then
-                ExternalSoredPath.Text = f.SelectedPath
+        Dim dialog As New CommonOpenFileDialog()
+
+        With dialog
+            .IsFolderPicker = True          ' اختيار مجلد وليس ملف
+            .Title = "اختر مسار حفظ الأرشيف الخارجي"
+            .EnsurePathExists = True        ' التأكد من وجود المجلد
+            .AllowNonFileSystemItems = False
+            .Multiselect = False
+
+            ' تحميل المسار الحالي (إن وجد)
+            If Not String.IsNullOrWhiteSpace(ExternalSoredPath.Text) AndAlso Directory.Exists(ExternalSoredPath.Text) Then
+                .InitialDirectory = ExternalSoredPath.Text
             End If
-        End Using
+        End With
+
+        ' عرض الحوار
+        If dialog.ShowDialog() = CommonFileDialogResult.Ok Then
+            ' تعيين المسار المختار إلى TextBox
+            ExternalSoredPath.Text = dialog.FileName
+        End If
+
+
+        'Using f As New FolderBrowserDialog()
+        '    f.Description = "اختر مسار حفظ الأرشيف الخارجي"
+        '    If Directory.Exists(ExternalSoredPath.Text) Then f.SelectedPath = ExternalSoredPath.Text
+        '    If f.ShowDialog(Me) = DialogResult.OK Then
+        '        ExternalSoredPath.Text = f.SelectedPath
+        '    End If
+        'End Using
     End Sub
 
     Private Sub btnFolderBrows2_Click(sender As Object, e As EventArgs) Handles btnFolderBrows2.Click
-        Using f As New FolderBrowserDialog()
-            f.Description = "اختر مسار حفظ صور المسح الضوئي"
-            If Directory.Exists(ScandImagePath.Text) Then f.SelectedPath = ScandImagePath.Text
-            If f.ShowDialog(Me) = DialogResult.OK Then
-                ScandImagePath.Text = f.SelectedPath
+        Dim dialog As New CommonOpenFileDialog()
+
+        With dialog
+            .IsFolderPicker = True          ' اختيار مجلد وليس ملف
+            .Title = "اختر مسار حفظ صور المسح الضوئي"
+            .EnsurePathExists = True        ' التأكد من وجود المجلد
+            .AllowNonFileSystemItems = False
+            .Multiselect = False
+
+            ' تحميل المسار الحالي (إن وجد)
+            If Not String.IsNullOrWhiteSpace(ScandImagePath.Text) AndAlso Directory.Exists(ScandImagePath.Text) Then
+                .InitialDirectory = ScandImagePath.Text
             End If
-        End Using
+        End With
+
+        ' عرض الحوار
+        If dialog.ShowDialog() = CommonFileDialogResult.Ok Then
+            ' تعيين المسار المختار إلى TextBox
+            ScandImagePath.Text = dialog.FileName
+        End If
+
     End Sub
 
     Private Sub btnFolderBrows3_Click(sender As Object, e As EventArgs) Handles btnFolderBrows3.Click
-        Using f As New FolderBrowserDialog()
-            f.Description = "اختر مسار حفظ ملفات PDF"
-            If Directory.Exists(PDFStoredPath.Text) Then f.SelectedPath = PDFStoredPath.Text
-            If f.ShowDialog(Me) = DialogResult.OK Then
-                PDFStoredPath.Text = f.SelectedPath
+        Dim dialog As New CommonOpenFileDialog()
+
+        With dialog
+            .IsFolderPicker = True          ' اختيار مجلد وليس ملف
+            .Title = "اختر مسار حفظ ملفات PDF"
+            .EnsurePathExists = True        ' التأكد من وجود المجلد
+            .AllowNonFileSystemItems = False
+            .Multiselect = False
+
+            ' تحميل المسار الحالي (إن وجد)
+            If Not String.IsNullOrWhiteSpace(PDFStoredPath.Text) AndAlso Directory.Exists(PDFStoredPath.Text) Then
+                .InitialDirectory = PDFStoredPath.Text
             End If
-        End Using
+        End With
+
+        ' عرض الحوار
+        If dialog.ShowDialog() = CommonFileDialogResult.Ok Then
+            ' تعيين المسار المختار إلى TextBox
+            PDFStoredPath.Text = dialog.FileName
+        End If
     End Sub
 
     Private Sub btnBrowseSearchDefaultPath_Click(sender As Object, e As EventArgs) Handles btnBrowseSearchDefaultPath.Click
-        Using f As New FolderBrowserDialog()
-            f.Description = "اختر مسار البحث الافتراضي"
-            If Directory.Exists(txtSearchDefaultPath.Text) Then f.SelectedPath = txtSearchDefaultPath.Text
-            If f.ShowDialog(Me) = DialogResult.OK Then
-                txtSearchDefaultPath.Text = f.SelectedPath
+        Dim dialog As New CommonOpenFileDialog()
+
+        With dialog
+            .IsFolderPicker = True          ' اختيار مجلد وليس ملف
+            .Title = "اختر مسار البحث الافتراضي"
+            .EnsurePathExists = True        ' التأكد من وجود المجلد
+            .AllowNonFileSystemItems = False
+            .Multiselect = False
+
+            ' تحميل المسار الحالي (إن وجد)
+            If Not String.IsNullOrWhiteSpace(txtSearchDefaultPath.Text) AndAlso Directory.Exists(txtSearchDefaultPath.Text) Then
+                .InitialDirectory = ExternalSoredPath.Text
             End If
-        End Using
+        End With
+
+        ' عرض الحوار
+        If dialog.ShowDialog() = CommonFileDialogResult.Ok Then
+            ' تعيين المسار المختار إلى TextBox
+            txtSearchDefaultPath.Text = dialog.FileName
+        End If
+
     End Sub
 
     '=========================
@@ -94,6 +158,11 @@ Public Class ArchiveVariablesForm
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         txtPassCon.UseSystemPasswordChar = Not CheckBox1.Checked
         CheckBox1.Text = If(CheckBox1.Checked, "إخفاء", "إظهار")
+    End Sub
+
+    Private Sub btnYearManagementForm_Click(sender As Object, e As EventArgs) Handles btnYearManagementForm.Click
+        Dim frm As New YearManagementForm
+        frm.ShowDialog()
     End Sub
 
 End Class

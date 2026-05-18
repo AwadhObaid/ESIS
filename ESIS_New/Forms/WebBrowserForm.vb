@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.Win32
 Public Class WebBrowserForm
+    Private scaler As ControlScaler
     ' المتغيرات الأساسية
     Private _url As String = ""
     Private _title As String = "متصفح الويب"
@@ -386,6 +387,16 @@ Handles TabControl1.SelectedIndexChanged
         _isMdiChild = isMdiChild
         ' عنوان الفورم
         Me.Text = _title
+
+        ' تهيئة كلاس التحجيم مع النموذج الحالي
+        scaler = New ControlScaler(Me)
+    End Sub
+
+    Private Sub WebBrowserForm_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        ' التحقق من أن الكائن scaler مهيأ قبل استدعائه
+        If scaler IsNot Nothing Then
+            scaler.ScaleControls(Me)
+        End If
     End Sub
 
     Private Sub WebBrowserForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -546,32 +557,74 @@ Handles TabControl1.SelectedIndexChanged
         End Try
     End Sub
 
-    ''' <summary>
-    ''' الانتقال إلى الرابط المدخل
-    ''' </summary>
+    '''' <summary>
+    '''' الانتقال إلى الرابط المدخل
+    '''' </summary>
+    'Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
+    '    Try
+    '        Dim browser = GetCurrentBrowser()
+    '        If browser Is Nothing Then Exit Sub
+
+    '        Dim url As String = txtUrl.Text.Trim()
+
+    '        If String.IsNullOrEmpty(url) Then Exit Sub
+    '        If Uri.IsWellFormedUriString(url, UriKind.Absolute) = False Then
+    '            url = "https://www.google.com"
+    '        End If
+
+    '        If Not url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) AndAlso
+    '           Not url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) Then
+
+    '            url = "http://" & url
+
+    '        End If
+
+    '        browser.Navigate(url)
+    '    Catch ex As Exception
+    '        MessageBox.Show($"خطأ في التنقل إلى الصفحة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
+
         Try
-            Dim browser = GetCurrentBrowser()
-            If browser Is Nothing Then Exit Sub
 
             Dim url As String = txtUrl.Text.Trim()
 
             If String.IsNullOrEmpty(url) Then Exit Sub
-            If Uri.IsWellFormedUriString(url, UriKind.Absolute) = False Then
-                url = "https://www.google.com"
-            End If
 
+            ' ==============================
+            ' معالجة الرابط
+            ' ==============================
             If Not url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) AndAlso
-               Not url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) Then
+           Not url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) Then
 
-                url = "http://" & url
+                If url.Contains(".") Then
+                    url = "http://" & url
+                Else
+                    url = "https://www.google.com"
+                End If
 
             End If
 
-            browser.Navigate(url)
+            ' تحقق نهائي
+            Dim uriResult As Uri = Nothing
+
+            If Uri.TryCreate(url, UriKind.Absolute, uriResult) Then
+
+                ' ==============================
+                ' فتح تبويب جديد
+                ' ==============================
+                CreateNewTab(uriResult.ToString(), TabControl1)
+
+            Else
+                MessageBox.Show("الرابط غير صالح", "تنبيه")
+            End If
+
         Catch ex As Exception
-            MessageBox.Show($"خطأ في التنقل إلى الصفحة: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("خطأ: " & ex.Message)
         End Try
+
     End Sub
 
     ''' <summary>

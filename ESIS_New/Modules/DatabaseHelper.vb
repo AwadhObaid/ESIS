@@ -807,5 +807,33 @@ Module DatabaseHelper
         Return dt
     End Function
 
+    Public Function ExecuteDataTable(query As String, Optional parameters() As SqlParameter = Nothing) As DataTable
+
+        Dim dt As New DataTable()
+
+        Try
+            Using conn As SqlConnection = Con()
+                conn.Open()
+                Using cmd As New SqlCommand(query, conn)
+
+                    If parameters IsNot Nothing Then
+                        cmd.Parameters.AddRange(parameters)
+                    End If
+
+                    Using da As New SqlDataAdapter(cmd)
+                        da.Fill(dt)
+                    End Using
+
+                End Using
+            End Using
+
+        Catch ex As Exception
+            MessageBox.Show("خطأ في جلب البيانات: " & ex.Message)
+        End Try
+
+        Return dt
+
+    End Function
+
 End Module
 

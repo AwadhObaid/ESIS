@@ -1864,6 +1864,38 @@ Public Class ArchiveClass
 
 #End Region
 
+
+    ' ---------------------------------------------------------
+    ' دوال جلب بيانات التقارير
+    ' ---------------------------------------------------------
+
+    Public Function GetSaderReportData() As DataTable
+        Dim query As String = "SELECT NumberBook, DateBook, SubjBook, WillMaster, WillSub, UserName FROM TbSader ORDER BY DateBook DESC"
+        Return DatabaseHelper.ExecuteQuery(query)
+    End Function
+
+    Public Function GetSaderReportDataByYear(year As Integer) As DataTable
+        Dim query As String = "SELECT NumberBook, DateBook, SubjBook, WillMaster, WillSub, UserName FROM TbSader WHERE Year = @Year ORDER BY DateBook DESC"
+        Dim parameters As SqlParameter() = {New SqlParameter("@Year", year)}
+        Return DatabaseHelper.ExecuteQuery(query, parameters)
+    End Function
+
+    Public Function GetArchiveReportData() As DataTable
+        Dim query As String = "SELECT ArchiveNum, ArchiveDate, ArchiveSubject, ArchiveFolder, ArchiveWillMaster, ArchiveWillSub, UserName FROM TbArchive WHERE IsDeleted = 0 ORDER BY ArchiveDate DESC"
+        Return DatabaseHelper.ExecuteQuery(query)
+    End Function
+
+    Public Function GetArchiveReportDataByYear(year As Integer) As DataTable
+        Dim query As String = "SELECT ArchiveNum, ArchiveDate, ArchiveSubject, ArchiveFolder, ArchiveWillMaster, ArchiveWillSub, UserName FROM TbArchive WHERE IsDeleted = 0 AND YEAR(ArchiveDate) = @Year ORDER BY ArchiveDate DESC"
+        Dim parameters As SqlParameter() = {New SqlParameter("@Year", year)}
+        Return DatabaseHelper.ExecuteQuery(query, parameters)
+    End Function
+
+    Public Function GetUnarchivedReportData() As DataTable
+        Dim query As String = "SELECT s.NumberBook, s.DateBook, s.SubjBook, s.WillMaster, s.WillSub, s.UserName FROM TbSader s LEFT JOIN TbArchive a ON s.ID = a.SaderID WHERE a.ID IS NULL ORDER BY s.DateBook DESC"
+        Return DatabaseHelper.ExecuteQuery(query)
+    End Function
+
 #Region " أكواد معطلة "
 
     '''' <summary>
